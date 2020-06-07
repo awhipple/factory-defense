@@ -3,6 +3,7 @@ import ImageLibrary from './gfx/ImageLibrary.js';
 import { KeyNames, MouseButtonNames } from './input/Enums.js';
 import { Coord } from './GameMath.js';
 import Button from './objects/Button.js';
+import FullscreenSplash from './objects/FullScreenSplash.js';
 
 export default class GameEngine {
   constructor(width, height, options = {}) {
@@ -30,9 +31,12 @@ export default class GameEngine {
     document.addEventListener('fullscreenchange', (event) => {
       this.fullscreen = !!document.fullscreenElement;
     });
+    if ( options.showFullscreenSplash ) {
+      this.window.register(new FullscreenSplash(this));
+    }
 
     this.images.load().then(() => {
-      if ( options.showFullScreenIcon ) {
+      if ( options.showFullscreenIcon ) {
         this.fullscreenButton = new Button(this, this.images.get("fullscreen"), width-20, height-20, 0.05);
         this.register(this.fullscreenButton);
       }

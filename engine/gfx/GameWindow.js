@@ -11,9 +11,6 @@ export default class GameWindow {
 
     this.objects = [];
 
-    this.img = new Image();
-    this.img.src = "./images/ball.png";
-
     requestAnimationFrame(() => this.draw());
   }
 
