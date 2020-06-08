@@ -91,17 +91,9 @@ export default class TileSet {
     }
   }
 
-  update() {
-    var tileSpanX = this.engine.window.width / this.camZoom + 1,
-        startTileX = Math.max(0, Math.floor(this.camCenter.x - tileSpanX/2)),
-        endTileX = Math.min(this.width, Math.ceil(this.camCenter.x + tileSpanX/2));
-
-    var tileSpanY = this.engine.window.height / this.camZoom + 1,
-        startTileY = Math.max(0, Math.floor(this.camCenter.y - tileSpanY/2)),
-        endTileY = Math.min(this.height, Math.ceil(this.camCenter.y + tileSpanY/2));
-        
-    for(var y = startTileY; y < endTileY; y++) {
-      for(var x = startTileX; x < endTileX; x++) {
+  update() {       
+    for(var x = 0; x < this.field.length; x++) {
+      for(var y = 0; y < this.field[x].length; y++) {
         for(var i = 0; i < this.field[x][y].buildings.length; i++) {
           var building = this.field[x][y].buildings[i];
           building.update();
