@@ -5,6 +5,7 @@ export default class GameWindow {
     this.height = height;
     
     this.canvas = document.getElementById(canvasId);
+    this.canvas.oncontextmenu = () => false;
     this.canvas.width = width;
     this.canvas.height = height;
     this.ctx = this.canvas.getContext("2d");

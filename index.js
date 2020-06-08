@@ -78,6 +78,9 @@ window.onload = function() {
       if ( event.button === "left" ) {
         cursorBuilding = null;
       }
+      if ( event.button === "right" ) {
+        field[selectedTile.x][selectedTile.y].buildings = [];
+      }
     })
 
     engine.update(() => {
