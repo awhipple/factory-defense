@@ -6,7 +6,8 @@ import HotBar from './engine/gfx/HotBar.js';
 
 window.onload = function() {
   var engine = new GameEngine(1920, 1080, {
-    showFullscreenSplash: false,
+    // showFullscreenSplash: true,
+    showFullscreenIcon: true,
   });
   engine.images.preload(["empty", "blueOre", "miner"]);
   

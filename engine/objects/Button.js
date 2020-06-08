@@ -20,7 +20,7 @@ export default class Button {
       }
     });
 
-    engine.onMouseClick(event => {
+    engine.onMouseDown(event => {
       if ( !engine.fullscreen && this.hover ) {
         engine.goFullscreen();
       }
