@@ -46,8 +46,11 @@ window.onload = function() {
 
     engine.onKeyPress(event => {
       if ( event.key === "1" ) {
-        cursorBuilding = new Building(selectedTile.x, selectedTile.y, engine.images.get("miner"), cursorOrientation);
-        field[selectedTile.x][selectedTile.y].buildings.push(cursorBuilding);
+        if ( cursorBuilding ) {
+          engine.unregister(cursorBuilding);
+        }
+        cursorBuilding = new Building(tileSet, selectedTile.x, selectedTile.y, engine.images.get("miner"), cursorOrientation);
+        engine.window.register(cursorBuilding, true);
       }
       if ( event.key === "r" ) {
         if ( cursorBuilding ) {
@@ -66,11 +69,7 @@ window.onload = function() {
     engine.onMouseMove(event => {
       selectedTile = tileSet.getTileAtCoord(event.pos);
       if ( cursorBuilding && !cursorBuilding.pos.equals(selectedTile) ) {
-        var oldBuildingsArray = field[cursorBuilding.pos.x][cursorBuilding.pos.y].buildings;
-        oldBuildingsArray.splice(oldBuildingsArray.indexOf(cursorBuilding), 1);
-
         cursorBuilding.pos = selectedTile;
-        field[selectedTile.x][selectedTile.y].buildings.push(cursorBuilding);
       }
     });
 
@@ -78,15 +77,25 @@ window.onload = function() {
       if ( event.button === "left" ) {
         if ( cursorBuilding ) {
           cursorBuilding.alpha = 1;
+          engine.unregister(cursorBuilding);
+          field[selectedTile.x][selectedTile.y].buildings.push(cursorBuilding);
           cursorBuilding = null;
         }
       }
       if ( event.button === "right" ) {
-        field[selectedTile.x][selectedTile.y].buildings = [];
+        if ( cursorBuilding ) {
+          engine.unregister(cursorBuilding);
+          cursorBuilding = null;
+        } else {
+          field[selectedTile.x][selectedTile.y].buildings = [];
+        }
       }
     })
 
     engine.update(() => {
+      if ( cursorBuilding ) {
+
+      }
     });
   });
 }

@@ -6,11 +6,11 @@ export default class Image {
     }
   }
   
-  draw(ctx, x, y, w, h, options = {}) {
+  draw(ctx, rect, options = {}) {
     if ( options.alpha ) {
       ctx.globalAlpha = options.alpha;
     }
-    ctx.drawImage(this.getImage(options.orientation), x, y, w, h);
+    ctx.drawImage(this.getImage(options.orientation), rect.x, rect.y, rect.w, rect.h);
     ctx.globalAlpha = 1;
   }
   

@@ -13,6 +13,15 @@ export class Coord {
   }
 }
 
+export class BoundingRect {
+  constructor(x, y, w, h) {
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
+  }
+}
+
 export function getDirectionFrom(pointA, pointB) {
   var direction = Math.atan((pointB.y - pointA.y)/(pointB.x - pointA.x));
   if ( pointA.x > pointB.x ) {

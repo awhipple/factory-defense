@@ -1,4 +1,4 @@
-import { Coord } from "../GameMath.js";
+import { Coord, BoundingRect } from "../GameMath.js";
 
 export default class TileSet {
   constructor(engine, field, options = {}) {
@@ -59,6 +59,10 @@ export default class TileSet {
       Math.floor(((this.engine.window.height / 2 - pos.y) / -this.camZoom + this.camCenter.y)));    
   }
 
+  getTileBoundingRect(tile) {
+    return new BoundingRect(this.viewportX(tile.x), this.viewportY(tile.y), this.camZoom, this.camZoom);
+  }
+
   draw(ctx) {
     var tileSpanX = this.engine.window.width / this.camZoom + 1,
         startTileX = Math.max(0, Math.floor(this.camCenter.x - tileSpanX/2)),
@@ -74,10 +78,7 @@ export default class TileSet {
         ctx.drawImage(this.engine.images.get(this.field[x][y].ground), tileX, tileY, this.camZoom, this.camZoom);
         for(var i = 0; i < this.field[x][y].buildings.length; i++) {
           var building = this.field[x][y].buildings[i];
-          building.image.draw(ctx, tileX, tileY, this.camZoom, this.camZoom, {
-            alpha: building.alpha,
-            orientation: building.orientation,
-          });
+          building.draw(ctx);
         }
       }
     }
