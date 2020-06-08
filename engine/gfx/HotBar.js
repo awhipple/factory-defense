@@ -5,12 +5,30 @@ export default class HotBar {
     this.iconSize = iconSize;
     this.iconSpacing = iconSpacing;
     this.iconImages = iconImages;
+
     this.selected = 0;
 
     this.width = iconCount * (iconSize + iconSpacing) + iconSpacing;
     this.height = iconSize + 2 * iconSpacing;
     this.startX = engine.window.width/2 - this.width/2;
     this.startY = engine.window.height - this.height;
+
+    engine.onMouseDown(event => {
+      if(
+        event.pos.x > this.startX && event.pos.x < this.startX + this.width &&
+        event.pos.y > this.startY &&
+        event.pos.x % (iconSize + iconSpacing) > iconSpacing
+      ) {
+        this.selected = Math.ceil((event.pos.x-this.startX)/(iconSize + iconSpacing));
+        if ( this.callback ) {
+          this.callback(this.selected);
+        }
+      }
+    });
+  }
+
+  onSelect(callback) {
+    this.callback = callback;
   }
 
   draw(ctx) {

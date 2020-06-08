@@ -10,7 +10,7 @@ window.onload = function() {
     showFullscreenIcon: true,
   });
   engine.images.preload(["empty", "blueOre", "miner"]);
-  
+
   engine.onKeyPress(event => {
     if ( event.key == 'f' ) {
       engine.goFullscreen();
@@ -19,6 +19,10 @@ window.onload = function() {
 
   engine.load().then(() => {
     var hotBar = new HotBar(engine, [engine.images.get("miner")]);
+    hotBar.onSelect(selected => {
+      setTimeout(() => setBuild(selected), 0);
+    });
+    
     engine.register(hotBar, true);
 
     var fieldWidth = 100;
@@ -50,13 +54,8 @@ window.onload = function() {
     };
 
     engine.onKeyPress(event => {
-      if ( event.key === "1" ) {
-        if ( cursorBuilding ) {
-          engine.unregister(cursorBuilding);
-        }
-        cursorBuilding = new Building(tileSet, selectedTile.x, selectedTile.y, engine.images.get("miner"), cursorOrientation);
-        engine.window.register(cursorBuilding, true);
-        hotBar.selected = 1;
+      if ( ["1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(event.key) ) {
+        setBuild(parseInt(event.key));
       }
       if ( event.key === "r" ) {
         if ( cursorBuilding ) {
@@ -105,5 +104,16 @@ window.onload = function() {
 
       }
     });
+
+    function setBuild(selected) {
+      if ( cursorBuilding ) {
+        engine.unregister(cursorBuilding);
+      }
+      if ( selected === 1 ) {
+        cursorBuilding = new Building(tileSet, selectedTile.x, selectedTile.y, engine.images.get("miner"), cursorOrientation);
+        engine.window.register(cursorBuilding, true);
+      }
+      hotBar.selected = selected;
+    }
   });
 }
