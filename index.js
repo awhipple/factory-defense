@@ -76,7 +76,10 @@ window.onload = function() {
 
     engine.onMouseDown(event => {
       if ( event.button === "left" ) {
-        cursorBuilding = null;
+        if ( cursorBuilding ) {
+          cursorBuilding.alpha = 1;
+          cursorBuilding = null;
+        }
       }
       if ( event.button === "right" ) {
         field[selectedTile.x][selectedTile.y].buildings = [];

@@ -6,5 +6,6 @@ export default class Building {
     this.pos = new Coord(x, y);
     this.image = new Image(img);
     this.orientation = orientation;
+    this.alpha = 0.4;
   }
 }

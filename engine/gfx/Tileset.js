@@ -74,8 +74,10 @@ export default class TileSet {
         ctx.drawImage(this.engine.images.get(this.field[x][y].ground), tileX, tileY, this.camZoom, this.camZoom);
         for(var i = 0; i < this.field[x][y].buildings.length; i++) {
           var building = this.field[x][y].buildings[i];
-          ctx.drawImage(building.image.getImage(building.orientation),
-            tileX, tileY, this.camZoom, this.camZoom);
+          building.image.draw(ctx, tileX, tileY, this.camZoom, this.camZoom, {
+            alpha: building.alpha,
+            orientation: building.orientation,
+          });
         }
       }
     }

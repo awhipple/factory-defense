@@ -5,7 +5,15 @@ export default class Image {
       right: this.img,
     }
   }
-
+  
+  draw(ctx, x, y, w, h, options = {}) {
+    if ( options.alpha ) {
+      ctx.globalAlpha = options.alpha;
+    }
+    ctx.drawImage(this.getImage(options.orientation), x, y, w, h);
+    ctx.globalAlpha = 1;
+  }
+  
   getImage(dir = "right") {
     if (!this.imageDirections[dir]) {
       this.generateRotations();
