@@ -14,8 +14,13 @@ export default class GameWindow {
     requestAnimationFrame(() => this.draw());
   }
 
-  register(object) {
-    this.objects.push(object);
+  // To Do: Implement z index for draw order
+  register(object, displayTop) {
+    if(displayTop) {
+      this.objects.push(object);
+    } else {
+      this.objects.unshift(object);
+    }
   }
 
   unregister(object) {

@@ -32,7 +32,7 @@ export default class GameEngine {
       this.fullscreen = !!document.fullscreenElement;
     });
     if ( options.showFullscreenSplash ) {
-      this.window.register(new FullscreenSplash(this));
+      this.window.register(new FullscreenSplash(this), true);
     }
 
     this.images.load().then(() => {
@@ -87,9 +87,21 @@ export default class GameEngine {
     });
   }
 
-  onMouseClick(callback) {
+  onMouseDown(callback) {
     this.window.canvas.addEventListener('mousedown', event => {
+      callback(this.mouseEvent(event));
+    });
+  }
+
+  onMouseUp(callback) {
+    this.window.canvas.addEventListener('mouseup', event => {
       callback({button: MouseButtonNames[event.button] || event.button});
+    });
+  }
+
+  onMouseWheel(callback) {
+    this.window.canvas.addEventListener('mousewheel', event => {
+      callback(this.mouseEvent(event));
     });
   }
 
@@ -101,5 +113,13 @@ export default class GameEngine {
       (rect.width - canvas.width/scale) / 2 :
       rect.left;
     return new Coord((event.clientX - subX) * scale, (event.clientY - rect.top) * scale);
+  }
+
+  mouseEvent(event) {
+    return {
+      button: MouseButtonNames[event.button] || event.button,
+      pos: this.getMouseCoord(event),
+      wheelDirection: event.wheelDeltaY < 0 ? "down" : "up",
+    };
   }
 }

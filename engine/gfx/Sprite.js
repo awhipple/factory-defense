@@ -1,9 +1,9 @@
 export default class Sprite {
   constructor(img, x, y, scale) {
     this.img = img;
-    this.x = x;
-    this.y = y;
-    this.scale = scale;
+    this.x = x || 0;
+    this.y = y || 0;
+    this.scale = scale || 1;
     
     this._rad = 0;
     this.rotated = false;

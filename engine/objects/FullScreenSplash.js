@@ -2,7 +2,7 @@ export default class FullscreenSplash {
   constructor(engine) {
     this.engine = engine;
 
-    engine.onMouseClick(event => {
+    engine.onMouseDown(event => {
       if ( !this.engine.fullscreen ) {
         engine.goFullscreen();
       }
@@ -13,11 +13,9 @@ export default class FullscreenSplash {
     if ( !this.engine.fullscreen ) {
       ctx.fillStyle = "#000";
       ctx.fillRect(0, 0, this.engine.window.width, this.engine.window.height);
-      ctx.fillStyle = "#666";
-      ctx.fillRect(600, 450, 400, 100);
-      ctx.fillStyle = "#000";
+      ctx.fillStyle = "#fff";
       ctx.font = "50px Arial";
-      ctx.fillText("Click to Play!", 640, 515);
+      ctx.fillText("Click to Play!", 10, 60);
       ctx.stroke();
     }
   }

@@ -3,6 +3,14 @@ export class Coord {
     this.x = x;
     this.y = y;
   }
+
+  equals(other) {
+    return this.x === other.x && this.y === other.y;
+  }
+
+  toString() {
+    return this.x + ',' + this.y;
+  }
 }
 
 export function getDirectionFrom(pointA, pointB) {
