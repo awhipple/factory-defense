@@ -1,15 +1,21 @@
 import GameEngine from './engine/GameEngine.js';
 import TileSet from './engine/gfx/Tileset.js';
-import Building from './gameObjects/Building.js';
+import Building, { BUILDINGS } from './gameObjects/Building.js';
 import { Coord } from './engine/GameMath.js';
 import HotBar from './engine/gfx/HotBar.js';
+import Resource from './gameObjects/Resource.js';
+
+// TO DO
+// FIX ENGINE Z INDEX
+// REGISTER OBJECTS WITH ENGINE TO UPDATE
 
 window.onload = function() {
   var engine = new GameEngine(1920, 1080, {
     // showFullscreenSplash: true,
     showFullscreenIcon: true,
   });
-  engine.images.preload(["empty", "blueOre", "miner"]);
+  engine.images.preload(["empty", "blueOre", "oreChunk"]);
+  engine.images.preload(BUILDINGS);
 
   engine.onKeyPress(event => {
     if ( event.key == 'f' ) {
@@ -18,7 +24,7 @@ window.onload = function() {
   });
 
   engine.load().then(() => {
-    var hotBar = new HotBar(engine, [engine.images.get("miner")]);
+    var hotBar = new HotBar(engine, BUILDINGS.map((b) => engine.images.get(b)));
     hotBar.onSelect(selected => {
       setTimeout(() => setBuild(selected), 0);
     });
@@ -55,19 +61,10 @@ window.onload = function() {
 
     engine.onKeyPress(event => {
       if ( ["1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(event.key) ) {
-        setBuild(parseInt(event.key));
+        hotBar.select(parseInt(event.key));
       }
       if ( event.key === "r" ) {
-        if ( cursorBuilding ) {
-          cursorOrientation = nextOrientation[cursorOrientation];
-          cursorBuilding.orientation = cursorOrientation;
-        } else {
-          var tileBuildings = field[selectedTile.x][selectedTile.y].buildings;
-          for(var i = 0; i < tileBuildings.length; i++) {
-            var building = tileBuildings[i];
-            building.orientation = nextOrientation[building.orientation];
-          }
-        }
+        rotateCursor();
       }
     })
 
@@ -80,40 +77,58 @@ window.onload = function() {
 
     engine.onMouseDown(event => {
       if ( event.button === "left" ) {
-        if ( cursorBuilding ) {
-          cursorBuilding.alpha = 1;
-          engine.unregister(cursorBuilding);
-          field[selectedTile.x][selectedTile.y].buildings.push(cursorBuilding);
-          cursorBuilding = null;
-          hotBar.selected = 0;
-        }
+        build();
       }
       if ( event.button === "right" ) {
-        if ( cursorBuilding ) {
-          engine.unregister(cursorBuilding);
-          cursorBuilding = null;
-          hotBar.selected = 0;
-        } else {
-          field[selectedTile.x][selectedTile.y].buildings = [];
-        }
+        remove();
       }
     })
 
     engine.update(() => {
-      if ( cursorBuilding ) {
-
-      }
+      tileSet.update();
     });
 
     function setBuild(selected) {
       if ( cursorBuilding ) {
         engine.unregister(cursorBuilding);
       }
-      if ( selected === 1 ) {
-        cursorBuilding = new Building(tileSet, selectedTile.x, selectedTile.y, engine.images.get("miner"), cursorOrientation);
-        engine.window.register(cursorBuilding, true);
-      }
+      cursorBuilding = new Building(tileSet, selectedTile.x, selectedTile.y, engine.images.get(BUILDINGS[selected-1]), cursorOrientation);
+      engine.window.register(cursorBuilding, true);
       hotBar.selected = selected;
     }
+
+    function rotateCursor() {
+      if ( cursorBuilding ) {
+        cursorOrientation = nextOrientation[cursorOrientation];
+        cursorBuilding.orientation = cursorOrientation;
+      } else {
+        var tileBuildings = field[selectedTile.x][selectedTile.y].buildings;
+        for(var i = 0; i < tileBuildings.length; i++) {
+          var building = tileBuildings[i];
+          building.orientation = nextOrientation[building.orientation];
+        }
+      }
+    }
+
+    function build() {
+      if ( cursorBuilding ) {
+        cursorBuilding.alpha = 1;
+        engine.unregister(cursorBuilding);
+        field[selectedTile.x][selectedTile.y].buildings.push(cursorBuilding);
+        cursorBuilding = null;
+        hotBar.selected = 0;
+      }
+    }
+
+    function remove() {
+      if ( cursorBuilding ) {
+        engine.unregister(cursorBuilding);
+        cursorBuilding = null;
+        hotBar.selected = 0;
+      } else {
+        field[selectedTile.x][selectedTile.y].buildings = [];
+      }
+    }
+
   });
 }

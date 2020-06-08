@@ -53,6 +53,13 @@ export default class TileSet {
     return this.engine.window.height / 2 - (this.camCenter.y - tileY) * this.camZoom;
   }
 
+  getScreenRect(tileRect) {
+    return new BoundingRect(
+      this.viewportX(tileRect.x), this.viewportY(tileRect.y),
+      tileRect.w * this.camZoom, tileRect.h * this.camZoom
+    );
+  }
+
   getTileAtCoord(pos) {
     return new Coord(
       Math.floor(((this.engine.window.width / 2 - pos.x) / -this.camZoom + this.camCenter.x)),
@@ -79,6 +86,25 @@ export default class TileSet {
         for(var i = 0; i < this.field[x][y].buildings.length; i++) {
           var building = this.field[x][y].buildings[i];
           building.draw(ctx);
+        }
+      }
+    }
+  }
+
+  update() {
+    var tileSpanX = this.engine.window.width / this.camZoom + 1,
+        startTileX = Math.max(0, Math.floor(this.camCenter.x - tileSpanX/2)),
+        endTileX = Math.min(this.width, Math.ceil(this.camCenter.x + tileSpanX/2));
+
+    var tileSpanY = this.engine.window.height / this.camZoom + 1,
+        startTileY = Math.max(0, Math.floor(this.camCenter.y - tileSpanY/2)),
+        endTileY = Math.min(this.height, Math.ceil(this.camCenter.y + tileSpanY/2));
+        
+    for(var y = startTileY; y < endTileY; y++) {
+      for(var x = startTileX; x < endTileX; x++) {
+        for(var i = 0; i < this.field[x][y].buildings.length; i++) {
+          var building = this.field[x][y].buildings[i];
+          building.update();
         }
       }
     }

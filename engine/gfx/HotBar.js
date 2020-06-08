@@ -1,14 +1,14 @@
 export default class HotBar {
-  constructor(engine, iconImages = [], iconCount = 9, iconSize = 75, iconSpacing = 15) {
+  constructor(engine, iconImages = [], iconSize = 75, iconSpacing = 15) {
     this.engine = engine;
-    this.iconCount = iconCount;
+    this.iconCount = iconImages.length;
     this.iconSize = iconSize;
     this.iconSpacing = iconSpacing;
     this.iconImages = iconImages;
 
     this.selected = 0;
 
-    this.width = iconCount * (iconSize + iconSpacing) + iconSpacing;
+    this.width = this.iconCount * (iconSize + iconSpacing) + iconSpacing;
     this.height = iconSize + 2 * iconSpacing;
     this.startX = engine.window.width/2 - this.width/2;
     this.startY = engine.window.height - this.height;
@@ -19,12 +19,18 @@ export default class HotBar {
         event.pos.y > this.startY &&
         event.pos.x % (iconSize + iconSpacing) > iconSpacing
       ) {
-        this.selected = Math.ceil((event.pos.x-this.startX)/(iconSize + iconSpacing));
-        if ( this.callback ) {
-          this.callback(this.selected);
-        }
+        this.select(Math.ceil((event.pos.x-this.startX)/(iconSize + iconSpacing)));
       }
     });
+  }
+
+  select(selected) {
+    if(selected > 0 && selected <= this.iconCount) {
+      this.selected = selected;
+      if ( this.callback ) {
+        this.callback(this.selected);
+      }
+    }
   }
 
   onSelect(callback) {
