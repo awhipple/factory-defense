@@ -1,10 +1,10 @@
 import GameEngine from './engine/GameEngine.js';
-import TileSet from './engine/gfx/Tileset.js';
 import Building, { BUILDINGS } from './gameObjects/Building.js';
-import { Coord } from './engine/GameMath.js';
+import { Coord, NEXT_ORIENTATION } from './engine/GameMath.js';
 import HotBar from './engine/gfx/HotBar.js';
 import Miner from './gameObjects/Miner.js';
 import Conveyor from './gameObjects/Conveyor.js';
+import Field from './gameObjects/Field.js';
 
 window.onload = function() {
   var engine = new GameEngine(1920, 1080, {
@@ -27,32 +27,11 @@ window.onload = function() {
     });
     engine.register(hotBar);
 
-    var fieldWidth = 100;
-    var fieldHeight = 100;
-    var field = [];
-    for(var x = 0; x < fieldWidth; x++) {
-      field[x] = [];
-      for(var y = 0; y < fieldHeight; y++) {
-        field[x][y] = {
-          ground: 'empty',
-          buildings: [],
-        };
-      }
-    }
-    field[49][49].ground = field[48][50].ground = field[49][50].ground = field[50][50].ground = 'blueOre';
-
-    var tileSet = new TileSet(engine, field);
-    engine.register(tileSet);
+    var field = new Field(engine, 100, 100);
 
     var selectedTile = new Coord(0, 0);
     var cursorBuilding = null;
     var cursorOrientation = "right";
-    var nextOrientation = {
-      right: "down",
-      down: "left",
-      left: "up",
-      up: "right",
-    };
 
     engine.onKeyPress(event => {
       if ( ["1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(event.key) ) {
@@ -64,7 +43,7 @@ window.onload = function() {
     })
 
     engine.onMouseMove(event => {
-      selectedTile = tileSet.getTileAtCoord(event.pos);
+      selectedTile = field.tileSet.getTileAtCoord(event.pos);
       if ( cursorBuilding && !cursorBuilding.pos.equals(selectedTile) ) {
         cursorBuilding.pos = selectedTile;
       }
@@ -88,11 +67,11 @@ window.onload = function() {
         engine.unregister(cursorBuilding);
       }
       if ( selected === 1 ) {
-        cursorBuilding = new Conveyor(tileSet, selectedTile.x, selectedTile.y, cursorOrientation);
+        cursorBuilding = new Conveyor(field, selectedTile.x, selectedTile.y, cursorOrientation);
       } else if ( selected === 2 ) {
-        cursorBuilding = new Miner(tileSet, selectedTile.x, selectedTile.y, cursorOrientation);
+        cursorBuilding = new Miner(field, selectedTile.x, selectedTile.y, cursorOrientation);
       } else {
-        cursorBuilding = new Building(tileSet, selectedTile.x, selectedTile.y, engine.images.get(BUILDINGS[selected-1]), cursorOrientation);
+        cursorBuilding = new Building(field, selectedTile.x, selectedTile.y, engine.images.get(BUILDINGS[selected-1]), cursorOrientation);
       }
       engine.register(cursorBuilding);
       hotBar.selected = selected;
@@ -100,13 +79,12 @@ window.onload = function() {
 
     function rotateCursor() {
       if ( cursorBuilding ) {
-        cursorOrientation = nextOrientation[cursorOrientation];
-        cursorBuilding.orientation = cursorOrientation;
+        cursorOrientation = NEXT_ORIENTATION[cursorOrientation];
+        cursorBuilding.rotate(cursorOrientation);
       } else {
-        var tileBuildings = field[selectedTile.x][selectedTile.y].buildings;
-        for(var i = 0; i < tileBuildings.length; i++) {
-          var building = tileBuildings[i];
-          building.orientation = nextOrientation[building.orientation];
+        var tileBuilding = field.getBuildingAt(selectedTile);
+        if ( tileBuilding ) {
+          tileBuilding.rotate();
         }
       }
     }
@@ -115,7 +93,7 @@ window.onload = function() {
       if ( cursorBuilding ) {
         cursorBuilding.alpha = 1;
         cursorBuilding.on = true;
-        field[selectedTile.x][selectedTile.y].buildings.push(cursorBuilding);
+        field.setBuildingAt(selectedTile, cursorBuilding);
         cursorBuilding = null;
         hotBar.selected = 0;
       }
@@ -127,11 +105,11 @@ window.onload = function() {
         cursorBuilding = null;
         hotBar.selected = 0;
       } else {
-        var tile = field[selectedTile.x][selectedTile.y];
-        for(var i = 0; i < tile.buildings.length; i++) {
-          engine.unregister(tile.buildings[i]);
+        var tile = field.field[selectedTile.x][selectedTile.y];
+        if ( tile.building ) {
+          engine.unregister(tile.building);
+          tile.building = null;
         }
-        tile.buildings = [];
       }
     }
 

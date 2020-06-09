@@ -83,11 +83,11 @@ export default class TileSet {
 
     for(var y = startTileY; y < endTileY; y++) {
       for(var x = startTileX; x < endTileX; x++) {
-        var tileX = this.viewportX(x), tileY = this.viewportY(y);
-        ctx.drawImage(this.engine.images.get(this.field[x][y].ground), tileX, tileY, this.camZoom, this.camZoom);
-        for(var i = 0; i < this.field[x][y].buildings.length; i++) {
-          var building = this.field[x][y].buildings[i];
-          building.draw(ctx);
+        var tileX = this.viewportX(x), tileY = this.viewportY(y),
+            tile = this.field[x][y];
+        ctx.drawImage(this.engine.images.get(tile.ground), tileX, tileY, this.camZoom, this.camZoom);
+        if ( tile.building ) {
+          tile.building.draw(ctx);
         }
       }
     }

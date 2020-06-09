@@ -1,4 +1,4 @@
-import { Coord } from "../engine/GameMath.js";
+import { Coord, NEXT_ORIENTATION } from "../engine/GameMath.js";
 import Image from "../engine/gfx/Image.js";
 
 export const BUILDINGS = [
@@ -8,8 +8,8 @@ export const BUILDINGS = [
 ]
 
 export default class Building {
-  constructor(tileSet, x, y, img, orientation = "right") {
-    this.tileSet = tileSet;
+  constructor(field, x, y, img, orientation = "right") {
+    this.field = field;
     this.pos = new Coord(x, y);
     this.image = new Image(img);
     this.orientation = orientation;
@@ -19,8 +19,16 @@ export default class Building {
     this.z = 3;
   }
 
+  rotate(orientation) {
+    if ( orientation ) {
+      this.orientation = orientation;
+    } else {
+      this.orientation = NEXT_ORIENTATION[this.orientation];
+    }
+  }
+
   draw(ctx) {
-    this.image.draw(ctx, this.tileSet.getTileBoundingRect(this.pos), {
+    this.image.draw(ctx, this.field.tileSet.getTileBoundingRect(this.pos), {
       orientation: this.orientation,
       alpha: this.alpha,
     });

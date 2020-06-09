@@ -1,7 +1,32 @@
+export const NEXT_ORIENTATION = {
+  left: "up",
+  up: "right",
+  right: "down",
+  down: "left",
+}
+
 export class Coord {
+  static left = new Coord(-1, 0);
+  static right = new Coord(1, 0);
+  static up = new Coord(0, -1);
+  static down = new Coord(0, 1);
+
   constructor(x, y) {
     this.x = x;
     this.y = y;
+  }
+
+  add(other) {
+    return new Coord(this.x + other.x, this.y + other.y);
+  }
+
+  addTo(other) {
+    this.x += other.x;
+    this.y += other.y;
+  }
+
+  times(other) {
+    return new Coord(this.x * other, this.y * other);
   }
 
   equals(other) {
