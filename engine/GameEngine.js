@@ -58,7 +58,7 @@ export default class GameEngine {
     this.window.unregister(object);
   }
 
-  update(gameLoop) {
+  onUpdate(gameLoop) {
     setInterval(() => {
       for(var i = 0; i < this.gameObjects.length; i++) {
         if ( this.gameObjects[i].update ) {
@@ -86,7 +86,7 @@ export default class GameEngine {
 
   onKeyPress(callback) {
     document.addEventListener('keydown', (event) => {
-      callback({key: KeyNames[event.keyCode] || event.keyCode});
+      callback(this.keyEvent(event));
     });
   }
 
@@ -126,6 +126,12 @@ export default class GameEngine {
       (rect.width - canvas.width/scale) / 2 :
       rect.left;
     return new Coord((event.clientX - subX) * scale, (event.clientY - rect.top) * scale);
+  }
+
+  keyEvent(event) {
+    return {
+      key: KeyNames[event.keyCode] || event.keyCode
+    }
   }
 
   mouseEvent(event) {

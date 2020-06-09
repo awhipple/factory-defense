@@ -79,8 +79,8 @@ window.onload = function() {
       }
     })
 
-    engine.update(() => {
-      tileSet.update();
+    engine.onUpdate(() => {
+
     });
 
     function setBuild(selected) {
