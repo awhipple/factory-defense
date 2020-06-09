@@ -8,6 +8,10 @@ export class Coord {
     return this.x === other.x && this.y === other.y;
   }
 
+  floor() {
+    return new Coord(Math.floor(this.x), Math.floor(this.y));
+  }
+
   toString() {
     return this.x + ',' + this.y;
   }

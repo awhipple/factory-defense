@@ -3,6 +3,8 @@ import TileSet from './engine/gfx/Tileset.js';
 import Building, { BUILDINGS } from './gameObjects/Building.js';
 import { Coord } from './engine/GameMath.js';
 import HotBar from './engine/gfx/HotBar.js';
+import Miner from './gameObjects/Miner.js';
+import Conveyor from './gameObjects/Conveyor.js';
 
 window.onload = function() {
   var engine = new GameEngine(1920, 1080, {
@@ -23,12 +25,10 @@ window.onload = function() {
     hotBar.onSelect(selected => {
       setTimeout(() => setBuild(selected), 0);
     });
-    
     engine.register(hotBar);
 
     var fieldWidth = 100;
     var fieldHeight = 100;
-
     var field = [];
     for(var x = 0; x < fieldWidth; x++) {
       field[x] = [];
@@ -87,7 +87,13 @@ window.onload = function() {
       if ( cursorBuilding ) {
         engine.unregister(cursorBuilding);
       }
-      cursorBuilding = new Building(tileSet, selectedTile.x, selectedTile.y, engine.images.get(BUILDINGS[selected-1]), cursorOrientation);
+      if ( selected === 1 ) {
+        cursorBuilding = new Conveyor(tileSet, selectedTile.x, selectedTile.y, cursorOrientation);
+      } else if ( selected === 2 ) {
+        cursorBuilding = new Miner(tileSet, selectedTile.x, selectedTile.y, cursorOrientation);
+      } else {
+        cursorBuilding = new Building(tileSet, selectedTile.x, selectedTile.y, engine.images.get(BUILDINGS[selected-1]), cursorOrientation);
+      }
       engine.register(cursorBuilding);
       hotBar.selected = selected;
     }
@@ -108,6 +114,7 @@ window.onload = function() {
     function build() {
       if ( cursorBuilding ) {
         cursorBuilding.alpha = 1;
+        cursorBuilding.on = true;
         field[selectedTile.x][selectedTile.y].buildings.push(cursorBuilding);
         cursorBuilding = null;
         hotBar.selected = 0;
