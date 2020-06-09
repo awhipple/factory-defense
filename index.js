@@ -6,6 +6,9 @@ import Miner from './gameObjects/Miner.js';
 import Conveyor from './gameObjects/Conveyor.js';
 import Field from './gameObjects/Field.js';
 
+// TO DO:
+// FIX BELT CENTERING LOGIC
+
 window.onload = function() {
   var engine = new GameEngine(1920, 1080, {
     // showFullscreenSplash: true,

@@ -25,7 +25,33 @@ export default class Conveyor extends Building {
   update() {
     for ( var i = 0; i < this.resources.length; i++ ) {
       var res = this.resources[i];
-      if ( this.pos.equals(res.pos.floor()) ) {
+      if ( !this.inCenter(res) ) {
+        if ( this.isHorizontal() ) {
+          if ( res.pos.y % 1 < 0.5 ) {
+            res.pos.y += 1/60;
+            if ( res.pos.y % 1 > 0.5 ) {
+              res.pos.y = Math.floor(res.pos.y) + 0.5;
+            }
+          } else {
+            res.pos.y -= 1/60;
+            if ( res.pos.y % 1 < 0.5 ) {
+              res.pos.y = Math.floor(res.pos.y) + 0.5;          
+            }
+          }
+        } else {
+          if ( res.pos.x % 1 < 0.5 ) {
+            res.pos.x += 1/60;
+            if ( res.pos.x % 1 > 0.5 ) {
+              res.pos.x = Math.floor(res.pos.x) + 0.5;
+            }
+          } else {
+            res.pos.x -= 1/60;
+            if ( res.pos.x % 1 < 0.5 ) {
+              res.pos.x = Math.floor(res.pos.x) + 0.5;
+            }
+          }
+        }
+      } else if ( this.pos.equals(res.pos.floor()) ) {
         this.resources[i].pos.addTo(this.moveCoord);
       } else {
         var handoffBuilding = this.field.getBuildingAt(this.pos.add(Coord[this.orientation]));
@@ -35,5 +61,14 @@ export default class Conveyor extends Building {
         }
       }
     }
+  }
+
+  inCenter(res) {
+    var coordVal = this.isHorizontal() ? res.pos.y : res.pos.x;
+    return coordVal % 1 === 0.5;
+  }
+
+  isHorizontal() {
+    return this.orientation === "left" || this.orientation === "right";
   }
 }
