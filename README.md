@@ -39,6 +39,9 @@ This contains all of your apps images, and is automatically instantiated with yo
 var engine = new GameEngine(...);
 engine.images
 ```
+### Methods
+* `get(imageName)`: Returns the image with the specified name.
+* `preload(imageName|[imageName])`: Will begin loading the specified image/images and cause the engine to wait until loading completes before calling the **load** callback. You can call this method multiple times.
 
 ## Image
 
@@ -49,10 +52,6 @@ engine.images
 ## Tileset
 
 ## Shapes
-
-### Methods
-* `get(imageName)`: Returns the image with the specified name.
-* `preload(imageName|[imageName])`: Will begin loading the specified image/images and cause the engine to wait until loading completes before calling the **load** callback. You can call this method multiple times.
 
 ## Events
 
