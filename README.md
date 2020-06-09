@@ -46,6 +46,8 @@ engine.images
 
 ## HotBar
 
+## Tileset
+
 ## Shapes
 
 ### Methods
