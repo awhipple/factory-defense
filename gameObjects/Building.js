@@ -5,7 +5,6 @@ import Resource from "./Resource.js";
 export const BUILDINGS = [
   "conveyor",
   "miner",
-  "super",
   "tower",
 ]
 
@@ -19,6 +18,8 @@ export default class Building {
 
     this.resources = [];
     this.spawnResource = 50;
+
+    this.z = 1;
   }
 
   draw(ctx) {
@@ -28,17 +29,13 @@ export default class Building {
     });
   }
 
-  update() {
+  update(engine) {
     this.spawnResource--;
     if ( this.spawnResource === 0 ) {
-      var res = new Resource(this.tileSet, this.pos.x+0.5, this.pos.y+0.5, this.tileSet.engine.images.get("oreChunk"));
+      var res = new Resource(this.tileSet, this.pos.x+0.5, this.pos.y+0.5, engine.images.get("oreChunk"));
       this.resources.push(res);
-      this.tileSet.engine.window.register(res, true);
+      engine.register(res);
       this.spawnResource = 50;
-    }
-    
-    for(var i = 0; i < this.resources.length; i++) {
-      this.resources[i].update();
     }
   }
 }

@@ -16,12 +16,8 @@ export default class GameWindow {
   }
 
   // To Do: Implement z index for draw order
-  register(object, displayTop) {
-    if(displayTop) {
-      this.objects.push(object);
-    } else {
-      this.objects.unshift(object);
-    }
+  register(object) {
+    this.objects.push(object);
   }
 
   unregister(object) {
@@ -36,6 +32,7 @@ export default class GameWindow {
     this.ctx.save();
     this.ctx.fillStyle = "#fff";
     this.ctx.fillRect(0, 0, this.width, this.height);
+    this.objects.sort((a, b) => (a.z || 0) - (b.z || 0))
     for(var i = 0; i < this.objects.length; i++) {
       this.objects[i].draw(this.ctx, this.engine);
     }

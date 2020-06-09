@@ -1,6 +1,7 @@
 export default class FullscreenSplash {
   constructor(engine) {
     this.engine = engine;
+    this.z = 100;
 
     engine.onMouseDown(event => {
       if ( !this.engine.fullscreen ) {

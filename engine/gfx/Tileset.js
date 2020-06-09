@@ -12,6 +12,8 @@ export default class TileSet {
     
     this.dragCam = false;
 
+    this.z = 0;
+
     engine.onMouseDown(event => {
       if ( event.button === "left") {
         this.lastMousePos = event.pos;
@@ -92,13 +94,6 @@ export default class TileSet {
   }
 
   update() {       
-    for(var x = 0; x < this.field.length; x++) {
-      for(var y = 0; y < this.field[x].length; y++) {
-        for(var i = 0; i < this.field[x][y].buildings.length; i++) {
-          var building = this.field[x][y].buildings[i];
-          building.update();
-        }
-      }
-    }
+    
   }
 }

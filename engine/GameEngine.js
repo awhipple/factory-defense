@@ -11,6 +11,8 @@ export default class GameEngine {
     this.images = new ImageLibrary();
     this.images.preload("fullscreen");
 
+    this.gameObjects = [];
+
     this.keyDownCallbacks = [];
     this.pressedKeys = {};
     document.addEventListener('keydown', (event) => {
@@ -32,7 +34,7 @@ export default class GameEngine {
       this.fullscreen = !!document.fullscreenElement;
     });
     if ( options.showFullscreenSplash ) {
-      this.window.register(new FullscreenSplash(this), true);
+      this.window.register(new FullscreenSplash(this));
     }
 
     this.images.load().then(() => {
@@ -44,15 +46,26 @@ export default class GameEngine {
   }
 
   register(object) {
+    this.gameObjects.push(object);
     this.window.register(object);
   }
 
   unregister(object) {
+    var objectIndex = this.gameObjects.indexOf(object);
+    if ( objectIndex !== -1 ) {
+      this.gameObjects.splice(objectIndex, 1);
+    }
     this.window.unregister(object);
   }
 
   update(gameLoop) {
     setInterval(() => {
+      for(var i = 0; i < this.gameObjects.length; i++) {
+        if ( this.gameObjects[i].update ) {
+          this.gameObjects[i].update(this);
+        }
+      }
+      
       var pressedKeys = Object.keys(this.pressedKeys);
       for(var i = 0; i < this.keyDownCallbacks.length; i++) {
         for(var k = 0; k < pressedKeys.length; k++) {

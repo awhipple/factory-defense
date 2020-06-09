@@ -3,11 +3,6 @@ import TileSet from './engine/gfx/Tileset.js';
 import Building, { BUILDINGS } from './gameObjects/Building.js';
 import { Coord } from './engine/GameMath.js';
 import HotBar from './engine/gfx/HotBar.js';
-import Resource from './gameObjects/Resource.js';
-
-// TO DO
-// FIX ENGINE Z INDEX
-// REGISTER OBJECTS WITH ENGINE TO UPDATE
 
 window.onload = function() {
   var engine = new GameEngine(1920, 1080, {
@@ -29,7 +24,7 @@ window.onload = function() {
       setTimeout(() => setBuild(selected), 0);
     });
     
-    engine.register(hotBar, true);
+    engine.register(hotBar);
 
     var fieldWidth = 100;
     var fieldHeight = 100;
@@ -93,7 +88,7 @@ window.onload = function() {
         engine.unregister(cursorBuilding);
       }
       cursorBuilding = new Building(tileSet, selectedTile.x, selectedTile.y, engine.images.get(BUILDINGS[selected-1]), cursorOrientation);
-      engine.window.register(cursorBuilding, true);
+      engine.register(cursorBuilding);
       hotBar.selected = selected;
     }
 
@@ -113,7 +108,6 @@ window.onload = function() {
     function build() {
       if ( cursorBuilding ) {
         cursorBuilding.alpha = 1;
-        engine.unregister(cursorBuilding);
         field[selectedTile.x][selectedTile.y].buildings.push(cursorBuilding);
         cursorBuilding = null;
         hotBar.selected = 0;
@@ -126,7 +120,11 @@ window.onload = function() {
         cursorBuilding = null;
         hotBar.selected = 0;
       } else {
-        field[selectedTile.x][selectedTile.y].buildings = [];
+        var tile = field[selectedTile.x][selectedTile.y];
+        for(var i = 0; i < tile.buildings.length; i++) {
+          engine.unregister(tile.buildings[i]);
+        }
+        tile.buildings = [];
       }
     }
 

@@ -7,6 +7,8 @@ export default class Resource {
     this.x = x;
     this.y = y;
     this.img = new Image(img);
+
+    this.z = 2;
   }
 
   draw(ctx) {
@@ -16,6 +18,6 @@ export default class Resource {
   }
 
   update() {
-    this.x += 0.01;
+    this.x += 0.01; 
   }
 }

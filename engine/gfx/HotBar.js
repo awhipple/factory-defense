@@ -13,6 +13,8 @@ export default class HotBar {
     this.startX = engine.window.width/2 - this.width/2;
     this.startY = engine.window.height - this.height;
 
+    this.z = 4;
+
     engine.onMouseDown(event => {
       if(
         event.pos.x > this.startX && event.pos.x < this.startX + this.width &&

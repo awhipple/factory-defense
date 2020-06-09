@@ -1,0 +1,5 @@
+0: Tileset
+1: Conveyors
+2: Resources
+3: Buildings
+42: Hotbar
