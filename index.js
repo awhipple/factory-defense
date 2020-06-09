@@ -4,16 +4,21 @@ import { Coord, NEXT_ORIENTATION } from './engine/GameMath.js';
 import HotBar from './engine/gfx/HotBar.js';
 import Miner from './gameObjects/Miner.js';
 import Conveyor from './gameObjects/Conveyor.js';
+import Collector from './gameObjects/Collector.js';
 import Field from './gameObjects/Field.js';
+import ScoreBoard from './engine/gfx/ScoreBoard.js';
 
 // TO DO:
 // FIX BELT CENTERING LOGIC
+// Remove blue score from engine
+// Make ScoreBoard generic
 
 window.onload = function() {
   var engine = new GameEngine(1920, 1080, {
     // showFullscreenSplash: true,
     showFullscreenIcon: true,
   });
+  engine.blue = 0;
   engine.images.preload(["empty", "blueOre", "oreChunk"]);
   engine.images.preload(BUILDINGS);
 
@@ -29,6 +34,9 @@ window.onload = function() {
       setTimeout(() => setBuild(selected), 0);
     });
     engine.register(hotBar);
+
+    var scoreBoard = new ScoreBoard(engine);
+    engine.register(scoreBoard);
 
     var field = new Field(engine, 100, 100);
 
@@ -73,6 +81,8 @@ window.onload = function() {
         cursorBuilding = new Conveyor(field, selectedTile.x, selectedTile.y, cursorOrientation);
       } else if ( selected === 2 ) {
         cursorBuilding = new Miner(field, selectedTile.x, selectedTile.y, cursorOrientation);
+      } else if ( selected === 3 ) {
+        cursorBuilding = new Collector(field, selectedTile.x, selectedTile.y, cursorOrientation);
       } else {
         cursorBuilding = new Building(field, selectedTile.x, selectedTile.y, engine.images.get(BUILDINGS[selected-1]), cursorOrientation);
       }

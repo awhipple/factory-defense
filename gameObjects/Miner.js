@@ -10,7 +10,7 @@ export default class Miner extends Building {
   }
 
   update(engine) {
-    if( this.on ) {
+    if ( this.on ) {
       this.spawnResource--;
       if ( 
         this.spawnResource <= 0 && 

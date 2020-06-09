@@ -4,7 +4,7 @@ import Image from "../engine/gfx/Image.js";
 export const BUILDINGS = [
   "conveyor",
   "miner",
-  "tower",
+  "collector",
 ]
 
 export default class Building {
