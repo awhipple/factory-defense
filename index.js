@@ -19,7 +19,7 @@ window.onload = function() {
     showFullscreenIcon: true,
   });
 
-  engine.blue = 0;
+  engine.globals.blue = 0;
   engine.images.preload(["empty", "blueOre", "oreChunk"]);
   engine.images.preload(BUILDINGS);
 
@@ -58,7 +58,7 @@ window.onload = function() {
     engine.onMouseMove(event => {
       selectedTile = field.tileSet.getTileAtCoord(event.pos);
       if ( cursorBuilding && !cursorBuilding.pos.equals(selectedTile) ) {
-        cursorBuilding.pos = selectedTile;
+        cursorBuilding.moveTo(selectedTile);
       }
     });
 

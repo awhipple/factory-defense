@@ -15,7 +15,7 @@ export default class ScoreBoard {
 
     ctx.font = "bold 50px Arial";
     ctx.fillStyle = "#000";
-    ctx.fillText(this.engine.blue, 90, 60);
+    ctx.fillText(this.engine.globals.blue, 90, 60);
 
     ctx.stroke();
   }

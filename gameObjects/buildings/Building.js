@@ -24,6 +24,14 @@ export default class Building {
     engine.register(this);
   }
 
+  moveTo(pos) {
+    this.pos = pos;
+  }
+
+  center() {
+    return this.pos.add(Coord.half);
+  }
+
   rotate(orientation) {
     var nextOrientation = orientation || NEXT_ORIENTATION[this.orientation];
     this.orientation = nextOrientation;
