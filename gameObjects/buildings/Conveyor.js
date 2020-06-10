@@ -7,23 +7,19 @@ export default class Conveyor extends Building {
     
     this.resources = [];
 
-    this.moveCoord = Coord[orientation].times(1/60);
+    this.moveCoord = Coord[orientation];
 
     this.z = 1;
   }
 
   rotate(orientation) {
     Building.prototype.rotate.call(this, orientation);
-    this.moveCoord = Coord[this.orientation].times(1/60);
+    this.moveCoord = Coord[this.orientation];
   }
 
   handOff(resource) {
-    if( this.resources.length < 3 ) {
-      this.resources.push(resource);
-      return true;
-    } else {
-      return false;
-    }
+    this.resources.push(resource);
+    return true;
   }
 
   update() {
@@ -33,16 +29,16 @@ export default class Conveyor extends Building {
         var isHorizontal = this.isHorizontal();
         var checkPos = isHorizontal ? res.pos.y : res.pos.x;
         var slideDirection = checkPos % 1 < 0.5 ? 1 : -1;
-        var slideVector = isHorizontal ? new Coord(0, 1/60) : new Coord(1/60, 0);
-        res.pos.addTo(slideVector.times(slideDirection));
+        var slideVector = isHorizontal ? Coord.down : Coord.right;
+        res.move(slideVector.times(slideDirection), 1/60);
         
         var newCheckPos = isHorizontal ? res.pos.y : res.pos.x;
         var newSlideDirection = newCheckPos % 1 < 0.5 ? 1 : -1;
         if ( newSlideDirection !== slideDirection ) {
-          res.pos = res.pos.floor().add(Coord.half);
+          res.moveTo(res.pos.floor().add(Coord.half));
         }
       } else if ( this.pos.equals(res.pos.floor()) ) {
-        this.resources[i].pos.addTo(this.moveCoord);
+        res.move(this.moveCoord, 1/60);
       } else {
         var handoffBuilding = this.field.getBuildingAt(this.pos.add(Coord[this.orientation]));
         if ( handoffBuilding?.handOff?.(res) ) {

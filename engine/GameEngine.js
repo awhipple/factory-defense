@@ -11,7 +11,7 @@ export default class GameEngine {
     this.images = new ImageLibrary();
     this.images.preload("fullscreen");
 
-    this.gameObjects = [];
+    this.gameObjects = {all: []};
     this.globals = {};
 
     this.keyDownCallbacks = [];
@@ -46,24 +46,46 @@ export default class GameEngine {
     });
   }
 
-  register(object) {
-    this.gameObjects.push(object);
+  register(object, name) {
+    this.gameObjects.all.push(object);
     this.window.register(object);
+
+    // Store in its own collection if requested
+    if ( name ) {
+      this.gameObjects[name] = this.gameObjects[name] || {};
+      do {
+        object._hash = Math.floor(Math.random()*1000000000);
+      } while (this.gameObjects[name][object._hash]);
+      this.gameObjects[name][object._hash] = object;
+    }
   }
 
   unregister(object) {
-    var objectIndex = this.gameObjects.indexOf(object);
+    var objectIndex = this.gameObjects.all.indexOf(object);
     if ( objectIndex !== -1 ) {
-      this.gameObjects.splice(objectIndex, 1);
+      this.gameObjects.all.splice(objectIndex, 1);
     }
     this.window.unregister(object);
+
+    var keys = Object.keys(this.gameObjects);
+    for ( var i = 0; i < keys.length; i++) {
+      if ( keys[i] !== "all" ) {
+        if ( this.gameObjects[keys[i]][object._hash] ) {
+          delete this.gameObjects[keys[i]][object._hash];
+        }
+      }
+    }
+  }
+
+  getObjects(name) {
+    return this.gameObjects[name] ? Object.values(this.gameObjects[name]) : [];
   }
 
   onUpdate(gameLoop) {
     setInterval(() => {
-      for(var i = 0; i < this.gameObjects.length; i++) {
-        if ( this.gameObjects[i].update ) {
-          this.gameObjects[i].update(this);
+      for(var i = 0; i < this.gameObjects.all.length; i++) {
+        if ( this.gameObjects.all[i].update ) {
+          this.gameObjects.all[i].update(this);
         }
       }
       

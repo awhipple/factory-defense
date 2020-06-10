@@ -38,9 +38,9 @@ export default class Building {
   }
 
   remove() {
-    this.field.engine.unregister(this);
+    this.engine.unregister(this);
     for ( var i = 0; i < this.resources.length; i++ ) {
-      this.field.engine.unregister(this.resources[i]);
+      this.engine.unregister(this.resources[i]);
     }
   }
 

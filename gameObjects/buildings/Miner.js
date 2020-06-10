@@ -17,8 +17,8 @@ export default class Miner extends Building {
         !this.resource && 
         this.field.field[this.pos.x][this.pos.y].ground === "blueOre"
       ) {
-        this.resource = new Resource(this.field.tileSet, this.pos.x+0.5, this.pos.y+0.5, engine.images.get("oreChunk"));
-        engine.register(this.resource);
+        this.resource = new Resource(engine, this.pos.x+0.5, this.pos.y+0.5, engine.images.get("oreChunk"));
+        engine.register(this.resource, "resource");
         this.spawnResource = 60;
       }
       if ( this.resource ) {

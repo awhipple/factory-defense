@@ -22,8 +22,8 @@ export default class Collector extends Building {
 
   handOff(resource) {
     if ( this.collectionPoint.distanceTo(resource.pos) < 0.1 ) {
-      this.field.engine.unregister(resource);
-      this.field.engine.globals.blue++;
+      this.engine.unregister(resource);
+      this.engine.globals.blue++;
       return true;
     } else {
       return false;
