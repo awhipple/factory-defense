@@ -1,23 +1,24 @@
 import GameEngine from './engine/GameEngine.js';
-import Building, { BUILDINGS } from './gameObjects/Building.js';
+import Building, { BUILDINGS } from './gameObjects/buildings/Building.js';
 import { Coord, NEXT_ORIENTATION } from './engine/GameMath.js';
 import HotBar from './engine/gfx/HotBar.js';
-import Miner from './gameObjects/Miner.js';
-import Conveyor from './gameObjects/Conveyor.js';
-import Collector from './gameObjects/Collector.js';
+import Miner from './gameObjects/buildings/Miner.js';
+import Conveyor from './gameObjects/buildings/Conveyor.js';
+import Collector from './gameObjects/buildings/Collector.js';
 import Field from './gameObjects/Field.js';
 import ScoreBoard from './engine/gfx/ScoreBoard.js';
 
 // TO DO:
-// FIX BELT CENTERING LOGIC
 // Remove blue score from engine
 // Make ScoreBoard generic
+// Fix image rotation code. It currently creates new rotation copies for each building.
 
 window.onload = function() {
   var engine = new GameEngine(1920, 1080, {
     // showFullscreenSplash: true,
     showFullscreenIcon: true,
   });
+
   engine.blue = 0;
   engine.images.preload(["empty", "blueOre", "oreChunk"]);
   engine.images.preload(BUILDINGS);
@@ -39,6 +40,7 @@ window.onload = function() {
     engine.register(scoreBoard);
 
     var field = new Field(engine, 100, 100);
+    engine.globals.field = field;
 
     var selectedTile = new Coord(0, 0);
     var cursorBuilding = null;
@@ -74,19 +76,11 @@ window.onload = function() {
     });
 
     function setBuild(selected) {
-      if ( cursorBuilding ) {
-        engine.unregister(cursorBuilding);
+      cursorBuilding?.remove();
+      var Type = [0, Conveyor, Miner, Collector, Building][selected];
+      if ( Type ) {
+        cursorBuilding = new Type(engine, selectedTile.x, selectedTile.y, cursorOrientation);
       }
-      if ( selected === 1 ) {
-        cursorBuilding = new Conveyor(field, selectedTile.x, selectedTile.y, cursorOrientation);
-      } else if ( selected === 2 ) {
-        cursorBuilding = new Miner(field, selectedTile.x, selectedTile.y, cursorOrientation);
-      } else if ( selected === 3 ) {
-        cursorBuilding = new Collector(field, selectedTile.x, selectedTile.y, cursorOrientation);
-      } else {
-        cursorBuilding = new Building(field, selectedTile.x, selectedTile.y, engine.images.get(BUILDINGS[selected-1]), cursorOrientation);
-      }
-      engine.register(cursorBuilding);
       hotBar.selected = selected;
     }
 
@@ -104,8 +98,10 @@ window.onload = function() {
 
     function build() {
       if ( cursorBuilding ) {
+        field.getBuildingAt(selectedTile)?.remove();
+        
         cursorBuilding.alpha = 1;
-        cursorBuilding.on = true;
+        cursorBuilding.on = true;  
         field.setBuildingAt(selectedTile, cursorBuilding);
         cursorBuilding = null;
         hotBar.selected = 0;
@@ -114,13 +110,13 @@ window.onload = function() {
 
     function remove() {
       if ( cursorBuilding ) {
-        engine.unregister(cursorBuilding);
+        cursorBuilding.remove();
         cursorBuilding = null;
         hotBar.selected = 0;
       } else {
         var tile = field.field[selectedTile.x][selectedTile.y];
         if ( tile.building ) {
-          engine.unregister(tile.building);
+          tile.building.remove();
           tile.building = null;
         }
       }

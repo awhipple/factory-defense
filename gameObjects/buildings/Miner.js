@@ -1,10 +1,10 @@
 import Building from "./Building.js";
-import Resource from "./Resource.js";
-import { Coord } from "../engine/GameMath.js";
+import Resource from "../Resource.js";
+import { Coord } from "../../engine/GameMath.js";
 
 export default class Miner extends Building {
-  constructor(field, x, y, orientation) {
-    super(field, x, y, field.engine.images.get("miner"), orientation);
+  constructor(engine, x, y, orientation) {
+    super(engine, x, y, engine.images.get("miner"), orientation);
 
     this.spawnResource = 60;
   }

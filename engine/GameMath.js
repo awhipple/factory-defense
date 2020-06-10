@@ -10,10 +10,15 @@ export class Coord {
   static right = new Coord(1, 0);
   static up = new Coord(0, -1);
   static down = new Coord(0, 1);
+  static half = new Coord(0.5, 0.5);
 
   constructor(x, y) {
     this.x = x;
     this.y = y;
+  }
+
+  copy() {
+    return new Coord(this.x, this.y);
   }
 
   add(other) {
@@ -23,6 +28,10 @@ export class Coord {
   addTo(other) {
     this.x += other.x;
     this.y += other.y;
+  }
+
+  subtract(other) {
+    return new Coord(this.x - other.x, this.y - other.y);
   }
 
   times(other) {
@@ -35,6 +44,10 @@ export class Coord {
 
   floor() {
     return new Coord(Math.floor(this.x), Math.floor(this.y));
+  }
+
+  getDecimal() {
+    return new Coord(this.x % 1, this.y % 1);
   }
 
   toString() {
@@ -61,3 +74,24 @@ export function getDirectionFrom(pointA, pointB) {
   }
   return direction;
 }
+
+export const numRotationsMap = {
+  "left-up": 1,
+  "left-right": 2,
+  "left-down": 3,
+  "up-right": 1,
+  "up-down": 2,
+  "up-left": 3,
+  "right-down": 1,
+  "right-left": 2,
+  "right-up": 3,
+  "down-left": 1,
+  "down-up": 2,
+  "down-right": 3,
+}
+
+export const rotationMappings = [
+  (pos) => new Coord(-pos.y, pos.x),
+  (pos) => new Coord(-pos.x, -pos.y),
+  (pos) => new Coord(pos.y, -pos.x),
+];

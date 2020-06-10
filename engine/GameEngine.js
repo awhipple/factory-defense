@@ -12,6 +12,7 @@ export default class GameEngine {
     this.images.preload("fullscreen");
 
     this.gameObjects = [];
+    this.globals = {};
 
     this.keyDownCallbacks = [];
     this.pressedKeys = {};

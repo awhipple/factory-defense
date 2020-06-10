@@ -1,8 +1,8 @@
 import Building from "./Building.js";
 
 export default class Collector extends Building {
-  constructor(field, x, y, orientation) {
-    super(field, x, y, field.engine.images.get("collector"), orientation);
+  constructor(engine, x, y, orientation) {
+    super(engine, x, y, engine.images.get("collector"), orientation);
 
     this.spawnResource = 60;
   }

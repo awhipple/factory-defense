@@ -1,9 +1,9 @@
 import Building from "./Building.js";
-import { Coord } from "../engine/GameMath.js";
+import { Coord } from "../../engine/GameMath.js";
 
 export default class Conveyor extends Building {
-  constructor(field, x, y, orientation) {
-    super(field, x, y, field.engine.images.get("conveyor"), orientation);
+  constructor(engine, x, y, orientation) {
+    super(engine, x, y, engine.images.get("conveyor"), orientation);
     
     this.resources = [];
 
@@ -18,38 +18,28 @@ export default class Conveyor extends Building {
   }
 
   handOff(resource) {
-    this.resources.push(resource);
-    return true;
+    if( this.resources.length < 3 ) {
+      this.resources.push(resource);
+      return true;
+    } else {
+      return false;
+    }
   }
 
   update() {
     for ( var i = 0; i < this.resources.length; i++ ) {
       var res = this.resources[i];
       if ( !this.inCenter(res) ) {
-        if ( this.isHorizontal() ) {
-          if ( res.pos.y % 1 < 0.5 ) {
-            res.pos.y += 1/60;
-            if ( res.pos.y % 1 > 0.5 ) {
-              res.pos.y = Math.floor(res.pos.y) + 0.5;
-            }
-          } else {
-            res.pos.y -= 1/60;
-            if ( res.pos.y % 1 < 0.5 ) {
-              res.pos.y = Math.floor(res.pos.y) + 0.5;          
-            }
-          }
-        } else {
-          if ( res.pos.x % 1 < 0.5 ) {
-            res.pos.x += 1/60;
-            if ( res.pos.x % 1 > 0.5 ) {
-              res.pos.x = Math.floor(res.pos.x) + 0.5;
-            }
-          } else {
-            res.pos.x -= 1/60;
-            if ( res.pos.x % 1 < 0.5 ) {
-              res.pos.x = Math.floor(res.pos.x) + 0.5;
-            }
-          }
+        var isHorizontal = this.isHorizontal();
+        var checkPos = isHorizontal ? res.pos.y : res.pos.x;
+        var slideDirection = checkPos % 1 < 0.5 ? 1 : -1;
+        var slideVector = isHorizontal ? new Coord(0, 1/60) : new Coord(1/60, 0);
+        res.pos.addTo(slideVector.times(slideDirection));
+        
+        var newCheckPos = isHorizontal ? res.pos.y : res.pos.x;
+        var newSlideDirection = newCheckPos % 1 < 0.5 ? 1 : -1;
+        if ( newSlideDirection !== slideDirection ) {
+          res.pos = res.pos.floor().add(Coord.half);
         }
       } else if ( this.pos.equals(res.pos.floor()) ) {
         this.resources[i].pos.addTo(this.moveCoord);
