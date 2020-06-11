@@ -2,6 +2,7 @@ import Image from "../engine/gfx/Image.js";
 import { BoundingRect, Coord } from "../engine/GameMath.js";
 
 export default class Resource {
+  static collisionSize = 0.2;
   z = 2;
 
   constructor(engine, x, y, img) {

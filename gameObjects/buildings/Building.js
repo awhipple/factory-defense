@@ -53,7 +53,11 @@ export default class Building {
   }
 
   set resource(res) {
-    this.resources = [ res ];
+    if ( res ) {
+      this.resources = [ res ];
+    } else {
+      this.resources = [];
+    }
   }
 
   removeResources() {

@@ -50,8 +50,12 @@ window.onload = function() {
       if ( ["1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(event.key) ) {
         hotBar.select(parseInt(event.key));
       }
-      if ( event.key === "r" ) {
+      if ( event.key === 'r' ) {
         rotateCursor();
+      }
+      if ( event.key === 'c' ) {
+        window.debugBuilding = field.getBuildingAt(selectedTile);
+        console.log(debugBuilding);
       }
     })
 

@@ -1,5 +1,6 @@
 import Building from "./Building.js";
 import { Coord } from "../../engine/GameMath.js";
+import Resource from "../../gameObjects/Resource.js"
 
 export default class Conveyor extends Building {
   resources = [];
@@ -17,8 +18,8 @@ export default class Conveyor extends Building {
   }
 
   handOff(resource) {
-    if ( this.resources.length < 4 ) {
-      this.resources.push(resource);
+    if ( this.resources.length < 1 / Resource.collisionSize + 1 ) {
+      this.resources.unshift(resource);
       return true;
     } else {
       return false;
@@ -41,6 +42,10 @@ export default class Conveyor extends Building {
           res.moveTo(res.pos.floor().add(Coord.half));
         }
       } else if ( this.pos.equals(res.pos.floor()) ) {
+        var nextResource = this.resources[i+1]
+        if ( nextResource?.pos.distanceTo(res.pos) < Resource.collisionSize) {
+          continue;
+        }
         res.move(this.moveCoord, 1/60);
       } else {
         var handoffBuilding = this.field.getBuildingAt(this.pos.add(Coord[this.orientation]));
