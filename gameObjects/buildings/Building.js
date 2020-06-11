@@ -38,9 +38,7 @@ export default class Building {
 
   remove() {
     this.engine.unregister(this);
-    for ( var i = 0; i < this.resources.length; i++ ) {
-      this.engine.unregister(this.resources[i]);
-    }
+    this.removeResources();
   }
 
   draw(ctx) {
@@ -51,10 +49,16 @@ export default class Building {
   }
 
   get resource() {
-    return this.resources[0];
+    return this.resources?.[0];
   }
 
   set resource(res) {
     this.resources = [ res ];
+  }
+
+  removeResources() {
+    for ( var i = 0; i < this.resources.length; i++ ) {
+      this.engine.unregister(this.resources[i]);
+    }
   }
 }

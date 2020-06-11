@@ -109,7 +109,7 @@ export default class GameEngine {
 
   onKeyPress(callback) {
     document.addEventListener('keydown', (event) => {
-      callback(this.keyEvent(event));
+      callback(this._keyEvent(event));
     });
   }
 
@@ -125,7 +125,7 @@ export default class GameEngine {
 
   onMouseDown(callback) {
     this.window.canvas.addEventListener('mousedown', event => {
-      callback(this.mouseEvent(event));
+      callback(this._mouseEvent(event));
     });
   }
 
@@ -137,7 +137,7 @@ export default class GameEngine {
 
   onMouseWheel(callback) {
     this.window.canvas.addEventListener('mousewheel', event => {
-      callback(this.mouseEvent(event));
+      callback(this._mouseEvent(event));
     });
   }
 
@@ -151,13 +151,13 @@ export default class GameEngine {
     return new Coord((event.clientX - subX) * scale, (event.clientY - rect.top) * scale);
   }
 
-  keyEvent(event) {
+  _keyEvent(event) {
     return {
       key: KeyNames[event.keyCode] || event.keyCode
     }
   }
 
-  mouseEvent(event) {
+  _mouseEvent(event) {
     return {
       button: MouseButtonNames[event.button] || event.button,
       pos: this.getMouseCoord(event),

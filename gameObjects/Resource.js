@@ -19,12 +19,6 @@ export default class Resource {
   }
 
   moveTo(coord) {
-    var resources = this.engine.getObjects("resource");
-    for ( var i = 0; i < resources.length; i++ ) {
-      if ( this !== resources[i] && coord.distanceTo(resources[i].pos) < 0.2) {
-        return;
-      }
-    }
     this.pos = coord;
   }
 
@@ -33,8 +27,5 @@ export default class Resource {
     var screenRect = this.tileSet.getScreenRect(tileRect);
     this.img.draw(ctx, screenRect);
   }
-
-  update() {
-     
-  }
+  
 }

@@ -16,12 +16,12 @@ export default class Image {
   
   getImage(dir = "right") {
     if (!this.imageDirections[dir]) {
-      this.generateRotations();
+      this._generateRotations();
     }
     return this.imageDirections[dir];
   }
 
-  generateRotations() {
+  _generateRotations() {
     [[Math.PI/2, "down"], [Math.PI, "left"], [3*Math.PI/2, "up"]].forEach((dir) => {
       var newImg = document.createElement("canvas");
       newImg.width = this.img.width;

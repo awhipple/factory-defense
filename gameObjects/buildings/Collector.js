@@ -5,17 +5,17 @@ export default class Collector extends Building {
   constructor(engine, x, y, orientation) {
     super(engine, x, y, engine.images.get("collector"), orientation);
 
-    this.updateCollectionPoint();
+    this._updateCollectionPoint();
   }
 
   moveTo(pos) {
     super.moveTo(pos);
-    this.updateCollectionPoint();
+    this._updateCollectionPoint();
   }
 
   rotate(orientation) {
     super.rotate(orientation);
-    this.updateCollectionPoint();
+    this._updateCollectionPoint();
   }
 
   handOff(resource) {
@@ -28,7 +28,7 @@ export default class Collector extends Building {
     }
   }
 
-  updateCollectionPoint() {
+  _updateCollectionPoint() {
     this.collectionPoint = this.center().add(Coord[this.orientation].times(0.5));
   }
 }

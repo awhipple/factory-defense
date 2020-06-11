@@ -92,8 +92,4 @@ export default class TileSet {
       }
     }
   }
-
-  update() {       
-    
-  }
 }

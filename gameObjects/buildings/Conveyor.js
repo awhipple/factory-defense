@@ -17,15 +17,19 @@ export default class Conveyor extends Building {
   }
 
   handOff(resource) {
-    this.resources.push(resource);
-    return true;
+    if ( this.resources.length < 4 ) {
+      this.resources.push(resource);
+      return true;
+    } else {
+      return false;
+    }
   }
 
   update() {
     for ( var i = 0; i < this.resources.length; i++ ) {
       var res = this.resources[i];
-      if ( !this.inCenter(res) ) {
-        var isHorizontal = this.isHorizontal();
+      if ( !this._inCenter(res) ) {
+        var isHorizontal = this._isHorizontal();
         var checkPos = isHorizontal ? res.pos.y : res.pos.x;
         var slideDirection = checkPos % 1 < 0.5 ? 1 : -1;
         var slideVector = isHorizontal ? Coord.down : Coord.right;
@@ -48,12 +52,12 @@ export default class Conveyor extends Building {
     }
   }
 
-  inCenter(res) {
-    var coordVal = this.isHorizontal() ? res.pos.y : res.pos.x;
+  _inCenter(res) {
+    var coordVal = this._isHorizontal() ? res.pos.y : res.pos.x;
     return coordVal % 1 === 0.5;
   }
 
-  isHorizontal() {
+  _isHorizontal() {
     return this.orientation === "left" || this.orientation === "right";
   }
 }
