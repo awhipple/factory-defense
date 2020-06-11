@@ -54,6 +54,12 @@ export class Coord {
     return new Coord(this.x % 1, this.y % 1);
   }
 
+  rotateAround(point) {
+    var relative = this.subtract(point);
+    var rotatedRelative = new Coord(-relative.y, relative.x);
+    return point.add(rotatedRelative);
+  }
+
   toString() {
     return this.x + ',' + this.y;
   }

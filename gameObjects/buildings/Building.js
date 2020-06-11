@@ -31,9 +31,13 @@ export default class Building {
     return this.pos.add(Coord.half);
   }
 
-  rotate(orientation) {
-    var nextOrientation = orientation || NEXT_ORIENTATION[this.orientation];
+  rotate() {
+    var nextOrientation = NEXT_ORIENTATION[this.orientation];
     this.orientation = nextOrientation;
+    for ( var i = 0; i < this.resources.length; i++ ) {
+      var res = this.resources[i];
+      res.moveTo(res.pos.rotateAround(this.center()));
+    }
   }
 
   remove() {
