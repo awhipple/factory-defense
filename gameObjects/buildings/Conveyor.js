@@ -2,18 +2,17 @@ import Building from "./Building.js";
 import { Coord } from "../../engine/GameMath.js";
 
 export default class Conveyor extends Building {
+  resources = [];
+  z = 1;
+
   constructor(engine, x, y, orientation) {
     super(engine, x, y, engine.images.get("conveyor"), orientation);
     
-    this.resources = [];
-
     this.moveCoord = Coord[orientation];
-
-    this.z = 1;
   }
 
   rotate(orientation) {
-    Building.prototype.rotate.call(this, orientation);
+    super.rotate(orientation);
     this.moveCoord = Coord[this.orientation];
   }
 

@@ -1,12 +1,12 @@
 export default class Button {
+  hover = false;
+
   constructor(engine, img, x, y, scale) {
     this.img = img;
     this.x = x;
     this.y = y;
     this.scale = scale;
     
-    this.hover = false;
-
     engine.onMouseMove(event => {
       if (event.pos.x > this.x-this.img.width*this.scale/2 &&
           event.pos.x < this.x+this.img.width*this.scale/2 &&

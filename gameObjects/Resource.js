@@ -2,13 +2,13 @@ import Image from "../engine/gfx/Image.js";
 import { BoundingRect, Coord } from "../engine/GameMath.js";
 
 export default class Resource {
+  z = 2;
+
   constructor(engine, x, y, img) {
     this.engine = engine;
     this.tileSet = engine.globals.tileSet;
     this.pos = new Coord(x, y);
     this.img = new Image(img);
-
-    this.z = 2;
   }
 
   move(coord, speed) {

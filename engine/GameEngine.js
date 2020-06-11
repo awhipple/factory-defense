@@ -6,16 +6,18 @@ import Button from './objects/Button.js';
 import FullscreenSplash from './objects/FullScreenSplash.js';
 
 export default class GameEngine {
+  images = new ImageLibrary();
+  gameObjects = {all: []};
+  globals = {};
+  keyDownCallbacks = [];
+  pressedKeys = {};
+  mousePos = new Coord(0, 0);
+  fullscreen = false;
+
   constructor(width, height, options = {}) {
     this.window = new GameWindow(this, width, height, "gameCanvas");
-    this.images = new ImageLibrary();
     this.images.preload("fullscreen");
 
-    this.gameObjects = {all: []};
-    this.globals = {};
-
-    this.keyDownCallbacks = [];
-    this.pressedKeys = {};
     document.addEventListener('keydown', (event) => {
       var key = KeyNames[event.keyCode] || event.keyCode;
       this.pressedKeys[key] = true;
@@ -25,12 +27,10 @@ export default class GameEngine {
       delete this.pressedKeys[key];
     });
 
-    this.mousePos = new Coord(0, 0);
     this.window.canvas.addEventListener('mousemove', event => {
       this.mousePos = this.getMouseCoord(event);
     });
 
-    this.fullscreen = false;
     document.addEventListener('fullscreenchange', (event) => {
       this.fullscreen = !!document.fullscreenElement;
     });

@@ -5,18 +5,16 @@ export default class Collector extends Building {
   constructor(engine, x, y, orientation) {
     super(engine, x, y, engine.images.get("collector"), orientation);
 
-    this.spawnResource = 60;
-
     this.updateCollectionPoint();
   }
 
   moveTo(pos) {
-    Building.prototype.moveTo.call(this, pos);
+    super.moveTo(pos);
     this.updateCollectionPoint();
   }
 
   rotate(orientation) {
-    Building.prototype.rotate.call(this, orientation);
+    super.rotate(orientation);
     this.updateCollectionPoint();
   }
 

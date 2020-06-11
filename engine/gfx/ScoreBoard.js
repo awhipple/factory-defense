@@ -1,8 +1,8 @@
 export default class ScoreBoard {
+  z = 100;
+
   constructor(engine) {
     this.engine = engine;
-
-    this.z = 100;
   }
 
   draw(ctx) {

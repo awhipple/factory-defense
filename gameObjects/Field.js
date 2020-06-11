@@ -1,12 +1,13 @@
 import TileSet from "../engine/gfx/Tileset.js";
 
 export default class Field {
+  field = [];
+
   constructor(engine, width, height) {
     this.engine = engine;
     this.width = width;
     this.height = height;
 
-    this.field = [];
     for(var x = 0; x < width; x++) {
       this.field[x] = [];
       for(var y = 0; y < height; y++) {

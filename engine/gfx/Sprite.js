@@ -1,12 +1,12 @@
 export default class Sprite {
+  _rad = 0;
+  rotated = false;
+
   constructor(img, x, y, scale) {
     this.img = img;
     this.x = x || 0;
     this.y = y || 0;
     this.scale = scale || 1;
-    
-    this._rad = 0;
-    this.rotated = false;
   }
 
   get rad() {

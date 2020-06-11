@@ -1,6 +1,11 @@
 import { Coord, BoundingRect } from "../GameMath.js";
 
 export default class TileSet {
+  camZoom = 100;
+  camZoomHighRes = 100;
+  dragCam = false;
+  z = 0;
+
   constructor(engine, field, options = {}) {
     this.engine = engine;
     this.width = field.length;
@@ -8,11 +13,6 @@ export default class TileSet {
     this.field = field;
 
     this.camCenter = new Coord(this.width/2, this.height/2);
-    this.camZoom = this.camZoomHighRes = 100;
-    
-    this.dragCam = false;
-
-    this.z = 0;
 
     engine.onMouseDown(event => {
       if ( event.button === "left") {

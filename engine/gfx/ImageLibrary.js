@@ -1,8 +1,9 @@
 export default class ImageLibrary {
+  images = {}
+  preloadPromises = [];
+
   constructor(path = "./images/") {
     this.path = path;
-    this.images = {};
-    this.preloadPromises = [];
   }
 
   loadImage(name) {

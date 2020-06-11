@@ -1,4 +1,6 @@
 export default class GameWindow {
+  objects = [];
+
   constructor(engine, width, height, canvasId) {
     this.engine = engine;
     this.width = width;
@@ -9,8 +11,6 @@ export default class GameWindow {
     this.canvas.width = width;
     this.canvas.height = height;
     this.ctx = this.canvas.getContext("2d");
-
-    this.objects = [];
 
     requestAnimationFrame(() => this.draw());
   }
