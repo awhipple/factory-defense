@@ -59,9 +59,6 @@ window.onload = function() {
         window.debugBuilding = field.getBuildingAt(selectedTile);
         console.log(debugBuilding);
       }
-      if ( event.key === 'm' ) {
-        cursorBuilding.img = cursorBuilding.img.mirror();
-      }
     })
 
     engine.onMouseMove(event => {
