@@ -14,6 +14,8 @@ import ScoreBoard from './engine/gfx/ScoreBoard.js';
 // Support different css canvas sizes
 // Miner should also cause conveyor to show bend
 // Fix conveyor bend image to line up properly
+// Add animations to engine and animate conveyor
+// Add click drag remove buildings
 
 window.onload = function() {
   var engine = new GameEngine(1920, 1080, {
