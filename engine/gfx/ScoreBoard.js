@@ -1,5 +1,8 @@
+import { BoundingRect } from "../GameMath.js";
+
 export default class ScoreBoard {
   z = 100;
+  imageRect = new BoundingRect(10, 10, 60, 60);
 
   constructor(engine) {
     this.engine = engine;
@@ -11,7 +14,7 @@ export default class ScoreBoard {
     ctx.lineWidth = 3;
     ctx.strokeRect(0, 0, 190, 85);
 
-    ctx.drawImage(this.engine.images.get("oreChunk"), 10, 10, 60, 60);
+    this.engine.images.get("oreChunk").draw(ctx, this.imageRect);
 
     ctx.font = "bold 50px Arial";
     ctx.fillStyle = "#000";

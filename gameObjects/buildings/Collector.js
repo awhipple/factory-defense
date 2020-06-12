@@ -3,7 +3,7 @@ import { Coord } from "../../engine/GameMath.js";
 
 export default class Collector extends Building {
   constructor(engine, x, y, orientation) {
-    super(engine, x, y, engine.images.get("collector"), orientation);
+    super(engine, x, y, "collector", orientation);
 
     this._updateCollectionPoint();
   }

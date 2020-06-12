@@ -13,11 +13,11 @@ export default class Building {
   on = false;
   z = 3;
 
-  constructor(engine, x, y, img, orientation = "right") {
+  constructor(engine, x, y, imgName, orientation = "right") {
     this.engine = engine;
     this.field = engine.globals.field;
     this.pos = new Coord(x, y);
-    this.img = new Image(img);
+    this.img = engine.images.get(imgName).rotate(orientation);
     this.orientation = orientation;
 
     engine.register(this);
@@ -38,6 +38,7 @@ export default class Building {
       var res = this.resources[i];
       res.moveTo(res.pos.rotateAround(this.center()));
     }
+    this.img = this.img.rotate();
   }
 
   remove() {

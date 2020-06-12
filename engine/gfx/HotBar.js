@@ -1,3 +1,5 @@
+import { BoundingRect } from "../GameMath.js";
+
 export default class HotBar {
   selected = 0;
   z = 4;
@@ -55,7 +57,7 @@ export default class HotBar {
         this.iconSize, this.iconSize,
       );
       if ( this.iconImages[i] ) {
-        ctx.drawImage(this.iconImages[i], startX, startY, this.iconSize, this.iconSize);
+        this.iconImages[i].draw(ctx, new BoundingRect(startX, startY, this.iconSize, this.iconSize));
       }
       ctx.lineWidth = 2;
       ctx.strokeRect(startX, startY, this.iconSize, this.iconSize);

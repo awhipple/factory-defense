@@ -85,7 +85,7 @@ export default class TileSet {
       for(var x = startTileX; x < endTileX; x++) {
         var tileX = this.viewportX(x), tileY = this.viewportY(y),
             tile = this.field[x][y];
-        ctx.drawImage(this.engine.images.get(tile.ground), tileX, tileY, this.camZoom, this.camZoom);
+        this.engine.images.get(tile.ground).draw(ctx, new BoundingRect(tileX, tileY, this.camZoom, this.camZoom));
         if ( tile.building ) {
           tile.building.draw(ctx);
         }

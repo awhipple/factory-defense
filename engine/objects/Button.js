@@ -1,3 +1,5 @@
+import { BoundingRect } from "../GameMath.js";
+
 export default class Button {
   hover = false;
 
@@ -29,9 +31,9 @@ export default class Button {
 
   draw(ctx, engine) {
     if(!engine.fullscreen) {
-      ctx.drawImage(this.img, 
+      this.img.draw(ctx, new BoundingRect(
         this.x-this.img.width*this.scale/2, this.y-this.img.height*this.scale/2, 
-        this.img.width*this.scale, this.img.height*this.scale);
+        this.img.width*this.scale, this.img.height*this.scale));
     }
   }
 }

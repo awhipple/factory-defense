@@ -7,7 +7,7 @@ export default class Conveyor extends Building {
   z = 1;
 
   constructor(engine, x, y, orientation) {
-    super(engine, x, y, engine.images.get("conveyor"), orientation);
+    super(engine, x, y, "conveyor", orientation);
     
     this.moveCoord = Coord[orientation];
   }
@@ -18,7 +18,7 @@ export default class Conveyor extends Building {
   }
 
   handOff(resource) {
-    if ( this.resources.length < 1 / Resource.collisionSize + 1 ) {
+    if ( this.resources.length < 1 / Resource.collisionSize ) {
       this.resources.unshift(resource);
       return true;
     } else {

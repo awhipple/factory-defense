@@ -1,3 +1,5 @@
+import Image from "./Image.js";
+
 export default class ImageLibrary {
   images = {}
   preloadPromises = [];
@@ -7,9 +9,9 @@ export default class ImageLibrary {
   }
 
   loadImage(name) {
-    var img = new Image;
+    var img = new window.Image;
     img.src = this.path + name + ".png";
-    return this.images[name] = img;
+    return this.images[name] = new Image(img);
   }
 
   get(name) {
@@ -22,7 +24,7 @@ export default class ImageLibrary {
     }
     for(var i = 0; i < name.length; i ++) {
       this.preloadPromises.push(new Promise((resolve, reject) => {
-        this.get(name[i]).onload = () => {resolve()};
+        this.get(name[i]).img.onload = () => {resolve()};
       }));
     }
   }

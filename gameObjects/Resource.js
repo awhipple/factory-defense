@@ -1,15 +1,14 @@
-import Image from "../engine/gfx/Image.js";
 import { BoundingRect, Coord } from "../engine/GameMath.js";
 
 export default class Resource {
   static collisionSize = 0.2;
   z = 2;
 
-  constructor(engine, x, y, img) {
+  constructor(engine, x, y) {
     this.engine = engine;
     this.tileSet = engine.globals.tileSet;
     this.pos = new Coord(x, y);
-    this.img = new Image(img);
+    this.img = engine.images.get("oreChunk")
   }
 
   move(coord, speed) {

@@ -9,9 +9,8 @@ import Field from './gameObjects/Field.js';
 import ScoreBoard from './engine/gfx/ScoreBoard.js';
 
 // TO DO:
-// Remove blue score from engine
 // Make ScoreBoard generic
-// Fix image rotation code. It currently creates new rotation copies for each building.
+// Take out buildings from the tileset and make buildings draw themselves
 
 window.onload = function() {
   var engine = new GameEngine(1920, 1080, {
@@ -56,6 +55,9 @@ window.onload = function() {
       if ( event.key === 'c' ) {
         window.debugBuilding = field.getBuildingAt(selectedTile);
         console.log(debugBuilding);
+      }
+      if ( event.key === 'm' ) {
+        cursorBuilding.img = cursorBuilding.img.mirror();
       }
     })
 
