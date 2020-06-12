@@ -8,6 +8,8 @@ export default class Image {
 
   constructor(img, orientation = "right", flip = "normal", orientationMap = null) {
     this.img = img;
+    this.width = img.width;
+    this.height = img.height;
     this.orientation = orientation;
     this.flip = flip;
     this.orientationMap = orientationMap || { right: { normal: this } };
@@ -37,6 +39,9 @@ export default class Image {
       x = a;
       y = b;
       options = c || {};
+    } else {
+      console.log("Unsupported Image.draw call");
+      return;
     }
 
     if ( options.alpha ) {

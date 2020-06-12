@@ -9,8 +9,10 @@ import Field from './gameObjects/Field.js';
 import ScoreBoard from './engine/gfx/ScoreBoard.js';
 
 // TO DO:
+// How do we initialize width and height in Image class? Currently setting to 0. Remove img.img from Button class
 // Make ScoreBoard generic
 // Take out buildings from the tileset and make buildings draw themselves
+// Improve building handling. Make it so we don't have to signal building change here in index
 // Support different css canvas sizes
 // Miner should also cause conveyor to show bend
 // Fix conveyor bend image to line up properly
@@ -126,6 +128,7 @@ window.onload = function() {
         if ( tile.building ) {
           tile.building.remove();
           tile.building = null;
+          field.signalBuildingChange(selectedTile);
         }
       }
     }
