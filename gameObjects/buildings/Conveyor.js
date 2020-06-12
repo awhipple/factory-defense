@@ -9,12 +9,23 @@ export default class Conveyor extends Building {
   constructor(engine, x, y, orientation) {
     super(engine, x, y, "conveyor", orientation);
     
+    this.conveyorImage = this.img;
+    this.conveyorCornerImage = engine.images.get("conveyorCorner");
+    this._updateImage();    
+    
     this.moveCoord = Coord[orientation];
   }
 
   rotate(orientation) {
     super.rotate(orientation);
     this.moveCoord = Coord[this.orientation];
+    this._updateImage();    
+  }
+
+  moveTo(coord) {
+    super.moveTo(coord);
+
+    this._updateImage();
   }
 
   handOff(resource) {
@@ -53,6 +64,56 @@ export default class Conveyor extends Building {
           this.resources.splice(i, 1);
           i--;
         }
+      }
+    }
+  }
+
+  onNeighborUpdate() {
+    this._updateImage();
+  }
+
+  _updateImage() {
+    var checkBuilding;
+
+    this.img = this.engine.images.get("conveyor").rotate(this.orientation);
+
+    checkBuilding = this.field.getBuildingAt(this.pos.add(Coord.left));
+    if ( checkBuilding && checkBuilding instanceof Conveyor && checkBuilding.orientation === "right" ) {
+      switch ( this.orientation ) {
+        case "up":   this.img = this.conveyorCornerImage.rotate("up").mirror();
+                     break;
+        case "down": this.img = this.conveyorCornerImage.rotate("down");
+                     break;
+      }
+    }
+
+    checkBuilding = this.field.getBuildingAt(this.pos.add(Coord.up));
+    if ( checkBuilding && checkBuilding instanceof Conveyor && checkBuilding.orientation === "down" ) {
+      switch ( this.orientation ) {
+        case "left":  this.img = this.conveyorCornerImage.rotate("left");
+                      break;
+        case "right": this.img = this.conveyorCornerImage.rotate("right").mirror();
+                      break;
+      }
+    }
+
+    checkBuilding = this.field.getBuildingAt(this.pos.add(Coord.right));
+    if ( checkBuilding && checkBuilding instanceof Conveyor && checkBuilding.orientation === "left" ) {
+      switch ( this.orientation ) {
+        case "up":   this.img = this.conveyorCornerImage.rotate("up");
+                     break;
+        case "down": this.img = this.conveyorCornerImage.rotate("down").mirror();
+                     break;
+      }
+    }
+
+    checkBuilding = this.field.getBuildingAt(this.pos.add(Coord.down));
+    if ( checkBuilding && checkBuilding instanceof Conveyor && checkBuilding.orientation === "up" ) {
+      switch ( this.orientation ) {
+        case "left":  this.img = this.conveyorCornerImage.rotate("left").mirror();
+                      break;
+        case "right": this.img = this.conveyorCornerImage.rotate("right");
+                      break;
       }
     }
   }

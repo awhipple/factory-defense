@@ -12,6 +12,8 @@ import ScoreBoard from './engine/gfx/ScoreBoard.js';
 // Make ScoreBoard generic
 // Take out buildings from the tileset and make buildings draw themselves
 // Support different css canvas sizes
+// Miner should also cause conveyor to show bend
+// Fix conveyor bend image to line up properly
 
 window.onload = function() {
   var engine = new GameEngine(1920, 1080, {
@@ -20,7 +22,7 @@ window.onload = function() {
   });
 
   engine.globals.blue = 0;
-  engine.images.preload(["empty", "blueOre", "oreChunk"]);
+  engine.images.preload(["empty", "blueOre", "oreChunk", "conveyorCorner"]);
   engine.images.preload(BUILDINGS);
 
   engine.onKeyPress(event => {

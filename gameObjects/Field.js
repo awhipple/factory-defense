@@ -1,4 +1,5 @@
 import TileSet from "../engine/gfx/Tileset.js";
+import { DIRECTIONS, Coord } from "../engine/GameMath.js";
 
 export default class Field {
   field = [];
@@ -34,5 +35,16 @@ export default class Field {
       this.engine.unregister(tile.building);
     }
     tile.building = building;
+
+    this.signalBuildingChange(pos);
+  }
+
+  signalBuildingChange(pos) {
+    DIRECTIONS.forEach(dir => {
+      var neighbor = this.getBuildingAt(pos.add(Coord[dir]));
+      if ( neighbor && neighbor.onNeighborUpdate ) {
+        neighbor.onNeighborUpdate();
+      }
+    });
   }
 }

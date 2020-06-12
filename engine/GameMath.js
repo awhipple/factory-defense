@@ -1,9 +1,13 @@
+export const DIRECTIONS = [
+  "left", "up", "right", "down",
+];
+
 export const NEXT_ORIENTATION = {
   left: "up",
   up: "right",
   right: "down",
   down: "left",
-}
+};
 
 export class Coord {
   static left = new Coord(-1, 0);

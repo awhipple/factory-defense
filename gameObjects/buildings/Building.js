@@ -39,6 +39,7 @@ export default class Building {
       res.moveTo(res.pos.rotateAround(this.center()));
     }
     this.img = this.img.rotate();
+    this.field.signalBuildingChange(this.pos);
   }
 
   remove() {
