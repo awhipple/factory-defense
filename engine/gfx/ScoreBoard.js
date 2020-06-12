@@ -12,6 +12,7 @@ export default class ScoreBoard {
     ctx.fillStyle = "#fff";
     ctx.fillRect(0, 0, 190, 85);
     ctx.lineWidth = 3;
+    ctx.strokeStyle = "#000";
     ctx.strokeRect(0, 0, 190, 85);
 
     this.engine.images.get("oreChunk").draw(ctx, this.imageRect);

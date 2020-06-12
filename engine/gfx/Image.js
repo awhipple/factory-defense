@@ -1,4 +1,4 @@
-import { NEXT_ORIENTATION } from "../GameMath.js";
+import { NEXT_ORIENTATION, BoundingRect, Coord } from "../GameMath.js";
 
 export default class Image {
   static MIRROR_FLIP = {
@@ -7,18 +7,48 @@ export default class Image {
   }
 
   constructor(img, orientation = "right", flip = "normal", orientationMap = null) {
-    console.log(orientation, flip);
     this.img = img;
     this.orientation = orientation;
     this.flip = flip;
     this.orientationMap = orientationMap || { right: { normal: this } };
   }
   
-  draw(ctx, rect, options = {}) {
+  draw(ctx, a, b, c, d, e) {
+    var x = null, y = null,
+        w = null, h = null,
+        coord = null, 
+        rect = null, 
+        options = null;
+    
+    if ( a instanceof BoundingRect ) {
+      rect = a;
+      options = b || {};
+    } else if ( a instanceof Coord ) {
+      coord = a;
+      options = b || {};
+    } else if ( typeof a === "number" && typeof b === "number" &&
+                typeof c === "number" && typeof d === "number") {
+      x = a;
+      y = b;
+      w = c;
+      h = d;
+      options = e || {};
+    } else if ( typeof a === "number" && typeof b === "number" ) {
+      x = a;
+      y = b;
+      options = c || {};
+    }
+
     if ( options.alpha ) {
       ctx.globalAlpha = options.alpha;
     }
-    ctx.drawImage(this.img, rect.x, rect.y, rect.w, rect.h);
+
+    ctx.drawImage(this.img, 
+      rect?.x || coord?.x || x, 
+      rect?.y || coord?.y || y, 
+      rect?.w || w || this.img.width, 
+      rect?.h || h || this.img.height
+    );
     ctx.globalAlpha = 1;
   }
 

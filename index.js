@@ -11,6 +11,7 @@ import ScoreBoard from './engine/gfx/ScoreBoard.js';
 // TO DO:
 // Make ScoreBoard generic
 // Take out buildings from the tileset and make buildings draw themselves
+// Support different css canvas sizes
 
 window.onload = function() {
   var engine = new GameEngine(1920, 1080, {
