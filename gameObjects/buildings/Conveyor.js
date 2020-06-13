@@ -4,6 +4,7 @@ import Resource from "../../gameObjects/Resource.js"
 
 export default class Conveyor extends Building {
   resources = [];
+  feedsToConveyor = true;
   z = 1;
 
   constructor(engine, x, y, orientation) {
@@ -78,7 +79,7 @@ export default class Conveyor extends Building {
     this.img = this.engine.images.get("conveyor").rotate(this.orientation);
 
     checkBuilding = this.field.getBuildingAt(this.pos.add(Coord.left));
-    if ( checkBuilding && checkBuilding instanceof Conveyor && checkBuilding.orientation === "right" ) {
+    if ( checkBuilding && checkBuilding.feedsToConveyor && checkBuilding.orientation === "right" ) {
       switch ( this.orientation ) {
         case "up":   this.img = this.conveyorCornerImage.rotate("up").mirror();
                      break;
@@ -88,7 +89,7 @@ export default class Conveyor extends Building {
     }
 
     checkBuilding = this.field.getBuildingAt(this.pos.add(Coord.up));
-    if ( checkBuilding && checkBuilding instanceof Conveyor && checkBuilding.orientation === "down" ) {
+    if ( checkBuilding && checkBuilding.feedsToConveyor && checkBuilding.orientation === "down" ) {
       switch ( this.orientation ) {
         case "left":  this.img = this.conveyorCornerImage.rotate("left");
                       break;
@@ -98,7 +99,7 @@ export default class Conveyor extends Building {
     }
 
     checkBuilding = this.field.getBuildingAt(this.pos.add(Coord.right));
-    if ( checkBuilding && checkBuilding instanceof Conveyor && checkBuilding.orientation === "left" ) {
+    if ( checkBuilding && checkBuilding.feedsToConveyor && checkBuilding.orientation === "left" ) {
       switch ( this.orientation ) {
         case "up":   this.img = this.conveyorCornerImage.rotate("up");
                      break;
@@ -108,7 +109,7 @@ export default class Conveyor extends Building {
     }
 
     checkBuilding = this.field.getBuildingAt(this.pos.add(Coord.down));
-    if ( checkBuilding && checkBuilding instanceof Conveyor && checkBuilding.orientation === "up" ) {
+    if ( checkBuilding && checkBuilding.feedsToConveyor && checkBuilding.orientation === "up" ) {
       switch ( this.orientation ) {
         case "left":  this.img = this.conveyorCornerImage.rotate("left").mirror();
                       break;

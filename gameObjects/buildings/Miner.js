@@ -5,6 +5,7 @@ import { Coord } from "../../engine/GameMath.js";
 export default class Miner extends Building {
   spawnRate = 60;
   spawnResource = this.spawnRate;
+  feedsToConveyor = true;
 
   constructor(engine, x, y, orientation) {
     super(engine, x, y, "miner", orientation);
