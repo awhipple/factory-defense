@@ -9,15 +9,15 @@ import Field from './gameObjects/Field.js';
 import ScoreBoard from './engine/gfx/ScoreBoard.js';
 
 // TO DO:
-// How do we initialize width and height in Image class? Currently setting to 0. Remove img.img from Button class
+// Librarify the engine
 // Make ScoreBoard generic
 // Take out buildings from the tileset and make buildings draw themselves
 // Improve building handling. Make it so we don't have to signal building change here in index
 // Support different css canvas sizes
 // Miner should also cause conveyor to show bend
-// Fix conveyor bend image to line up properly
 // Add animations to engine and animate conveyor
 // Add click drag remove buildings
+// Fans get loud when I zoom out. Tileset should probably store static version of game field.
 
 window.onload = function() {
   var engine = new GameEngine(1920, 1080, {
