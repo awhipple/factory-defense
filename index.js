@@ -40,6 +40,7 @@ window.onload = function() {
     var selectedTile = new Coord(0, 0);
     var cursorBuilding = null;
     var cursorOrientation = "right";
+    var deleteMode = false;
 
     engine.onKeyPress(event => {
       if ( ["1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(event.key) ) {
@@ -59,6 +60,9 @@ window.onload = function() {
       if ( cursorBuilding && !cursorBuilding.pos.equals(selectedTile) ) {
         cursorBuilding.moveTo(selectedTile);
       }
+      if ( deleteMode ) {
+        field.removeBuildingAt(selectedTile);
+      }
     });
 
     engine.onMouseDown(event => {
@@ -67,6 +71,12 @@ window.onload = function() {
       }
       if ( event.button === "right" ) {
         remove();
+      }
+    });
+
+    engine.onMouseUp(event => {
+      if ( event.button === "right" ) {
+        deleteMode = false;
       }
     })
 
@@ -109,11 +119,8 @@ window.onload = function() {
         cursorBuilding = null;
         hotBar.selected = 0;
       } else {
-        if ( field.getBuildingAt(selectedTile) ) {
-          field.removeBuildingAt(selectedTile);
-        }
+        deleteMode = true;
       }
     }
-
   });
 }
