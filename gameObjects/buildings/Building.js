@@ -1,5 +1,4 @@
 import { Coord, NEXT_ORIENTATION } from "../../engine/GameMath.js";
-import Image from "../../engine/gfx/Image.js";
 
 export const BUILDINGS = [
   "conveyor",

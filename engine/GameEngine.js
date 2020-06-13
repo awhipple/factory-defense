@@ -128,6 +128,7 @@ export default class GameEngine {
 
   onMouseMove(callback) {
     this.window.canvas.addEventListener('mousemove', event => {
+      // console.log(this.getMouseCoord(event));
       callback({pos: this.getMouseCoord(event)});
     });
   }
@@ -135,6 +136,11 @@ export default class GameEngine {
   onMouseDown(callback) {
     this.window.canvas.addEventListener('mousedown', event => {
       callback(this._mouseEvent(event));
+      var canvas = this.window.canvas;
+      // console.log(' ')
+      // console.log("Canvas: ", canvas.width, canvas.height);
+      // console.log("Click:  ", event.clientX, event.clientY);
+      // console.log(canvas.getBoundingClientRect());
     });
   }
 
@@ -153,11 +159,11 @@ export default class GameEngine {
   getMouseCoord(event) {
     var canvas = this.window.canvas;
     var rect = canvas.getBoundingClientRect();
-    var scale = canvas.height / rect.height;
-    var subX = rect.width-2 != canvas.width ? 
-      (rect.width - canvas.width/scale) / 2 :
-      rect.left;
-    return new Coord((event.clientX - subX) * scale, (event.clientY - rect.top) * scale);
+    
+    return new Coord(
+      (event.clientX - rect.x) * canvas.width / rect.width,
+      (event.clientY - rect.y) * canvas.height / rect.height,
+    );
   }
 
   _keyEvent(event) {

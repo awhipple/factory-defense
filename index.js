@@ -8,16 +8,6 @@ import Collector from './gameObjects/buildings/Collector.js';
 import Field from './gameObjects/Field.js';
 import ScoreBoard from './engine/gfx/ScoreBoard.js';
 
-// TO DO:
-// Librarify the engine
-// Make ScoreBoard generic
-// Support different css canvas sizes
-// Miner should also cause conveyor to show bend
-// Add animations to engine and animate conveyor
-// Add click drag remove buildings
-// Add click drag to create conveyors
-// Fans get loud when I zoom out. Tileset should probably store static version of game field.
-
 window.onload = function() {
   var engine = new GameEngine(1920, 1080, {
     // showFullscreenSplash: true,
