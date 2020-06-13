@@ -48,7 +48,7 @@ export default class Building {
   }
 
   draw(ctx) {
-    this.img.draw(ctx, this.field.tileSet.getTileBoundingRect(this.pos), {
+    this.img.draw(ctx, this.field.tileSet.getTileRect(this.pos), {
       alpha: this.alpha,
     });
   }

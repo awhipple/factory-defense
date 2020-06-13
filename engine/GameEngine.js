@@ -44,6 +44,8 @@ export default class GameEngine {
         this.register(this.fullscreenButton);
       }
     });
+
+    this.startGameLoop();
   }
 
   register(object, name) {
@@ -82,6 +84,10 @@ export default class GameEngine {
   }
 
   onUpdate(gameLoop) {
+    this.gameLoop = gameLoop;
+  }
+
+  startGameLoop() {
     setInterval(() => {
       for(var i = 0; i < this.gameObjects.all.length; i++) {
         if ( this.gameObjects.all[i].update ) {
@@ -95,7 +101,10 @@ export default class GameEngine {
           this.keyDownCallbacks[i]({key: pressedKeys[k]});
         }
       }
-      gameLoop();
+
+      if ( this.gameLoop ) {
+        this.gameLoop();
+      }
     }, 1000/60);
   }
 

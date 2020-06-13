@@ -11,12 +11,11 @@ import ScoreBoard from './engine/gfx/ScoreBoard.js';
 // TO DO:
 // Librarify the engine
 // Make ScoreBoard generic
-// Take out buildings from the tileset and make buildings draw themselves
-// Improve building handling. Make it so we don't have to signal building change here in index
 // Support different css canvas sizes
 // Miner should also cause conveyor to show bend
 // Add animations to engine and animate conveyor
 // Add click drag remove buildings
+// Add click drag to create conveyors
 // Fans get loud when I zoom out. Tileset should probably store static version of game field.
 
 window.onload = function() {
@@ -81,10 +80,6 @@ window.onload = function() {
       }
     })
 
-    engine.onUpdate(() => {
-
-    });
-
     function setBuild(selected) {
       cursorBuilding?.remove();
       var Type = [0, Conveyor, Miner, Collector, Building][selected];
@@ -124,11 +119,8 @@ window.onload = function() {
         cursorBuilding = null;
         hotBar.selected = 0;
       } else {
-        var tile = field.field[selectedTile.x][selectedTile.y];
-        if ( tile.building ) {
-          tile.building.remove();
-          tile.building = null;
-          field.signalBuildingChange(selectedTile);
+        if ( field.getBuildingAt(selectedTile) ) {
+          field.removeBuildingAt(selectedTile);
         }
       }
     }
