@@ -11,7 +11,6 @@ export default class Field {
       new Coord( 0, -1),
       new Coord( 1, -1),
       new Coord(-1,  0),
-      new Coord( 0,  0),
       new Coord( 1,  0),
       new Coord(-1,  1),
       new Coord( 0,  1),
@@ -33,6 +32,7 @@ export default class Field {
       new Coord(-2, -1),
       new Coord( 2, -1),
       new Coord(-2,  0),
+      new Coord( 0,  0),
       new Coord( 2,  0),
       new Coord(-2,  1),
       new Coord( 2,  1),
@@ -70,24 +70,30 @@ export default class Field {
   }
 
   setBuildingAt(pos, building) {
-    for ( var i = 0; i < Field.BUILDING_TILES[building.size].length; i++ ) {
-      var buildingPos = pos.add(Field.BUILDING_TILES[building.size][i]);
+    var buildSize = building?.size || "small";
+    for ( var i = 0; i < Field.BUILDING_TILES[buildSize].length; i++ ) {
+      var buildingPos = pos.add(Field.BUILDING_TILES[buildSize][i]);
+      
       var oldBuilding = this.buildings[buildingPos.x][buildingPos.y];
+      for ( var k = 0; k < Field.BUILDING_TILES[oldBuilding?.size]?.length; k++) {
+        var oldBuildingPos = oldBuilding.pos.add(Field.BUILDING_TILES[oldBuilding.size][k]);
+        this.buildings[oldBuildingPos.x][oldBuildingPos.y] = null;
+      }
       oldBuilding?.remove();
+      if ( oldBuilding ) {
+        this.signalBuildingChange(oldBuilding.pos, oldBuilding.size);
+      }
+
       this.buildings[buildingPos.x][buildingPos.y] = building;
     }
 
-    var updatePos = pos.add(Field.UPDATE_TILES[building.size][i]);
-    this.signalBuildingChange(pos);
+    if ( building ) {
+      this.signalBuildingChange(pos, building.size);
+    }
   }
 
   removeBuildingAt(pos) {
-    var building = this.buildings[pos.x][pos.y];
-    if ( building ) {
-      building.remove();
-      this.buildings[pos.x][pos.y] = null;
-      this.signalBuildingChange(pos, building.size);
-    }
+    this.setBuildingAt(pos, null);
   }
 
   signalBuildingChange(pos, size = "small") {
