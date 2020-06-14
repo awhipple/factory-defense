@@ -2,7 +2,7 @@ import { BoundingRect } from "../GameMath.js";
 
 export default class HotBar {
   selected = 0;
-  z = 4;
+  z = 60;
 
   constructor(engine, iconImages = [], iconSize = 75, iconSpacing = 15) {
     this.engine = engine;
@@ -66,6 +66,5 @@ export default class HotBar {
       ctx.fillStyle = "#000";
       ctx.fillText(i + 1, startX + 3, startY + this.iconSize - 3);
     }
-    ctx.stroke();
   }
 }

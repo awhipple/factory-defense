@@ -30,10 +30,12 @@ export default class GameWindow {
     requestAnimationFrame(() => this.draw());
     this.ctx.save();
     this.ctx.fillStyle = "#fff";
-    this.ctx.fillRect(0, 0, this.width, this.height);
+    this.ctx.clearRect(0, 0, this.width, this.height);
     this.objects.sort((a, b) => (a.z || 0) - (b.z || 0))
     for(var i = 0; i < this.objects.length; i++) {
-      this.objects[i].draw(this.ctx, this.engine);
+      if ( !this.objects[i].hide ) {
+        this.objects[i].draw?.(this.ctx, this.engine);
+      }
     }
     this.ctx.restore();
   }

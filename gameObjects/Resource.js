@@ -2,7 +2,7 @@ import { BoundingRect, Coord } from "../engine/GameMath.js";
 
 export default class Resource {
   static collisionSize = 0.2;
-  z = 2;
+  z = 20;
 
   constructor(engine, x, y) {
     this.engine = engine;

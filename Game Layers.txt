@@ -1,5 +1,7 @@
 0: Tileset
-1: Conveyors
-2: Resources
-3: Buildings
-42: Hotbar
+10: Conveyors
+20: Resources
+30: Buildings
+40: Enemies
+50: Alert
+60: Hotbar

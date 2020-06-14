@@ -5,7 +5,7 @@ import Resource from "../../gameObjects/Resource.js"
 export default class Conveyor extends Building {
   resources = [];
   feedsToConveyor = true;
-  z = 1;
+  z = 10;
 
   constructor(engine, pos, orientation) {
     super(engine, pos, "conveyor", orientation);

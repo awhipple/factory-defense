@@ -1,3 +1,5 @@
+* Enemies move slower when zoomed out? Delta?
+* Why do enemies show lock behind them? One of the two is transparent?
 * Add animations to engine and animate conveyor
 * Add click drag to create conveyors
 * Clean up index. Index should be slim and instantiate the game object

@@ -1,7 +1,7 @@
 import { BoundingRect } from "../GameMath.js";
 
 export default class ScoreBoard {
-  z = 100;
+  z = 60;
   imageRect = new BoundingRect(10, 10, 60, 60);
 
   constructor(engine) {

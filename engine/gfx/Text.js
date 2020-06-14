@@ -1,14 +1,19 @@
 import Image from "./Image.js";
 
 export default class Text {
-  constructor(str) {
+  constructor(str, x, y, options = {}) {
     this.str = str;
+    this.x = x;
+    this.y = y;
+    this.center = options.center;
+    this.style = options.style;
   }
 
   draw(ctx) {
-    ctx.font = "bold 200px Arial";
+    ctx.font = this.style || "bold 200px Arial"
+    var xShow = this.x - (this.center ? ctx.measureText(this.str).width/2 : 0);
     ctx.fillStyle = "#733";
-    ctx.fillText(this.str, 90, 260);
+    ctx.fillText(this.str, xShow, this.y);
   }
 
   setText(str) {

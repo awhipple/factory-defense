@@ -1,4 +1,4 @@
-import { Coord, NEXT_ORIENTATION } from "../../engine/GameMath.js";
+import { Coord, NEXT_ORIENTATION, BoundingRect } from "../../engine/GameMath.js";
 
 export const BUILDINGS = [
   "conveyor",
@@ -11,7 +11,9 @@ export default class Building {
   resources = [];
   on = false;
   size = "small";
-  z = 3;
+  z = 30;
+  health = 100;
+  maxHealth = this.health;
 
   constructor(engine, pos, imgName, orientation = "right") {
     this.engine = engine;
@@ -19,12 +21,20 @@ export default class Building {
     this.pos = pos;
     this.img = engine.images.get(imgName).rotate(orientation);
     this.orientation = orientation;
+    
+    this.tileSpace = engine.globals.tile
+
+    this.moveTo(pos);
 
     engine.register(this);
   }
 
   moveTo(pos) {
     this.pos = pos;
+
+    this.tileRect = this.size === "small" ?
+      new BoundingRect(pos.x, pos.y, 1, 1) :
+      new BoundingRect(pos.x - 1, pos.y - 1, 3, 3);
   }
 
   center() {
@@ -48,15 +58,6 @@ export default class Building {
     return true;
   }
 
-  draw(ctx) {
-    var drawArea = this.size === "large" ?
-      this.field.tileSet.getTileRect(this.pos.subtract(Coord.unit), this.pos.add(Coord.unit)) :
-      this.field.tileSet.getTileRect(this.pos);
-    this.img.draw(ctx, drawArea, {
-      alpha: this.alpha,
-    });
-  }
-
   get resource() {
     return this.resources?.[0];
   }
@@ -77,5 +78,19 @@ export default class Building {
 
   handoff() {
     return false;
+  }
+
+  damage(dmg) {
+    this.health -= dmg;
+    console.log("Building health = ", this.health);
+  }
+
+  draw(ctx) {
+    var drawArea = this.size === "large" ?
+      this.field.tileSet.getTileRect(this.pos.subtract(Coord.unit), this.pos.add(Coord.unit)) :
+      this.field.tileSet.getTileRect(this.pos);
+    this.img.draw(ctx, drawArea, {
+      alpha: this.alpha,
+    });
   }
 }

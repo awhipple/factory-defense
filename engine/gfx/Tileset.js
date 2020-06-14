@@ -51,8 +51,13 @@ export default class TileSet {
   viewportX(tileX) {
     return this.engine.window.width / 2 - (this.camCenter.x - tileX) * this.camZoom;
   }
+  
   viewportY(tileY) {
     return this.engine.window.height / 2 - (this.camCenter.y - tileY) * this.camZoom;
+  }
+
+  viewportPos(pos) {
+    return new Coord(this.viewportX(pos.x), this.viewportY(pos.y));
   }
 
   getScreenRect(tileRect) {
@@ -62,10 +67,10 @@ export default class TileSet {
     );
   }
 
-  getTileAtCoord(pos) {
+  tilePos(pos) {
     return new Coord(
-      Math.floor(((this.engine.window.width / 2 - pos.x) / -this.camZoom + this.camCenter.x)),
-      Math.floor(((this.engine.window.height / 2 - pos.y) / -this.camZoom + this.camCenter.y)));    
+      (this.engine.window.width / 2 - pos.x) / -this.camZoom + this.camCenter.x,
+      (this.engine.window.height / 2 - pos.y) / -this.camZoom + this.camCenter.y);    
   }
 
   getTileRect(upperLeftTile, lowerRightTile = null) {

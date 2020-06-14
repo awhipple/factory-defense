@@ -1,5 +1,6 @@
 import TileSet from "../engine/gfx/Tileset.js";
-import { DIRECTIONS, Coord } from "../engine/GameMath.js";
+import { Coord } from "../engine/GameMath.js";
+import Enemy from "./Enemy.js";
 
 export default class Field {
   static BUILDING_TILES = {
@@ -65,6 +66,22 @@ export default class Field {
     engine.register(this.tileSet);
   }
 
+  update(engine) {
+    if ( this.targetBuilding ) {
+      this.enemyCountdown -= 1/60;
+      if ( this.enemyCountdown < 0 ) {
+        this.enemyCountdown += 2;
+
+        var dir = Math.random() * 2 * Math.PI;
+        var distance = Math.random() * 10 + 5;
+        var enemy = new Enemy(engine, this.targetBuilding, 
+          this.targetBuilding.pos.add(new Coord(Math.cos(dir) * distance, Math.sin(dir) * distance))
+        );
+        engine.register(enemy, "enemy");
+      }
+    }
+  }
+
   getBuildingAt(pos) {
     return this.buildings[pos.x][pos.y];
   }
@@ -108,6 +125,18 @@ export default class Field {
       if ( neighbor && neighbor.onNeighborUpdate ) {
         neighbor.onNeighborUpdate();
       }
+    });
+  }
+
+  startWave(targetBuilding) {
+    this.targetBuilding = targetBuilding;
+    this.enemyCountdown = 6;
+  }
+
+  endWave() {
+    this.targetBuilding = null;
+    this.engine.getObjects("enemy").forEach(enemy => {
+      enemy.despawn()
     });
   }
 }

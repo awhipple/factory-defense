@@ -5,9 +5,9 @@ import HotBar from './engine/gfx/HotBar.js';
 import Miner from './gameObjects/buildings/Miner.js';
 import Conveyor from './gameObjects/buildings/Conveyor.js';
 import Field from './gameObjects/Field.js';
-import ScoreBoard from './engine/gfx/ScoreBoard.js';
 import Unlocker from './gameObjects/buildings/Unlocker.js';
 import Lock from './gameObjects/buildings/Lock.js';
+import Alert from './engine/gfx/effects/Alert.js';
 
 window.onload = function() {
   var engine = new GameEngine(1920, 1080, {
@@ -32,13 +32,15 @@ window.onload = function() {
     });
     engine.register(hotBar);
 
-    // var scoreBoard = new ScoreBoard(engine);
-    // engine.register(scoreBoard);
-
     var field = new Field(engine, 100, 100);
+    engine.register(field);
     engine.globals.field = field;
     var lockCoord = new Coord(55, 50);
     field.setBuildingAt(lockCoord, new Lock(engine, lockCoord));
+
+    var alert = new Alert(engine, "WARNING!");
+    engine.register(alert);
+    engine.globals.alert = alert;
 
     var selectedTile = new Coord(0, 0);
     var cursorBuilding = null;
@@ -59,7 +61,7 @@ window.onload = function() {
     })
 
     engine.onMouseMove(event => {
-      selectedTile = field.tileSet.getTileAtCoord(event.pos);
+      selectedTile = field.tileSet.tilePos(event.pos).floor();
       if ( cursorBuilding && !cursorBuilding.pos.equals(selectedTile) ) {
         cursorBuilding.moveTo(selectedTile);
       }

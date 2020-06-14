@@ -22,6 +22,11 @@ export class Coord {
     this.y = y;
   }
 
+  within(rect) {
+    return this.x > rect.x && this.x < rect.x + rect.w &&
+           this.y > rect.y && this.y < rect.y + rect.h;
+  }
+
   distanceTo(other) {
     return Math.sqrt(Math.pow(this.x - other.x, 2) + Math.pow(this.y - other.y, 2));
   }
