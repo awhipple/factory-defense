@@ -105,7 +105,9 @@ export default class Field {
       if ( oldBuilding ) {
         this.signalBuildingChange(oldBuilding.pos, oldBuilding.size);
       }
-
+    }
+    for ( var i = 0; i < Field.BUILDING_TILES[buildSize].length; i++ ) {
+      var buildingPos = pos.add(Field.BUILDING_TILES[buildSize][i]);
       this.buildings[buildingPos.x][buildingPos.y] = building;
     }
 
