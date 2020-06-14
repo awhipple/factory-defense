@@ -2,6 +2,46 @@ import TileSet from "../engine/gfx/Tileset.js";
 import { DIRECTIONS, Coord } from "../engine/GameMath.js";
 
 export default class Field {
+  static BUILDING_TILES = {
+    small: [
+      new Coord(0, 0),
+    ],
+    large: [
+      new Coord(-1, -1),
+      new Coord( 0, -1),
+      new Coord( 1, -1),
+      new Coord(-1,  0),
+      new Coord( 0,  0),
+      new Coord( 1,  0),
+      new Coord(-1,  1),
+      new Coord( 0,  1),
+      new Coord( 1,  1),
+    ]
+  }
+
+  static UPDATE_TILES = {
+    small: [
+      new Coord( 0, -1),
+      new Coord(-1,  0),
+      new Coord( 1,  0),
+      new Coord( 0,  1),
+    ],
+    large: [
+      new Coord(-1, -2),
+      new Coord( 0, -2),
+      new Coord( 1, -2),
+      new Coord(-2, -1),
+      new Coord( 2, -1),
+      new Coord(-2,  0),
+      new Coord( 2,  0),
+      new Coord(-2,  1),
+      new Coord( 2,  1),
+      new Coord(-1,  2),
+      new Coord( 0,  2),
+      new Coord( 1,  2),
+    ]
+  }
+
   ground = [];
   buildings = [];
 
@@ -30,12 +70,14 @@ export default class Field {
   }
 
   setBuildingAt(pos, building) {
-    var oldBuilding = this.buildings[pos.x][pos.y];
-    if ( oldBuilding ) {
-      this.engine.unregister(oldBuilding);
+    for ( var i = 0; i < Field.BUILDING_TILES[building.size].length; i++ ) {
+      var buildingPos = pos.add(Field.BUILDING_TILES[building.size][i]);
+      var oldBuilding = this.buildings[buildingPos.x][buildingPos.y];
+      oldBuilding?.remove();
+      this.buildings[buildingPos.x][buildingPos.y] = building;
     }
-    this.buildings[pos.x][pos.y] = building;
 
+    var updatePos = pos.add(Field.UPDATE_TILES[building.size][i]);
     this.signalBuildingChange(pos);
   }
 
@@ -44,13 +86,13 @@ export default class Field {
     if ( building ) {
       building.remove();
       this.buildings[pos.x][pos.y] = null;
-      this.signalBuildingChange(pos);
+      this.signalBuildingChange(pos, building.size);
     }
   }
 
-  signalBuildingChange(pos) {
-    DIRECTIONS.forEach(dir => {
-      var neighbor = this.getBuildingAt(pos.add(Coord[dir]));
+  signalBuildingChange(pos, size = "small") {
+    Field.UPDATE_TILES[size].forEach(relativePos => {
+      var neighbor = this.getBuildingAt(pos.add(relativePos));
       if ( neighbor && neighbor.onNeighborUpdate ) {
         neighbor.onNeighborUpdate();
       }

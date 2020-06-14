@@ -68,8 +68,12 @@ export default class TileSet {
       Math.floor(((this.engine.window.height / 2 - pos.y) / -this.camZoom + this.camCenter.y)));    
   }
 
-  getTileRect(tile) {
-    return new BoundingRect(this.viewportX(tile.x), this.viewportY(tile.y), this.camZoom, this.camZoom);
+  getTileRect(upperLeftTile, lowerRightTile = null) {
+    return new BoundingRect(
+      this.viewportX(upperLeftTile.x), this.viewportY(upperLeftTile.y), 
+      this.camZoom * (lowerRightTile ? lowerRightTile.x - upperLeftTile.x + 1 : 1),
+      this.camZoom * (lowerRightTile ? lowerRightTile.y - upperLeftTile.y + 1 : 1)
+    );
   }
 
   draw(ctx) {
@@ -83,7 +87,7 @@ export default class TileSet {
 
     for(var y = startTileY; y < endTileY; y++) {
       for(var x = startTileX; x < endTileX; x++) {
-        this.engine.images.get(this.ground[x][y]).draw(ctx, this.getTileRect({x, y}));
+        this.engine.images.get(this.ground[x][y]).draw(ctx, this.getTileRect(new Coord(x, y)));
       }
     }
   }

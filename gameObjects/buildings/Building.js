@@ -3,13 +3,14 @@ import { Coord, NEXT_ORIENTATION } from "../../engine/GameMath.js";
 export const BUILDINGS = [
   "conveyor",
   "miner",
-  "collector",
+  "unlocker",
 ]
 
 export default class Building {
   alpha = 0.4;
   resources = [];
   on = false;
+  size = "small";
   z = 3;
 
   constructor(engine, x, y, imgName, orientation = "right") {
@@ -38,7 +39,7 @@ export default class Building {
       res.moveTo(res.pos.rotateAround(this.center()));
     }
     this.img = this.img.rotate();
-    this.field.signalBuildingChange(this.pos);
+    this.field.signalBuildingChange(this.pos, this.size);
   }
 
   remove() {
@@ -47,7 +48,10 @@ export default class Building {
   }
 
   draw(ctx) {
-    this.img.draw(ctx, this.field.tileSet.getTileRect(this.pos), {
+    var drawArea = this.size === "large" ?
+      this.field.tileSet.getTileRect(this.pos.subtract(Coord.unit), this.pos.add(Coord.unit)) :
+      this.field.tileSet.getTileRect(this.pos);
+    this.img.draw(ctx, drawArea, {
       alpha: this.alpha,
     });
   }

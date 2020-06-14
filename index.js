@@ -1,5 +1,5 @@
 import GameEngine from './engine/GameEngine.js';
-import Building, { BUILDINGS } from './gameObjects/buildings/Building.js';
+import { BUILDINGS } from './gameObjects/buildings/Building.js';
 import { Coord, NEXT_ORIENTATION } from './engine/GameMath.js';
 import HotBar from './engine/gfx/HotBar.js';
 import Miner from './gameObjects/buildings/Miner.js';
@@ -7,6 +7,7 @@ import Conveyor from './gameObjects/buildings/Conveyor.js';
 import Collector from './gameObjects/buildings/Collector.js';
 import Field from './gameObjects/Field.js';
 import ScoreBoard from './engine/gfx/ScoreBoard.js';
+import Unlocker from './gameObjects/buildings/Unlocker.js';
 
 window.onload = function() {
   var engine = new GameEngine(1920, 1080, {
@@ -82,7 +83,7 @@ window.onload = function() {
 
     function setBuild(selected) {
       cursorBuilding?.remove();
-      var Type = [0, Conveyor, Miner, Collector, Building][selected];
+      var Type = [0, Conveyor, Miner, Unlocker][selected];
       if ( Type ) {
         cursorBuilding = new Type(engine, selectedTile.x, selectedTile.y, cursorOrientation);
       }
@@ -103,8 +104,6 @@ window.onload = function() {
 
     function build() {
       if ( cursorBuilding ) {
-        field.getBuildingAt(selectedTile)?.remove();
-        
         cursorBuilding.alpha = 1;
         cursorBuilding.on = true;  
         field.setBuildingAt(selectedTile, cursorBuilding);
@@ -120,6 +119,7 @@ window.onload = function() {
         hotBar.selected = 0;
       } else {
         deleteMode = true;
+        field.removeBuildingAt(selectedTile);
       }
     }
   });

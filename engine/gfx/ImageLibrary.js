@@ -33,7 +33,7 @@ export default class ImageLibrary {
       img.onload = () => {
         image.width = img.width;
         image.height = img.height;
-        resolve()
+        resolve();
       };
     })
 

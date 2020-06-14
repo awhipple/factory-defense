@@ -10,6 +10,7 @@ export const NEXT_ORIENTATION = {
 };
 
 export class Coord {
+  static unit = new Coord(1, 1);
   static left = new Coord(-1, 0);
   static right = new Coord(1, 0);
   static up = new Coord(0, -1);
