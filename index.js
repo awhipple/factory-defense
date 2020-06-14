@@ -4,10 +4,10 @@ import { Coord, NEXT_ORIENTATION } from './engine/GameMath.js';
 import HotBar from './engine/gfx/HotBar.js';
 import Miner from './gameObjects/buildings/Miner.js';
 import Conveyor from './gameObjects/buildings/Conveyor.js';
-import Collector from './gameObjects/buildings/Collector.js';
 import Field from './gameObjects/Field.js';
 import ScoreBoard from './engine/gfx/ScoreBoard.js';
 import Unlocker from './gameObjects/buildings/Unlocker.js';
+import Lock from './gameObjects/buildings/Lock.js';
 
 window.onload = function() {
   var engine = new GameEngine(1920, 1080, {
@@ -16,7 +16,7 @@ window.onload = function() {
   });
 
   engine.globals.blue = 0;
-  engine.images.preload(["empty", "blueOre", "oreChunk", "conveyorCorner"]);
+  engine.images.preload(["empty", "blueOre", "lock", "oreChunk", "conveyorCorner"]);
   engine.images.preload(BUILDINGS);
 
   engine.onKeyPress(event => {
@@ -37,6 +37,8 @@ window.onload = function() {
 
     var field = new Field(engine, 100, 100);
     engine.globals.field = field;
+    var lockCoord = new Coord(55, 50);
+    field.setBuildingAt(lockCoord, new Lock(engine, lockCoord));
 
     var selectedTile = new Coord(0, 0);
     var cursorBuilding = null;
@@ -85,7 +87,7 @@ window.onload = function() {
       cursorBuilding?.remove();
       var Type = [0, Conveyor, Miner, Unlocker][selected];
       if ( Type ) {
-        cursorBuilding = new Type(engine, selectedTile.x, selectedTile.y, cursorOrientation);
+        cursorBuilding = new Type(engine, selectedTile, cursorOrientation);
       }
       hotBar.selected = selected;
     }

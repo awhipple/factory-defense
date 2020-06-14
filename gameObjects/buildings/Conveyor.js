@@ -7,8 +7,8 @@ export default class Conveyor extends Building {
   feedsToConveyor = true;
   z = 1;
 
-  constructor(engine, x, y, orientation) {
-    super(engine, x, y, "conveyor", orientation);
+  constructor(engine, pos, orientation) {
+    super(engine, pos, "conveyor", orientation);
     
     this.conveyorImage = this.img;
     this.conveyorCornerImage = engine.images.get("conveyorCorner");

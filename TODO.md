@@ -1,4 +1,4 @@
-* Fix unlocker remove size and placement over other buildings
+* Fix deleting the lock
 * Add animations to engine and animate conveyor
 * Add click drag to create conveyors
 * Clean up index. Index should be slim and instantiate the game object

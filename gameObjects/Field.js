@@ -70,6 +70,9 @@ export default class Field {
   }
 
   setBuildingAt(pos, building) {
+    // This method gets tricky because of new building sizes.
+    // It needs to remove all buildings under tiles of the new building and
+    // trigger updates on all the tiles of those underneath buildings as well.
     var buildSize = building?.size || "small";
     for ( var i = 0; i < Field.BUILDING_TILES[buildSize].length; i++ ) {
       var buildingPos = pos.add(Field.BUILDING_TILES[buildSize][i]);

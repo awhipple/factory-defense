@@ -13,10 +13,10 @@ export default class Building {
   size = "small";
   z = 3;
 
-  constructor(engine, x, y, imgName, orientation = "right") {
+  constructor(engine, pos, imgName, orientation = "right") {
     this.engine = engine;
     this.field = engine.globals.field;
-    this.pos = new Coord(x, y);
+    this.pos = pos;
     this.img = engine.images.get(imgName).rotate(orientation);
     this.orientation = orientation;
 
@@ -72,5 +72,9 @@ export default class Building {
     for ( var i = 0; i < this.resources.length; i++ ) {
       this.engine.unregister(this.resources[i]);
     }
+  }
+
+  handoff() {
+    return false;
   }
 }

@@ -2,8 +2,8 @@ import Building from "./Building.js";
 import { Coord } from "../../engine/GameMath.js";
 
 export default class Collector extends Building {
-  constructor(engine, x, y, orientation) {
-    super(engine, x, y, "collector", orientation);
+  constructor(engine, pos, orientation) {
+    super(engine, pos, "collector", orientation);
 
     this._updateCollectionPoint();
   }

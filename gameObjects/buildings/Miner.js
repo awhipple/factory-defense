@@ -7,8 +7,8 @@ export default class Miner extends Building {
   spawnResource = this.spawnRate;
   feedsToConveyor = true;
 
-  constructor(engine, x, y, orientation) {
-    super(engine, x, y, "miner", orientation);
+  constructor(engine, pos, orientation) {
+    super(engine, pos, "miner", orientation);
   }
 
   update(engine) {
