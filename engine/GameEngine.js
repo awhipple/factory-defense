@@ -88,24 +88,35 @@ export default class GameEngine {
   }
 
   startGameLoop() {
-    setInterval(() => {
-      for(var i = 0; i < this.gameObjects.all.length; i++) {
-        if ( this.gameObjects.all[i].update ) {
-          this.gameObjects.all[i].update(this);
-        }
-      }
-      
-      var pressedKeys = Object.keys(this.pressedKeys);
-      for(var i = 0; i < this.keyDownCallbacks.length; i++) {
-        for(var k = 0; k < pressedKeys.length; k++) {
-          this.keyDownCallbacks[i]({key: pressedKeys[k]});
-        }
-      }
+    this.nextTick = (new Date).getTime();
 
-      if ( this.gameLoop ) {
-        this.gameLoop();
+    setInterval(() => {
+      this.loops = 0;
+      while ((new Date).getTime() > this.nextTick && this.loops < 10) {
+        this.update();
+        this.nextTick += 1000/60;
+        this.loops++;
       }
     }, 1000/60);
+  }
+
+  update() {
+    for(var i = 0; i < this.gameObjects.all.length; i++) {
+      if ( this.gameObjects.all[i].update ) {
+        this.gameObjects.all[i].update(this);
+      }
+    }
+  
+    var pressedKeys = Object.keys(this.pressedKeys);
+    for(var i = 0; i < this.keyDownCallbacks.length; i++) {
+      for(var k = 0; k < pressedKeys.length; k++) {
+        this.keyDownCallbacks[i]({key: pressedKeys[k]});
+      }
+    }
+
+    if ( this.gameLoop ) {
+      this.gameLoop();
+    }
   }
 
   load() {
