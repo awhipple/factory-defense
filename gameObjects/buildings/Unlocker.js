@@ -7,7 +7,7 @@ export default class Unlocker extends Building {
   size = "large";
   centerBuilding = null;
   lockText = null;
-  unlock = 50;
+  unlock = 80;
 
   constructor(engine, pos, orientation) {
     super(engine, pos, "unlocker", orientation);
@@ -26,11 +26,9 @@ export default class Unlocker extends Building {
   }
 
   handOff(resource) {
-    if ( this.collectionPoint.distanceTo(resource.pos) < 0.1 ) {
+    if ( this.centerBuilding instanceof Lock && this.unlock > 0 && this.collectionPoint.distanceTo(resource.pos) < 0.1 ) {
       this.engine.unregister(resource);
-      if ( this.unlock > 0 ) {
-        this.unlock -= 1;
-      }
+      this.unlock -= 1;
       this.text?.setText(this.unlock);
       return true;
     } else {
