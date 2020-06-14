@@ -32,8 +32,8 @@ window.onload = function() {
     });
     engine.register(hotBar);
 
-    var scoreBoard = new ScoreBoard(engine);
-    engine.register(scoreBoard);
+    // var scoreBoard = new ScoreBoard(engine);
+    // engine.register(scoreBoard);
 
     var field = new Field(engine, 100, 100);
     engine.globals.field = field;
@@ -107,8 +107,10 @@ window.onload = function() {
     function build() {
       if ( cursorBuilding ) {
         cursorBuilding.alpha = 1;
-        cursorBuilding.on = true;  
-        field.setBuildingAt(selectedTile, cursorBuilding);
+        cursorBuilding.on = true;
+        if ( !field.setBuildingAt(selectedTile, cursorBuilding) ) {
+          cursorBuilding.remove();
+        }
         cursorBuilding = null;
         hotBar.selected = 0;
       }

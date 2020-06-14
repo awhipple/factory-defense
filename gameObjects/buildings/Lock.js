@@ -5,4 +5,12 @@ export default class Lock extends Building {
   constructor(engine, pos, orientation) {
     super(engine, pos, "lock", orientation);
   }
+
+  rotate() {
+
+  }
+
+  remove() {
+    return false;
+  }
 }

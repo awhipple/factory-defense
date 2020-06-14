@@ -78,11 +78,13 @@ export default class Field {
       var buildingPos = pos.add(Field.BUILDING_TILES[buildSize][i]);
       
       var oldBuilding = this.buildings[buildingPos.x][buildingPos.y];
+      if (oldBuilding && !oldBuilding.remove()) {
+        return false;
+      }
       for ( var k = 0; k < Field.BUILDING_TILES[oldBuilding?.size]?.length; k++) {
         var oldBuildingPos = oldBuilding.pos.add(Field.BUILDING_TILES[oldBuilding.size][k]);
         this.buildings[oldBuildingPos.x][oldBuildingPos.y] = null;
       }
-      oldBuilding?.remove();
       if ( oldBuilding ) {
         this.signalBuildingChange(oldBuilding.pos, oldBuilding.size);
       }
@@ -93,6 +95,7 @@ export default class Field {
     if ( building ) {
       this.signalBuildingChange(pos, building.size);
     }
+    return true;
   }
 
   removeBuildingAt(pos) {

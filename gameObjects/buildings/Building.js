@@ -45,6 +45,7 @@ export default class Building {
   remove() {
     this.engine.unregister(this);
     this.removeResources();
+    return true;
   }
 
   draw(ctx) {

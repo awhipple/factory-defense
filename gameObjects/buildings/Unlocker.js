@@ -45,7 +45,7 @@ export default class Unlocker extends Building {
     this.collectionPoint = this.center().add(Coord[this.orientation].times(1.5));
     
     this.centerBuilding = this.field.getBuildingAt(this.pos);
-    this.text = this.text || this.centerBuilding instanceof Lock ? new Text(this.unlock) : null;
+    this.text = this.centerBuilding instanceof Lock ? this.text || new Text(this.unlock) : null;
     this.textImage = this.text?.asImage(400, 400);
   }
 }
