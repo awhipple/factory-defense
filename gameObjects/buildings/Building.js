@@ -1,4 +1,5 @@
 import { Coord, NEXT_ORIENTATION, BoundingRect } from "../../engine/GameMath.js";
+import Rectangle from "../../engine/gfx/shapes/Rectangle.js"
 
 export const BUILDINGS = [
   "conveyor",
@@ -24,6 +25,8 @@ export default class Building {
     
     this.tileSpace = engine.globals.tile
 
+    this.healthBar = new Rectangle(0, 0, 0, 0, "#0f0")
+
     this.moveTo(pos);
 
     engine.register(this);
@@ -35,6 +38,8 @@ export default class Building {
     this.tileRect = this.size === "small" ?
       new BoundingRect(pos.x, pos.y, 1, 1) :
       new BoundingRect(pos.x - 1, pos.y - 1, 3, 3);
+
+    this.healthBarRect = new BoundingRect(this.pos.x + 0.1, this.pos.y - 0.9, 0.8, 0.1);
   }
 
   center() {
@@ -82,7 +87,9 @@ export default class Building {
 
   damage(dmg) {
     this.health -= dmg;
-    console.log("Building health = ", this.health);
+    if (this.health <= 0) {
+      this.field.removeBuildingAt(this.pos.add(Coord.right));
+    }
   }
 
   draw(ctx) {
@@ -92,5 +99,10 @@ export default class Building {
     this.img.draw(ctx, drawArea, {
       alpha: this.alpha,
     });
+    if ( this.health < this.maxHealth ) {
+      this.healthBar.rect = this.engine.globals.tileSet.getScreenRect(this.healthBarRect);
+      this.healthBar.fill = this.health / this.maxHealth;
+      this.healthBar.draw(ctx);
+    }
   }
 }

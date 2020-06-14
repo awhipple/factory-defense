@@ -28,6 +28,12 @@ export default class Unlocker extends Building {
     this._updateCollectionPoint();
   }
 
+  remove() {
+    super.remove();
+    this.field.endWave();
+    return true;
+  }
+
   handOff(resource) {
     if ( this.unlock && this.unlock > 0 && this.collectionPoint.distanceTo(resource.pos) < 0.1 ) {
       this.engine.unregister(resource);

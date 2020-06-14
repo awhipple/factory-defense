@@ -6,7 +6,7 @@ export default class Enemy {
   radius = 0.25;
   health = 4;
   maxHealth = this.health;
-  speed = 1/120;
+  speed = 1/20;
   shouldDespawn = false;
   z = 40;
 

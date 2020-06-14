@@ -70,7 +70,7 @@ export default class Field {
     if ( this.targetBuilding ) {
       this.enemyCountdown -= 1/60;
       if ( this.enemyCountdown < 0 ) {
-        this.enemyCountdown += 2;
+        this.enemyCountdown += 1.5;
 
         var dir = Math.random() * 2 * Math.PI;
         var distance = Math.random() * 10 + 5;
