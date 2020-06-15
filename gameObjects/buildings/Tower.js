@@ -1,6 +1,7 @@
 import Building from "./Building.js";
 import Bar from "../../engine/gfx/ui/Bar.js";
 import { BoundingRect, Coord } from "../../engine/GameMath.js";
+import Projectile from "../Projectile.js";
 
 export default class Tower extends Building {
   ammo = 0;
@@ -34,7 +35,7 @@ export default class Tower extends Building {
   handOff(resource) {
     if ( this.ammo < this.ammoMax && this.collectionPoint.distanceTo(resource.pos) < 0.1 ) {
       this.engine.unregister(resource);
-      this.ammo += 5;
+      this.ammo += 1;
       this.ammo = Math.min(this.ammo, this.ammoMax);
       this.ammoBar.setVal(this.ammo);
       return true;
@@ -51,9 +52,15 @@ export default class Tower extends Building {
       for ( var i = 0; i < enemies.length; i++ ) {
         var enemy = enemies[i];
         
-        if ( this.pos.distanceTo(enemy.pos) < 5 ) {
+        if (this.ammo > 0 && this.pos.distanceTo(enemy.pos) < 5 ) {
           this.fireIn += this.fireRate;
-               
+          
+          var projectile = new Projectile(engine, this.center().copy(), enemy);
+          engine.register(projectile);
+
+          this.ammo--;
+          this.ammoBar.setVal(this.ammo);
+          break;
         }
       }
     }

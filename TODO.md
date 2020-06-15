@@ -1,3 +1,4 @@
+* Belts sometimes get broken and wont select. Hot bar is highlighted. No cursor belt shown. cant read rotate of undefined Conveyor::96
 * Enemies move slower when zoomed out? Delta?
 * Why do enemies show lock behind them? One of the two is transparent?
 * Add animations to engine and animate conveyor
