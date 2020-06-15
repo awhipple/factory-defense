@@ -20,7 +20,7 @@ window.onload = function() {
   window.engine = engine;
 
   engine.globals.blue = 0;
-  engine.images.preload(["empty", "blueOre", "lock", "oreChunk", "conveyorCorner"]);
+  engine.images.preload(["empty", "blueOre", "lock", "oreChunk", "conveyorCorner", "beaker"]);
   engine.images.preload(BUILDINGS);
 
   engine.onKeyPress(event => {
@@ -30,7 +30,7 @@ window.onload = function() {
   });
 
   engine.load().then(() => {
-    var hotBar = new HotBar(engine, BUILDINGS.map((b) => engine.images.get(b)));
+    var hotBar = new HotBar(engine, BUILDINGS.slice(0, 3).map((b) => engine.images.get(b)));
     hotBar.onSelect(selected => {
       // Prevent the same click from selecting a tower and building in the same step.
       setTimeout(() => setBuild(selected), 0);
@@ -41,7 +41,14 @@ window.onload = function() {
     engine.register(field);
     engine.globals.field = field;
     var lockCoord = new Coord(55, 50);
-    field.setBuildingAt(lockCoord, new Lock(engine, lockCoord));
+    field.setBuildingAt(new Lock(engine, lockCoord));
+
+    // Test Code
+    // field.setBuildingAt(new Miner(engine, new Coord(50, 50), "right"));
+    // field.setBuildingAt(new Conveyor(engine, new Coord(51, 50), "right"));
+    // field.setBuildingAt(new Conveyor(engine, new Coord(52, 50), "right"));
+    // field.setBuildingAt(new Conveyor(engine, new Coord(53, 50), "right"));
+    // field.setBuildingAt(new Unlocker(engine, new Coord(55, 50), "left"));
 
     var alert = new Alert(engine, "WARNING!");
     engine.register(alert);
@@ -49,6 +56,7 @@ window.onload = function() {
 
     var selectedTile = new Coord(0, 0);
     var cursorBuilding = null;
+    var hoverBuilding = null;
     var cursorOrientation = "right";
     var deleteMode = false;
 
@@ -67,6 +75,13 @@ window.onload = function() {
 
     engine.onMouseMove(event => {
       selectedTile = field.tileSet.tilePos(event.pos).floor();
+      var newHoverBuilding = field.getBuildingAt(selectedTile);
+      if ( !cursorBuilding && hoverBuilding !== newHoverBuilding ) {
+        hoverBuilding?.unHover();
+        newHoverBuilding?.hover();
+        
+        hoverBuilding = newHoverBuilding;
+      }
       if ( cursorBuilding && !cursorBuilding.pos.equals(selectedTile) ) {
         cursorBuilding.moveTo(selectedTile);
       }
@@ -90,11 +105,20 @@ window.onload = function() {
       }
     })
 
+    engine.on("unlock", () => {
+      hotBar.addIcon(engine.images.get("tower"));
+    });
+
     function setBuild(selected) {
       cursorBuilding?.remove();
       var Type = [null, Conveyor, Miner, Unlocker, Tower][selected];
       if ( Type ) {
         cursorBuilding = new Type(engine, selectedTile, cursorOrientation);
+        cursorBuilding.alpha = 0.4;
+        cursorBuilding.on = false;
+        hoverBuilding?.unHover();
+        hoverBuilding = cursorBuilding;
+        hoverBuilding.hover();
         hotBar.selected = selected;
       }
     }
@@ -115,7 +139,7 @@ window.onload = function() {
       if ( cursorBuilding ) {
         cursorBuilding.alpha = 1;
         cursorBuilding.on = true;
-        if ( !field.setBuildingAt(selectedTile, cursorBuilding) ) {
+        if ( !field.setBuildingAt(cursorBuilding, selectedTile) ) {
           cursorBuilding.remove();
         }
         cursorBuilding = null;

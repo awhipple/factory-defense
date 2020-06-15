@@ -1,11 +1,13 @@
 export default class Circle {
-  alpha = 1;
   arc = 1;
   
-  constructor(pos, radius, color) {
+  constructor(pos, radius, options = {}) {
     this.pos = pos;
     this.radius = radius;
-    this.color = color;
+    
+    this.color = options.color ?? "#000";
+    this.alpha = options.alpha ?? 1;
+    this.border = options.border ?? true;
   }
 
   draw(ctx) {
@@ -30,8 +32,10 @@ export default class Circle {
       ctx.fillStyle = this.color;
       ctx.fill();
     }
-    ctx.strokeStyle = "#000";
-    ctx.stroke();
+    if ( this.border ) {
+      ctx.strokeStyle = "#000";
+      ctx.stroke();
+    }
 
     ctx.restore();
   }

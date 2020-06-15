@@ -35,16 +35,17 @@ export default class Unlocker extends Building {
   }
 
   handOff(resource) {
-    if ( this.unlock && this.unlock > 0 && this.collectionPoint.distanceTo(resource.pos) < 0.1 ) {
+    if ( this.unlockCost && this.unlockCost > 0 && this.collectionPoint.distanceTo(resource.pos) < 0.1 ) {
       this.engine.unregister(resource);
-      this.unlock -= 1;
-      this.text?.setText(this.unlock);
+      this.unlockCost -= 1;
+      this.text?.setText(this.unlockCost);
       if ( this.startWave ) {
         this.engine.globals.alert.activate(3);
         this.field.startWave(this);
         this.startWave = false;
       }
-      if ( this.unlock === 0 ) {
+      if ( this.unlockCost === 0 ) {
+        this.lock?.unlock();
         this.field.endWave();
       }
       return true;
@@ -55,20 +56,24 @@ export default class Unlocker extends Building {
 
   draw(ctx) {
     super.draw(ctx);
-    this.textImage?.draw(ctx, this.field.tileSet.getTileRect(this.pos));
+
+    if ( this.unlockCost > 0 ) {
+      this.textImage?.draw(ctx, this.field.tileSet.getTileRect(this.pos));
+    }
   }
 
   _updateCollectionPoint() {
     this.collectionPoint = this.center().add(Coord[this.orientation].times(1.5));
     
     this.centerBuilding = this.field.getBuildingAt(this.pos);
-    if ( this.centerBuilding instanceof Lock ) {
-      this.unlock = this.unlock || this.centerBuilding.cost;
-      this.text = this.text || new Text(this.unlock, 200, 340, { center: true });
+    if ( this.centerBuilding instanceof Lock && this.centerBuilding.locked) {
+      this.lock = this.centerBuilding;
+      this.unlockCost = this.unlockCost || this.centerBuilding.cost;
+      this.text = this.text || new Text(this.unlockCost, 200, 340, { center: true });
       this.textImage = this.text.asImage(400, 400);
       this.startWave = true;
     } else {
-      this.unlock = null;
+      this.unlockCost = null;
       this.text = null;
       this.textImage = null;
       this.startWave = false;

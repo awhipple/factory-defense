@@ -25,6 +25,12 @@ export default class Image {
     if ( a instanceof BoundingRect ) {
       rect = a;
       options = b || {};
+    } else if ( a instanceof Coord &&
+      typeof b === "number" && typeof c === "number") {
+        coord = a;
+        w = b;
+        h = c;
+        options = d || {};
     } else if ( a instanceof Coord ) {
       coord = a;
       options = b || {};
@@ -44,17 +50,22 @@ export default class Image {
       return;
     }
 
+    ctx.save();
     if ( options.alpha ) {
       ctx.globalAlpha = options.alpha;
     }
+    var center = options.center ?? false;
+    
+    var drawWidth = rect?.w || w || this.img.width;
+    var drawHeight = rect?.h || h || this.img.height;
 
     ctx.drawImage(this.img, 
-      rect?.x || coord?.x || x, 
-      rect?.y || coord?.y || y, 
-      rect?.w || w || this.img.width, 
-      rect?.h || h || this.img.height
+      (rect?.x || coord?.x || x) - (center ? drawWidth/2 : 0), 
+      (rect?.y || coord?.y || y) - (center ? drawHeight/2 : 0),
+      drawWidth, drawHeight, 
     );
-    ctx.globalAlpha = 1;
+
+    ctx.restore();
   }
 
   rotate(targetOrientation = null) {

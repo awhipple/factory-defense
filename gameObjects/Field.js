@@ -86,10 +86,11 @@ export default class Field {
     return this.buildings[pos.x][pos.y];
   }
 
-  setBuildingAt(pos, building) {
+  setBuildingAt(building, pos = null) {
     // This method gets tricky because of new building sizes.
     // It needs to remove all buildings under tiles of the new building and
     // trigger updates on all the tiles of those underneath buildings as well.
+    pos = pos || building?.pos;
     var buildSize = building?.size || "small";
     for ( var i = 0; i < Field.BUILDING_TILES[buildSize].length; i++ ) {
       var buildingPos = pos.add(Field.BUILDING_TILES[buildSize][i]);
@@ -118,7 +119,7 @@ export default class Field {
   }
 
   removeBuildingAt(pos) {
-    this.setBuildingAt(pos, null);
+    this.setBuildingAt(null, pos);
   }
 
   signalBuildingChange(pos, size = "small") {

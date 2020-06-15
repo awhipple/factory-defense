@@ -10,6 +10,7 @@ export default class GameEngine {
   gameObjects = {all: []};
   globals = {};
   keyDownCallbacks = [];
+  eventListeners = {};
   pressedKeys = {};
   mousePos = new Coord(0, 0);
   fullscreen = false;
@@ -161,6 +162,18 @@ export default class GameEngine {
     this.window.canvas.addEventListener('mousewheel', event => {
       callback(this._mouseEvent(event));
     });
+  }
+
+  on(eventName, callback) {
+    this.eventListeners[eventName] = this.eventListeners[eventName] || [];
+    this.eventListeners[eventName].push(callback);
+  }
+
+  trigger(eventName) {
+    var listeners = this.eventListeners[eventName] || [];
+    for ( var i = 0; i < listeners.length; i++ ) {
+      listeners[i]();
+    }
   }
 
   getMouseCoord(event) {

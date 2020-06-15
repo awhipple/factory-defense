@@ -11,7 +11,7 @@ export default class Projectile {
     this.dir = getDirectionFrom(this.pos, this.target.pos);
     this.vector = new Coord(Math.cos(this.dir) * 1/5, Math.sin(this.dir) * 1/5);
 
-    this.circle = new Circle(this.pos.copy(), 0, "#00f");
+    this.circle = new Circle(this.pos.copy(), 0, {color: "#00f"});
   }
 
   update(engine) {

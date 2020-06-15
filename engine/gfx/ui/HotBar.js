@@ -6,15 +6,11 @@ export default class HotBar {
 
   constructor(engine, iconImages = [], iconSize = 75, iconSpacing = 15) {
     this.engine = engine;
-    this.iconCount = iconImages.length;
+    this.iconImages = iconImages;
     this.iconSize = iconSize;
     this.iconSpacing = iconSpacing;
-    this.iconImages = iconImages;
 
-    this.width = this.iconCount * (iconSize + iconSpacing) + iconSpacing;
-    this.height = iconSize + 2 * iconSpacing;
-    this.startX = engine.window.width/2 - this.width/2;
-    this.startY = engine.window.height - this.height;
+    this._initializeDimensions();
 
     engine.onMouseDown(event => {
       if (
@@ -25,6 +21,11 @@ export default class HotBar {
         this.select(Math.ceil((event.pos.x-this.startX)/(iconSize + iconSpacing)));
       }
     });
+  }
+
+  addIcon(img) {
+    this.iconImages.push(img);
+    this._initializeDimensions();
   }
 
   select(selected) {
@@ -66,5 +67,14 @@ export default class HotBar {
       ctx.fillStyle = "#000";
       ctx.fillText(i + 1, startX + 3, startY + this.iconSize - 3);
     }
+  }
+
+  _initializeDimensions() {
+    this.iconCount = this.iconImages.length;
+
+    this.width = this.iconCount * (this.iconSize + this.iconSpacing) + this.iconSpacing;
+    this.height = this.iconSize + 2 * this.iconSpacing;
+    this.startX = this.engine.window.width/2 - this.width/2;
+    this.startY = this.engine.window.height - this.height;
   }
 }

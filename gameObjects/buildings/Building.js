@@ -9,17 +9,21 @@ export const BUILDINGS = [
 ]
 
 export default class Building {
-  alpha = 0.4;
-  resources = [];
-  on = false;
+  alpha = 1;
+  on = true;
   size = "small";
-  z = 30;
   health = 100;
   maxHealth = this.health;
+  z = 30;
+
+  _hover = false;
+  
+  resources = [];
 
   constructor(engine, pos, imgName, orientation = "right") {
     this.engine = engine;
     this.field = engine.globals.field;
+    this.tileSet = this.field.tileSet;
     this.pos = pos;
     this.img = engine.images.get(imgName).rotate(orientation);
     this.orientation = orientation;
@@ -62,6 +66,14 @@ export default class Building {
     this.engine.unregister(this);
     this.removeResources();
     return true;
+  }
+
+  hover() {
+    this._hover = true;
+  }
+
+  unHover() {
+    this._hover = false;
   }
 
   get resource() {

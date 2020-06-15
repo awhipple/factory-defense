@@ -20,7 +20,7 @@ export default class Enemy {
     this.xv = Math.cos(this.dir) * this.speed;
     this.yv = Math.sin(this.dir) * this.speed;
 
-    this.body = new Circle(this.tileSet.viewportPos(this.pos), this.tileSet.camZoom * this.radius, "#a33");
+    this.body = new Circle(this.tileSet.viewportPos(this.pos), this.tileSet.camZoom * this.radius, {color: "#a33"});
 
     engine.onMouseDown(event => {
       if ( event.button === "left" ) {
