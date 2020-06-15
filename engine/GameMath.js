@@ -31,6 +31,10 @@ export class Coord {
     return Math.sqrt(Math.pow(this.x - other.x, 2) + Math.pow(this.y - other.y, 2));
   }
 
+  distanceFromLessThan(other, distance) {
+    return Math.pow(this.x - other.x, 2) + Math.pow(this.y - other.y, 2) < Math.pow(distance, 2);
+  }
+
   copy() {
     return new Coord(this.x, this.y);
   }

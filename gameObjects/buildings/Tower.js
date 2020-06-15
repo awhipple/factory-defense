@@ -4,8 +4,8 @@ import { BoundingRect, Coord } from "../../engine/GameMath.js";
 import Projectile from "../Projectile.js";
 
 export default class Tower extends Building {
-  ammo = 0;
-  ammoMax = 25;
+  _ammo = 0;
+  ammoMax = 12;
   fireRate = 0.2;
   fireIn = 0;
 
@@ -35,9 +35,8 @@ export default class Tower extends Building {
   handOff(resource) {
     if ( this.ammo < this.ammoMax && this.collectionPoint.distanceTo(resource.pos) < 0.1 ) {
       this.engine.unregister(resource);
-      this.ammo += 1;
+      this.ammo += 2;
       this.ammo = Math.min(this.ammo, this.ammoMax);
-      this.ammoBar.setVal(this.ammo);
       return true;
     } else {
       return false;
@@ -48,19 +47,20 @@ export default class Tower extends Building {
     this.fireIn = Math.max(this.fireIn - 1/60, 0);
 
     if ( this.fireIn === 0 ) {
-      var enemies = engine.getObjects("enemy");
-      for ( var i = 0; i < enemies.length; i++ ) {
-        var enemy = enemies[i];
-        
-        if (this.ammo > 0 && this.pos.distanceTo(enemy.pos) < 5 ) {
-          this.fireIn += this.fireRate;
+      if ( !this.target ) {
+        var enemies = engine.getObjects("enemy");
+        for ( var i = 0; i < enemies.length; i++ ) {
+          var enemy = enemies[i];
           
-          var projectile = new Projectile(engine, this.center().copy(), enemy);
-          engine.register(projectile);
+          if (this.ammo > 0 && this.pos.distanceTo(enemy.pos) < 5 ) {
+            this.fireIn += this.fireRate;
+            
+            var projectile = new Projectile(engine, this.center().copy(), enemy);
+            engine.register(projectile);
 
-          this.ammo--;
-          this.ammoBar.setVal(this.ammo);
-          break;
+            this.ammo--;
+            break;
+          }
         }
       }
     }
@@ -70,6 +70,16 @@ export default class Tower extends Building {
     super.draw(ctx);
 
     this.ammoBar.draw(ctx, this.engine.globals.tileSet.getScreenRect(this.ammoRect));
+  }
+
+  get ammo() {
+    return this._ammo;
+  }
+
+  set ammo(val) {
+    this._ammo = val;
+    this.ammoBar.setVal(this._ammo);
+
   }
 
   _updateAmmoRect() {

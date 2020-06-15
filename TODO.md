@@ -9,3 +9,4 @@
 * Librarify the engine
 * Make ScoreBoard generic
 * Fans get loud when I zoom out. Tileset should probably store static version of game field.
+* When game is sleeping for a long time, it goes turbo speed.

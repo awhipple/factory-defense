@@ -9,13 +9,18 @@ export default class Projectile {
     this.target = target;
 
     this.dir = getDirectionFrom(this.pos, this.target.pos);
-    this.vector = new Coord(Math.cos(this.dir) * 2/15, Math.sin(this.dir) * 2/15);
+    this.vector = new Coord(Math.cos(this.dir) * 1/5, Math.sin(this.dir) * 1/5);
 
     this.circle = new Circle(this.pos.copy(), 0, "#00f");
   }
 
   update(engine) {
     this.pos.addTo(this.vector);
+
+    if(this.pos.distanceFromLessThan(this.target.pos, 0.25)) {
+      this.target.damage(1);
+      engine.unregister(this);
+    }
   }
 
   draw(ctx) {

@@ -16,6 +16,9 @@ window.onload = function() {
     showFullscreenIcon: true,
   });
 
+  // Debug
+  window.engine = engine;
+
   engine.globals.blue = 0;
   engine.images.preload(["empty", "blueOre", "lock", "oreChunk", "conveyorCorner"]);
   engine.images.preload(BUILDINGS);

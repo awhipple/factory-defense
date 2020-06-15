@@ -34,6 +34,17 @@ export default class Enemy {
     });
   }
 
+  damage(dmg) {
+    this.health -= dmg;
+    if ( this.health <= 0 ) {
+      this.engine.unregister(this);
+    }
+  }
+
+  despawn() {
+    this.shouldDespawn = true;
+  }
+
   update() {
     if ( this.shouldDespawn ) {
       this.alpha -= 1/60;
@@ -56,9 +67,6 @@ export default class Enemy {
     }
   }
 
-  despawn() {
-    this.shouldDespawn = true;
-  }
 
   draw(ctx) {
     this.body.pos = this.tileSet.viewportPos(this.pos);
