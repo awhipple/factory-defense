@@ -32,6 +32,7 @@ window.onload = function() {
   engine.load().then(() => {
     var hotBar = new HotBar(engine, BUILDINGS.map((b) => engine.images.get(b)));
     hotBar.onSelect(selected => {
+      // Prevent the same click from selecting a tower and building in the same step.
       setTimeout(() => setBuild(selected), 0);
     });
     engine.register(hotBar);
@@ -91,11 +92,11 @@ window.onload = function() {
 
     function setBuild(selected) {
       cursorBuilding?.remove();
-      var Type = [0, Conveyor, Miner, Unlocker, Tower][selected];
+      var Type = [null, Conveyor, Miner, Unlocker, Tower][selected];
       if ( Type ) {
         cursorBuilding = new Type(engine, selectedTile, cursorOrientation);
+        hotBar.selected = selected;
       }
-      hotBar.selected = selected;
     }
 
     function rotateCursor() {

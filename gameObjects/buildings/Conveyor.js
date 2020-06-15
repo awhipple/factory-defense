@@ -78,43 +78,42 @@ export default class Conveyor extends Building {
 
     this.img = this.engine.images.get("conveyor").rotate(this.orientation);
 
-    checkBuilding = this.field.getBuildingAt(this.pos.add(Coord.left));
-    if ( checkBuilding && checkBuilding.feedsToConveyor && checkBuilding.orientation === "right" ) {
-      switch ( this.orientation ) {
-        case "up":   this.img = this.conveyorCornerImage.rotate("up").mirror();
-                     break;
-        case "down": this.img = this.conveyorCornerImage.rotate("down");
-                     break;
+    if ( this.conveyorCornerImage ) {
+      checkBuilding = this.field.getBuildingAt(this.pos.add(Coord.left));
+      if ( checkBuilding && checkBuilding.feedsToConveyor && checkBuilding.orientation === "right" ) {
+        switch ( this.orientation ) {
+          case "up":   this.img = this.conveyorCornerImage.rotate("up").mirror();
+                      break;
+          case "down": this.img = this.conveyorCornerImage.rotate("down");
+                      break;
+        }
       }
-    }
-
-    checkBuilding = this.field.getBuildingAt(this.pos.add(Coord.up));
-    if ( checkBuilding && checkBuilding.feedsToConveyor && checkBuilding.orientation === "down" ) {
-      switch ( this.orientation ) {
-        case "left":  this.img = this.conveyorCornerImage.rotate("left");
-                      break;
-        case "right": this.img = this.conveyorCornerImage.rotate("right").mirror();
-                      break;
+      checkBuilding = this.field.getBuildingAt(this.pos.add(Coord.up));
+      if ( checkBuilding && checkBuilding.feedsToConveyor && checkBuilding.orientation === "down" ) {
+        switch ( this.orientation ) {
+          case "left":  this.img = this.conveyorCornerImage.rotate("left");
+                        break;
+          case "right": this.img = this.conveyorCornerImage.rotate("right").mirror();
+                        break;
+        }
       }
-    }
-
-    checkBuilding = this.field.getBuildingAt(this.pos.add(Coord.right));
-    if ( checkBuilding && checkBuilding.feedsToConveyor && checkBuilding.orientation === "left" ) {
-      switch ( this.orientation ) {
-        case "up":   this.img = this.conveyorCornerImage.rotate("up");
-                     break;
-        case "down": this.img = this.conveyorCornerImage.rotate("down").mirror();
-                     break;
+      checkBuilding = this.field.getBuildingAt(this.pos.add(Coord.right));
+      if ( checkBuilding && checkBuilding.feedsToConveyor && checkBuilding.orientation === "left" ) {
+        switch ( this.orientation ) {
+          case "up":   this.img = this.conveyorCornerImage.rotate("up");
+                      break;
+          case "down": this.img = this.conveyorCornerImage.rotate("down").mirror();
+                      break;
+        }
       }
-    }
-
-    checkBuilding = this.field.getBuildingAt(this.pos.add(Coord.down));
-    if ( checkBuilding && checkBuilding.feedsToConveyor && checkBuilding.orientation === "up" ) {
-      switch ( this.orientation ) {
-        case "left":  this.img = this.conveyorCornerImage.rotate("left").mirror();
-                      break;
-        case "right": this.img = this.conveyorCornerImage.rotate("right");
-                      break;
+      checkBuilding = this.field.getBuildingAt(this.pos.add(Coord.down));
+      if ( checkBuilding && checkBuilding.feedsToConveyor && checkBuilding.orientation === "up" ) {
+        switch ( this.orientation ) {
+          case "left":  this.img = this.conveyorCornerImage.rotate("left").mirror();
+                        break;
+          case "right": this.img = this.conveyorCornerImage.rotate("right");
+                        break;
+        }
       }
     }
   }
