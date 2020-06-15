@@ -1,13 +1,14 @@
 import GameEngine from './engine/GameEngine.js';
 import { BUILDINGS } from './gameObjects/buildings/Building.js';
 import { Coord, NEXT_ORIENTATION } from './engine/GameMath.js';
-import HotBar from './engine/gfx/HotBar.js';
+import HotBar from './engine/gfx/ui/HotBar.js';
 import Miner from './gameObjects/buildings/Miner.js';
 import Conveyor from './gameObjects/buildings/Conveyor.js';
 import Field from './gameObjects/Field.js';
 import Unlocker from './gameObjects/buildings/Unlocker.js';
 import Lock from './gameObjects/buildings/Lock.js';
 import Alert from './engine/gfx/effects/Alert.js';
+import Tower from './gameObjects/buildings/Tower.js';
 
 window.onload = function() {
   var engine = new GameEngine(1920, 1080, {
@@ -87,7 +88,7 @@ window.onload = function() {
 
     function setBuild(selected) {
       cursorBuilding?.remove();
-      var Type = [0, Conveyor, Miner, Unlocker][selected];
+      var Type = [0, Conveyor, Miner, Unlocker, Tower][selected];
       if ( Type ) {
         cursorBuilding = new Type(engine, selectedTile, cursorOrientation);
       }

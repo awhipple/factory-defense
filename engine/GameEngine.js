@@ -80,6 +80,7 @@ export default class GameEngine {
   }
 
   getObjects(name) {
+    this.gameObjects[name] = this.gameObjects[name] || {}
     return this.gameObjects[name] ? Object.values(this.gameObjects[name]) : [];
   }
 

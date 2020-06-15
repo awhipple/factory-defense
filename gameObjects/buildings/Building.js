@@ -5,6 +5,7 @@ export const BUILDINGS = [
   "conveyor",
   "miner",
   "unlocker",
+  "tower",
 ]
 
 export default class Building {

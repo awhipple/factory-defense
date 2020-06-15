@@ -1,4 +1,4 @@
-import { BoundingRect } from "../GameMath.js";
+import { BoundingRect } from "../../GameMath.js";
 
 export default class HotBar {
   selected = 0;
