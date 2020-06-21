@@ -49,13 +49,13 @@ window.onload = function() {
     field.setBuildingAt(new Lock(engine, lockCoord));
 
     // Test Code
-    field.setBuildingAt(new Miner(engine, new Coord(50, 50), "right"));
-    field.setBuildingAt(new Conveyor(engine, new Coord(51, 50), "right"));
-    field.setBuildingAt(new Conveyor(engine, new Coord(52, 50), "right"));
-    field.setBuildingAt(new Conveyor(engine, new Coord(53, 50), "right"));
-    field.setBuildingAt(new Unlocker(engine, new Coord(55, 50), "left"));
-    field.setBuildingAt(new Tower(engine, new Coord(50, 49), "left"));
-    field.setBuildingAt(new Miner(engine, new Coord(49, 49), "right")); 
+    // field.setBuildingAt(new Miner(engine, new Coord(50, 50), "right"));
+    // field.setBuildingAt(new Conveyor(engine, new Coord(51, 50), "right"));
+    // field.setBuildingAt(new Conveyor(engine, new Coord(52, 50), "right"));
+    // field.setBuildingAt(new Conveyor(engine, new Coord(53, 50), "right"));
+    // field.setBuildingAt(new Unlocker(engine, new Coord(55, 50), "left"));
+    // field.setBuildingAt(new Tower(engine, new Coord(50, 49), "left"));
+    // field.setBuildingAt(new Miner(engine, new Coord(49, 49), "right")); 
 
     var alert = new Alert(engine, "WARNING!", "alarm");
     engine.register(alert);
