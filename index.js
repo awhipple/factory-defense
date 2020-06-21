@@ -30,9 +30,11 @@ window.onload = function() {
     }
   });
 
-  engine.on("firstInteraction", () => {
-    engine.sounds.play("music", {loop: true});
-  });
+  if ( engine.prod ) {
+    engine.on("firstInteraction", () => {
+      engine.sounds.play("music", {loop: true});
+    });
+  }
 
   engine.load().then(() => {
     var hotBar = new HotBar(engine, BUILDINGS.slice(0, 3).map((b) => engine.images.get(b)));
@@ -49,7 +51,9 @@ window.onload = function() {
     field.setBuildingAt(new Lock(engine, lockCoord));
 
     // ******** || Test Code || ************
-    _setUpTestBuildings();
+    if ( engine.dev ) {
+      _setUpTestBuildings();
+    }
 
     var alert = new Alert(engine, "WARNING!", "alarm");
     engine.register(alert);
@@ -71,6 +75,9 @@ window.onload = function() {
       if ( event.key === 'c' ) {
         window.debugBuilding = field.getBuildingAt(selectedTile);
         console.log(debugBuilding);
+      }
+      if ( engine.dev && event.key === 'm' ) {
+        engine.sounds.play("music", {loop: true});
       }
     })
 

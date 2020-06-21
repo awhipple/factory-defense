@@ -21,6 +21,9 @@ export default class GameEngine {
     this.window = new GameWindow(this, width, height, "gameCanvas");
     this.images.preload("fullscreen");
 
+    this.dev = window.location.href.indexOf("localhost") !== -1;
+    this.prod = !this.dev;
+
     document.addEventListener('keydown', (event) => {
       var key = KeyNames[event.keyCode] || event.keyCode;
       this.pressedKeys[key] = true;
