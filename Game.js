@@ -49,7 +49,7 @@ export default class Game {
           this.rotateCursor();
         }
         if ( event.key === 'c' ) {
-          window.debugBuilding = this.field.getBuildingAt(selectedTile);
+          window.debugBuilding = this.field.getBuildingAt(this.selectedTile);
           console.log(window.debugBuilding);
         }
         if ( this.engine.dev && event.key === 'm' ) {
@@ -64,9 +64,7 @@ export default class Game {
           if ( this.cursorBuilding instanceof Conveyor && this.engine.mouse.left) {
             var mouseMoveDirection = this.lastSelectedTile.directionTo(this.selectedTile);
             this.cursorBuilding.rotate(mouseMoveDirection);
-            var newConveyor = this.cursorBuilding.clone();
-            this.build(this.lastSelectedTile);
-            this.cursorBuilding = newConveyor;
+            this.build(this.lastSelectedTile, true);
           }
 
           var newHoverBuilding = this.field.getBuildingAt(this.selectedTile);
@@ -173,14 +171,15 @@ export default class Game {
     }
   }
 
-  build(tile) {
+  build(tile, keepCursor = false) {
     if ( this.cursorBuilding ) {
+      var nextCursorBuilding = keepCursor ? this.cursorBuilding.clone() : null;
       this.cursorBuilding.alpha = 1;
       this.cursorBuilding.on = true;
       if ( !this.field.setBuildingAt(this.cursorBuilding, tile) ) {
         this.cursorBuilding.remove();
       }
-      this.cursorBuilding = null;
+      this.cursorBuilding = nextCursorBuilding;
       this.hotBar.selected = 0;
     }
   }

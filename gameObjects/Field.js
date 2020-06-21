@@ -96,7 +96,7 @@ export default class Field {
       var buildingPos = pos.add(Field.BUILDING_TILES[buildSize][i]);
       
       var oldBuilding = this.buildings[buildingPos.x][buildingPos.y];
-      if (oldBuilding && !oldBuilding.remove()) {
+      if (oldBuilding && (building || !oldBuilding.remove())) {
         return false;
       }
       for ( var k = 0; k < Field.BUILDING_TILES[oldBuilding?.size]?.length; k++) {
