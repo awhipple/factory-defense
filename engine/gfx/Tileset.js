@@ -81,6 +81,13 @@ export default class TileSet {
     );
   }
 
+  within(pos) {
+    return (
+      pos.x > 0 && pos.x < this.width &&
+      pos.y > 0 && pos.y < this.height
+    );
+  }
+
   draw(ctx) {
     var tileSpanX = this.engine.window.width / this.camZoom + 1,
         startTileX = Math.max(0, Math.floor(this.camCenter.x - tileSpanX/2)),

@@ -48,14 +48,8 @@ window.onload = function() {
     var lockCoord = new Coord(55, 50);
     field.setBuildingAt(new Lock(engine, lockCoord));
 
-    // Test Code
-    // field.setBuildingAt(new Miner(engine, new Coord(50, 50), "right"));
-    // field.setBuildingAt(new Conveyor(engine, new Coord(51, 50), "right"));
-    // field.setBuildingAt(new Conveyor(engine, new Coord(52, 50), "right"));
-    // field.setBuildingAt(new Conveyor(engine, new Coord(53, 50), "right"));
-    // field.setBuildingAt(new Unlocker(engine, new Coord(55, 50), "left"));
-    // field.setBuildingAt(new Tower(engine, new Coord(50, 49), "left"));
-    // field.setBuildingAt(new Miner(engine, new Coord(49, 49), "right")); 
+    // ******** || Test Code || ************
+    _setUpTestBuildings();
 
     var alert = new Alert(engine, "WARNING!", "alarm");
     engine.register(alert);
@@ -81,19 +75,22 @@ window.onload = function() {
     })
 
     engine.onMouseMove(event => {
+      var oldSelectedTile = selectedTile;
       selectedTile = field.tileSet.tilePos(event.pos).floor();
-      var newHoverBuilding = field.getBuildingAt(selectedTile);
-      if ( !cursorBuilding && hoverBuilding !== newHoverBuilding ) {
-        hoverBuilding?.unHover();
-        newHoverBuilding?.hover();
-        
-        hoverBuilding = newHoverBuilding;
-      }
-      if ( cursorBuilding && !cursorBuilding.pos.equals(selectedTile) ) {
-        cursorBuilding.moveTo(selectedTile);
-      }
-      if ( deleteMode ) {
-        field.removeBuildingAt(selectedTile);
+      if ( !selectedTile.equals(oldSelectedTile) ) {
+        var newHoverBuilding = field.getBuildingAt(selectedTile);
+        if ( !cursorBuilding && hoverBuilding !== newHoverBuilding ) {
+          hoverBuilding?.unHover();
+          newHoverBuilding?.hover();
+          
+          hoverBuilding = newHoverBuilding;
+        }
+        if ( cursorBuilding && !cursorBuilding.pos.equals(selectedTile) ) {
+          cursorBuilding.moveTo(selectedTile);
+        }
+        if ( deleteMode ) {
+          field.removeBuildingAt(selectedTile);
+        }
       }
     });
 
@@ -163,6 +160,22 @@ window.onload = function() {
         deleteMode = true;
         field.removeBuildingAt(selectedTile);
       }
+    }
+
+    function _setUpTestBuildings() {
+      field.setBuildingAt(new Miner(engine, new Coord(50, 50), "right"));
+      field.setBuildingAt(new Conveyor(engine, new Coord(51, 50), "right"));
+      field.setBuildingAt(new Conveyor(engine, new Coord(52, 50), "right"));
+      field.setBuildingAt(new Conveyor(engine, new Coord(53, 50), "right"));
+      field.setBuildingAt(new Unlocker(engine, new Coord(55, 50), "left"));
+      field.setBuildingAt(new Miner(engine, new Coord(49, 50), "down"));
+      field.setBuildingAt(new Miner(engine, new Coord(48, 50), "down"));
+      field.setBuildingAt(new Conveyor(engine, new Coord(49, 51), "right"));
+      field.setBuildingAt(new Conveyor(engine, new Coord(48, 51), "right"));
+      field.setBuildingAt(new Conveyor(engine, new Coord(50, 51), "right"));
+      field.setBuildingAt(new Conveyor(engine, new Coord(51, 51), "up"));
+      field.setBuildingAt(new Tower(engine, new Coord(50, 49), "left"));
+      field.setBuildingAt(new Miner(engine, new Coord(49, 49), "right")); 
     }
   });
 }

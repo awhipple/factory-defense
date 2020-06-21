@@ -17,9 +17,13 @@ export default class Projectile {
   update(engine) {
     this.pos.addTo(this.vector);
 
-    if(this.pos.distanceFromLessThan(this.target.pos, 0.25)) {
+    if ( this.pos.distanceFromLessThan(this.target.pos, 0.25) ) {
       this.target.damage(1);
       engine.unregister(this);
+    }
+
+    if ( !this.tileSet.within(this.pos) ) {
+      this.engine.unregister(this);
     }
   }
 
