@@ -124,7 +124,7 @@ export default class GameEngine {
   }
 
   load() {
-    return Promise.all([ this.images.load(), this.sounds.load() ]);
+    return this.images.load();
   }
 
   goFullscreen() {

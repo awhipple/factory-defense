@@ -22,8 +22,7 @@ window.onload = function() {
   engine.globals.blue = 0;
   engine.images.preload(["empty", "blueOre", "lock", "oreChunk", "conveyorCorner", "beaker"]);
   engine.images.preload(BUILDINGS);
-  engine.sounds.preload(["tsuwami_magenta-and-cyan", "gunshot"]);
-  engine.sounds.alias("song", "tsuwami_magenta-and-cyan");
+  engine.sounds.alias("music", "tsuwami_magenta-and-cyan");
 
   engine.onKeyPress(event => {
     if ( event.key == 'f' ) {
@@ -32,7 +31,9 @@ window.onload = function() {
   });
 
   engine.load().then(() => {
-    // engine.sounds.play("song");
+    
+    engine.sounds.play("music", {loop: true});
+    
     var hotBar = new HotBar(engine, BUILDINGS.slice(0, 3).map((b) => engine.images.get(b)));
     hotBar.onSelect(selected => {
       // Prevent the same click from selecting a tower and building in the same step.
@@ -47,13 +48,13 @@ window.onload = function() {
     field.setBuildingAt(new Lock(engine, lockCoord));
 
     // Test Code
-    field.setBuildingAt(new Miner(engine, new Coord(50, 50), "right"));
-    field.setBuildingAt(new Conveyor(engine, new Coord(51, 50), "right"));
-    field.setBuildingAt(new Conveyor(engine, new Coord(52, 50), "right"));
-    field.setBuildingAt(new Conveyor(engine, new Coord(53, 50), "right"));
-    field.setBuildingAt(new Unlocker(engine, new Coord(55, 50), "left"));
-    field.setBuildingAt(new Tower(engine, new Coord(50, 49), "left"));
-    field.setBuildingAt(new Miner(engine, new Coord(49, 49), "right")); 
+    // field.setBuildingAt(new Miner(engine, new Coord(50, 50), "right"));
+    // field.setBuildingAt(new Conveyor(engine, new Coord(51, 50), "right"));
+    // field.setBuildingAt(new Conveyor(engine, new Coord(52, 50), "right"));
+    // field.setBuildingAt(new Conveyor(engine, new Coord(53, 50), "right"));
+    // field.setBuildingAt(new Unlocker(engine, new Coord(55, 50), "left"));
+    // field.setBuildingAt(new Tower(engine, new Coord(50, 49), "left"));
+    // field.setBuildingAt(new Miner(engine, new Coord(49, 49), "right")); 
 
     var alert = new Alert(engine, "WARNING!");
     engine.register(alert);

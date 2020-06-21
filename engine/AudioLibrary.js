@@ -1,6 +1,5 @@
 export default class AudioLibrary {
   sounds = {};
-  preloadPromises = {};
 
   constructor(root = "./sounds/") {
     this.root = root;
@@ -10,33 +9,20 @@ export default class AudioLibrary {
     return this.sounds[name] || this._loadSound(name);
   }
 
-  preload(name) {
-    if(typeof name === 'string') {
-      name = [ name ];
-    }
-    for(var i = 0; i < name.length; i++) {
-      this.get(name[i]);
-    }
-  }
-
   alias(name, original) {
-    this.sounds[name] = this.sounds[original];
+    this.sounds[name] = this.get(original);
   }
 
-  play(name) {
-    this.get(name).play();
+  play(name, options = {}) {
+    this.get(name).play(options);
   }
 
-  load() {
-    return Promise.all(Object.values(this.preloadPromises));
+  stop(name) {
+    this.get(name).stop();
   }
 
   _loadSound(name) {
     var sound =  new Sound(this.root + name + ".mp3");
-    this.preloadPromises[name] = new Promise((resolve) => {
-      // sound.onload = () => { resolve(); };
-      resolve();
-    });
     return this.sounds[name] = sound;
   }
 
@@ -52,7 +38,12 @@ class Sound {
     this.channelPointer = 0;
   }
 
-  play() {
+  play(options = {}) {
+    if ( options.loop ) {
+      this.playLoop();
+      return;
+    } 
+
     this.channelPointer = (this.channelPointer + 1) % this.channels.length;
     
     if ( !this.channels[this.channelPointer].paused ) {
@@ -60,6 +51,23 @@ class Sound {
     }
 
     this.channels[this.channelPointer].play();
+  }
+
+  playLoop() {
+    if ( !this.loopAudio ) {
+      this.loopAudio = this.channels[0].cloneNode();
+      this.loopAudio.loop = true;
+    }
+    this.loopAudio.play();
+  }
+
+  stop() {
+    this.channels.forEach(channel => {
+      channel.pause();
+      channel.currentTime = 0;
+    });
+    this.loopAudio.pause();
+    this.loopAudio.currentTime = 0;
   }
 
   _addChannel() {
