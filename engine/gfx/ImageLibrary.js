@@ -13,7 +13,7 @@ export default class ImageLibrary {
   }
 
   preload(name) {
-    if(typeof name == 'string') {
+    if ( typeof name === 'string' ) {
       name = [ name ];
     }
     for(var i = 0; i < name.length; i++) {
@@ -35,7 +35,7 @@ export default class ImageLibrary {
         image.height = img.height;
         resolve();
       };
-    })
+    });
 
     return this.images[name] = image;
   }

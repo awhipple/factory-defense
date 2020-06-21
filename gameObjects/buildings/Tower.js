@@ -67,6 +67,7 @@ export default class Tower extends Building {
             engine.register(projectile);
 
             this.ammo--;
+            this.engine.sounds.play("gunshot");
             break;
           }
         }
