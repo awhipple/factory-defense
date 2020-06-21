@@ -9,8 +9,11 @@ import Unlocker from './gameObjects/buildings/Unlocker.js';
 import Lock from './gameObjects/buildings/Lock.js';
 import Alert from './engine/gfx/effects/Alert.js';
 import Tower from './gameObjects/buildings/Tower.js';
+import Game from './Game.js';
 
 window.onload = function() {
+  var game = new Game();
+
   var engine = new GameEngine(1920, 1080, {
     // showFullscreenSplash: true,
     showFullscreenIcon: true,
@@ -18,6 +21,7 @@ window.onload = function() {
 
   // Debug
   window.engine = engine;
+  // engine.setProd();
 
   engine.globals.blue = 0;
   engine.images.preload(["empty", "blueOre", "lock", "oreChunk", "conveyorCorner", "beaker"]);
@@ -50,7 +54,6 @@ window.onload = function() {
     var lockCoord = new Coord(55, 50);
     field.setBuildingAt(new Lock(engine, lockCoord));
 
-    // ******** || Test Code || ************
     if ( engine.dev ) {
       _setUpTestBuildings();
     }
@@ -173,7 +176,7 @@ window.onload = function() {
       field.setBuildingAt(new Miner(engine, new Coord(50, 50), "right"));
       field.setBuildingAt(new Conveyor(engine, new Coord(51, 50), "right"));
       field.setBuildingAt(new Conveyor(engine, new Coord(52, 50), "right"));
-      field.setBuildingAt(new Conveyor(engine, new Coord(53, 50), "right"));
+      // field.setBuildingAt(new Conveyor(engine, new Coord(53, 50), "right"));
       field.setBuildingAt(new Unlocker(engine, new Coord(55, 50), "left"));
       field.setBuildingAt(new Miner(engine, new Coord(49, 50), "down"));
       field.setBuildingAt(new Miner(engine, new Coord(48, 50), "down"));

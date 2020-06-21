@@ -22,7 +22,6 @@ export default class GameEngine {
     this.images.preload("fullscreen");
 
     this.dev = window.location.href.indexOf("localhost") !== -1;
-    this.prod = !this.dev;
 
     document.addEventListener('keydown', (event) => {
       var key = KeyNames[event.keyCode] || event.keyCode;
@@ -195,6 +194,14 @@ export default class GameEngine {
       (event.clientX - rect.x) * canvas.width / rect.width,
       (event.clientY - rect.y) * canvas.height / rect.height,
     );
+  }
+
+  get prod() {
+    return !this.dev;
+  }
+
+  setProd() {
+    this.dev = false;
   }
 
   _keyEvent(event) {
