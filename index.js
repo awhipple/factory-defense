@@ -30,10 +30,11 @@ window.onload = function() {
     }
   });
 
-  engine.load().then(() => {
-    
+  engine.on("firstInteraction", event => {
     engine.sounds.play("music", {loop: true});
-    
+  });
+
+  engine.load().then(() => {
     var hotBar = new HotBar(engine, BUILDINGS.slice(0, 3).map((b) => engine.images.get(b)));
     hotBar.onSelect(selected => {
       // Prevent the same click from selecting a tower and building in the same step.

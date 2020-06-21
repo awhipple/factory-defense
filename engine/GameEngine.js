@@ -41,7 +41,14 @@ export default class GameEngine {
       this.window.register(new FullscreenSplash(this));
     }
 
-    this.images.load().then(() => {
+    this.onMouseDown(() => {
+      if ( !this.firstInteraction ) {
+        this.firstInteraction = true;
+        this.trigger("firstInteraction")
+      }
+    });
+
+    this.load().then(() => {
       if ( options.showFullscreenIcon ) {
         this.fullscreenButton = new Button(this, this.images.get("fullscreen"), width-20, height-20, 0.05);
         this.register(this.fullscreenButton);
@@ -150,7 +157,6 @@ export default class GameEngine {
   onMouseDown(callback) {
     this.window.canvas.addEventListener('mousedown', event => {
       callback(this._mouseEvent(event));
-      var canvas = this.window.canvas;
     });
   }
 
