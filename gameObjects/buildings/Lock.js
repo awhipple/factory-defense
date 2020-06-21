@@ -11,7 +11,7 @@ export default class Lock extends Building {
 
     engine.onMouseDown(event => {
       if ( this.tileSet.tilePos(event.pos).floor().equals(this.pos) && !this.locked) {
-        this.engine.globals.alert.activate(3);
+        this.engine.globals.alert.activate(6);
         this.field.startWave(this);
       }
     });

@@ -40,7 +40,7 @@ export default class Unlocker extends Building {
       this.unlockCost -= 1;
       this.text?.setText(this.unlockCost);
       if ( this.startWave ) {
-        this.engine.globals.alert.activate(3);
+        this.engine.globals.alert.activate(6);
         this.field.startWave(this);
         this.startWave = false;
       }

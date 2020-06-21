@@ -5,14 +5,15 @@ export default class Alert {
   count = 0;
   alphaDir = 0;
   maxAlpha = 0.4;
-  speed = 1/120;
+  speed = 1/90;
   hide = true;
   z = 50;
   
-  constructor(engine, str = null) {
+  constructor(engine, str = null, sound = null) {
     this.engine = engine;
     this.width = engine.window.width;
     this.height = engine.window.height;
+    this.sound = sound;
 
     if ( str ) {
       this.warnText = new Text("Warning!!", this.width/2, 250, { style: "bold 100px Arial", center: true });
@@ -23,6 +24,10 @@ export default class Alert {
     this.count = count;
     this.alphaDir = this.speed;
     this.hide = false;
+
+    if ( this.sound ) {
+      this.engine.sounds.play(this.sound);
+    }
   }
 
   update() {
