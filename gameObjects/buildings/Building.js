@@ -1,5 +1,5 @@
 import { Coord, NEXT_ORIENTATION, BoundingRect } from "../../engine/GameMath.js";
-import Rectangle from "../../engine/gfx/shapes/Rectangle.js"
+import Rectangle from "../../engine/gfx/shapes/Rectangle.js";
 
 export const BUILDINGS = [
   "conveyor",
