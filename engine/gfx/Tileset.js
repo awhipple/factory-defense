@@ -3,7 +3,7 @@ import { Coord, BoundingRect } from "../GameMath.js";
 export default class TileSet {
   camZoom = 100;
   camZoomHighRes = 100;
-  dragCam = false;
+  _dragCam = false;
   z = 0;
 
   constructor(engine, ground, options = {}) {
@@ -14,17 +14,22 @@ export default class TileSet {
 
     this.camCenter = new Coord(this.width/2, this.height/2);
 
-    engine.onMouseDown(event => {
-      if ( event.button === "left") {
-        this.lastMousePos = event.pos;
-        this.dragCam = true;
-      }
-    });
-    engine.onMouseUp(event => {
-      if (event.button === "left") {
-        this.dragCam = false;
-      }
-    });
+    options.autoDrag = options.autoDrag ?? true;
+
+    if ( options.autoDrag ) {
+      engine.onMouseDown(event => {
+        if ( event.button === "left") {
+          this.lastMousePos = event.pos;
+          this.dragCam = true;
+        }
+      });
+      engine.onMouseUp(event => {
+        if (event.button === "left") {
+          this.dragCam = false;
+        }
+      });
+    }
+
     engine.onMouseMove(event => {
       if ( this.dragCam ) {
         this.camCenter.x -= (event.pos.x - this.lastMousePos.x) / this.camZoom;
@@ -46,6 +51,17 @@ export default class TileSet {
       }
       this.camZoom = Math.floor(this.camZoomHighRes);
     });
+  }
+
+  get dragCam() {
+    return this._dragCam;
+  }
+
+  set dragCam(val) {
+    if ( !this.dragCam && val ) {
+      this.lastMousePos = this.engine.mouse.pos;
+    }
+    this._dragCam = val;
   }
 
   viewportX(tileX) {

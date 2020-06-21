@@ -1,6 +1,6 @@
 * Add animations to engine and animate conveyor
 * Clean up index. Index should be slim and instantiate the game object
-* Add click drag to create conveyors
+* Make it so buildings can't be built on top of each other, but click drag conveyor into building still works.
 * Can we handle bad ratios screen sizes? Auto adjust canvas size to css size or similar?
 * Add sound
 * Librarify the engine

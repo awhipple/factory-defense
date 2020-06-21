@@ -51,14 +51,13 @@ export default class Building {
     return this.pos.add(Coord.half);
   }
 
-  rotate() {
-    var nextOrientation = NEXT_ORIENTATION[this.orientation];
-    this.orientation = nextOrientation;
+  rotate(newOrientation = null) {
+    this.orientation = newOrientation || NEXT_ORIENTATION[this.orientation];;
     for ( var i = 0; i < this.resources.length; i++ ) {
       var res = this.resources[i];
       res.moveTo(res.pos.rotateAround(this.center()));
     }
-    this.img = this.img.rotate();
+    this.img = this.img.rotate(newOrientation);
     this.field.signalBuildingChange(this.pos, this.size);
   }
 
@@ -103,6 +102,10 @@ export default class Building {
     if (this.health <= 0) {
       this.field.removeBuildingAt(this.pos.add(Coord.right));
     }
+  }
+
+  clone() {
+    return new this.constructor(this.engine, this.pos.copy(), this.orientation);
   }
 
   draw(ctx) {

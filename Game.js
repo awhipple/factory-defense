@@ -38,7 +38,86 @@ export default class Game {
 
   play() {
     this.engine.load().then(() => {
-      this.hotBar = new HotBar(engine, BUILDINGS.slice(0, 3).map((b) => engine.images.get(b)));
+
+      this.initialize();
+
+      this.engine.onKeyPress(event => {
+        if ( ["1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(event.key) ) {
+          this.hotBar.select(parseInt(event.key));
+        }
+        if ( event.key === 'r' ) {
+          this.rotateCursor();
+        }
+        if ( event.key === 'c' ) {
+          window.debugBuilding = this.field.getBuildingAt(selectedTile);
+          console.log(window.debugBuilding);
+        }
+        if ( this.engine.dev && event.key === 'm' ) {
+          this.engine.sounds.play("music", {loop: true});
+        }
+      })
+
+      this.engine.onMouseMove(event => {
+        this.lastSelectedTile = this.selectedTile;
+        this.selectedTile = this.tileSet.tilePos(event.pos).floor();
+        if ( !this.selectedTile.equals(this.lastSelectedTile) ) {
+          if ( this.cursorBuilding instanceof Conveyor && this.engine.mouse.left) {
+            var mouseMoveDirection = this.lastSelectedTile.directionTo(this.selectedTile);
+            this.cursorBuilding.rotate(mouseMoveDirection);
+            var newConveyor = this.cursorBuilding.clone();
+            this.build(this.lastSelectedTile);
+            this.cursorBuilding = newConveyor;
+          }
+
+          var newHoverBuilding = this.field.getBuildingAt(this.selectedTile);
+          if ( !this.cursorBuilding && this.hoverBuilding !== newHoverBuilding ) {
+            this.hoverBuilding?.unHover();
+            newHoverBuilding?.hover();
+            
+            this.hoverBuilding = newHoverBuilding;
+          }
+          if ( this.cursorBuilding && !this.cursorBuilding.pos.equals(this.selectedTile) ) {
+            this.cursorBuilding.moveTo(this.selectedTile);
+          }
+          if ( this.deleteMode ) {
+            this.field.removeBuildingAt(this.selectedTile);
+          }
+        }
+      });
+
+      this.engine.onMouseDown(event => {
+        if ( event.button === "left" ) {
+          if ( !this.cursorBuilding ) {
+            this.tileSet.dragCam = true;
+          }
+        }
+        if ( event.button === "right" ) {
+          this.remove();
+        }
+      });
+
+      this.engine.onMouseUp(event => {
+        if ( event.button === "left" ) {
+          if ( this.cursorBuilding ) {
+            this.build(this.selectedTile);
+          }
+          this.tileSet.dragCam = false;
+        }
+        
+        if ( event.button === "right" ) {
+          this.deleteMode = false;
+        }
+      })
+
+      this.engine.on("unlock", () => {
+        this.hotBar.addIcon(this.engine.images.get("tower"));
+      });
+
+    });
+  }
+
+  initialize() {
+    this.hotBar = new HotBar(engine, BUILDINGS.slice(0, 3).map((b) => engine.images.get(b)));
       this.hotBar.onSelect(selected => {
         // Prevent the same click from selecting a tower and building in the same step.
         setTimeout(() => this.setBuild(selected), 0);
@@ -66,63 +145,6 @@ export default class Game {
       this.hoverBuilding = null;
       this.cursorOrientation = "right";
       this.deleteMode = false;
-
-      this.engine.onKeyPress(event => {
-        if ( ["1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(event.key) ) {
-          this.hotBar.select(parseInt(event.key));
-        }
-        if ( event.key === 'r' ) {
-          this.rotateCursor();
-        }
-        if ( event.key === 'c' ) {
-          window.debugBuilding = this.field.getBuildingAt(selectedTile);
-          console.log(window.debugBuilding);
-        }
-        if ( this.engine.dev && event.key === 'm' ) {
-          this.engine.sounds.play("music", {loop: true});
-        }
-      })
-
-      this.engine.onMouseMove(event => {
-        this.oldSelectedTile = this.selectedTile;
-        this.selectedTile = this.tileSet.tilePos(event.pos).floor();
-        if ( !this.selectedTile.equals(this.oldSelectedTile) ) {
-          var newHoverBuilding = this.field.getBuildingAt(this.selectedTile);
-          if ( !this.cursorBuilding && this.hoverBuilding !== newHoverBuilding ) {
-            this.hoverBuilding?.unHover();
-            newHoverBuilding?.hover();
-            
-            this.hoverBuilding = newHoverBuilding;
-          }
-          if ( this.cursorBuilding && !this.cursorBuilding.pos.equals(this.selectedTile) ) {
-            this.cursorBuilding.moveTo(this.selectedTile);
-          }
-          if ( this.deleteMode ) {
-            this.field.removeBuildingAt(this.selectedTile);
-          }
-        }
-      });
-
-      this.engine.onMouseDown(event => {
-        if ( event.button === "left" ) {
-          this.build();
-        }
-        if ( event.button === "right" ) {
-          this.remove();
-        }
-      });
-
-      this.engine.onMouseUp(event => {
-        if ( event.button === "right" ) {
-          this.deleteMode = false;
-        }
-      })
-
-      this.engine.on("unlock", () => {
-        this.hotBar.addIcon(this.engine.images.get("tower"));
-      });
-
-    });
   }
 
   rotateCursor() {
@@ -151,11 +173,11 @@ export default class Game {
     }
   }
 
-  build() {
+  build(tile) {
     if ( this.cursorBuilding ) {
       this.cursorBuilding.alpha = 1;
       this.cursorBuilding.on = true;
-      if ( !this.field.setBuildingAt(this.cursorBuilding, this.selectedTile) ) {
+      if ( !this.field.setBuildingAt(this.cursorBuilding, tile) ) {
         this.cursorBuilding.remove();
       }
       this.cursorBuilding = null;

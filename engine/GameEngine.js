@@ -14,7 +14,7 @@ export default class GameEngine {
   keyDownCallbacks = [];
   eventListeners = {};
   pressedKeys = {};
-  mousePos = new Coord(0, 0);
+  mouse = {pos: new Coord(0, 0), left: false, right: false};
   fullscreen = false;
 
   constructor(width, height, options = {}) {
@@ -33,7 +33,17 @@ export default class GameEngine {
     });
 
     this.window.canvas.addEventListener('mousemove', event => {
-      this.mousePos = this.getMouseCoord(event);
+      this.mouse.pos = this.getMouseCoord(event);
+    });
+    this.onMouseDown(event => {
+      if ( !this.firstInteraction ) {
+        this.firstInteraction = true;
+        this.trigger("firstInteraction")
+      }
+      this.mouse[MouseButtonNames[event.button] || event.button] = true;
+    });
+    this.onMouseUp(event => {
+      this.mouse[MouseButtonNames[event.button] || event.button] = false;
     });
 
     document.addEventListener('fullscreenchange', (event) => {
@@ -42,13 +52,6 @@ export default class GameEngine {
     if ( options.showFullscreenSplash ) {
       this.window.register(new FullscreenSplash(this));
     }
-
-    this.onMouseDown(() => {
-      if ( !this.firstInteraction ) {
-        this.firstInteraction = true;
-        this.trigger("firstInteraction")
-      }
-    });
 
     this.load().then(() => {
       if ( options.showFullscreenIcon ) {

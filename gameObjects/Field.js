@@ -61,7 +61,7 @@ export default class Field {
     }
     this.ground[49][49] = this.ground[48][50] = this.ground[49][50] = this.ground[50][50] = 'blueOre';
 
-    this.tileSet = new TileSet(engine, this.ground);
+    this.tileSet = new TileSet(engine, this.ground, {autoDrag: false});
     engine.globals.tileSet = this.tileSet;
     engine.register(this.tileSet);
   }
