@@ -100,8 +100,12 @@ export default class Building {
 
   damage(dmg) {
     this.health -= dmg;
-    if (this.health <= 0) {
-      this.field.removeBuildingAt(this.pos.add(Coord.right));
+    if (this.health <= 0 && this.health > -dmg) {
+      var removeFrom = this.pos.copy();
+      if ( this.size === "large" ) {
+        removeFrom.addTo(Coord.right);
+      }
+      this.field.removeBuildingAt(removeFrom);
     }
     this.healthBar.setVal(this.health);
   }

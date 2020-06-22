@@ -71,11 +71,13 @@ export default class Field {
       this.enemyCountdown -= 1/60;
       if ( this.enemyCountdown < 0 ) {
         this.enemyCountdown += 1.5;
+        this.enemyCount++;
 
         var dir = Math.random() * 2 * Math.PI;
         var distance = Math.random() * 10 + 10;
         var enemy = new Enemy(engine, this.targetBuilding, 
-          this.targetBuilding.pos.add(new Coord(Math.cos(dir) * distance, Math.sin(dir) * distance))
+          this.targetBuilding.pos.add(new Coord(Math.cos(dir) * distance, Math.sin(dir) * distance)),
+          Math.floor(this.enemyCount/50) + 4
         );
         engine.register(enemy, "enemy");
       }
@@ -119,6 +121,7 @@ export default class Field {
   }
 
   removeBuildingAt(pos) {
+    console.log("Removing at ", pos);
     this.setBuildingAt(null, pos);
   }
 
@@ -134,6 +137,7 @@ export default class Field {
   startWave(targetBuilding) {
     this.targetBuilding = targetBuilding;
     this.enemyCountdown = 6;
+    this.enemyCount = 0;
   }
 
   endWave() {

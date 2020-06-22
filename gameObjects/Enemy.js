@@ -6,18 +6,17 @@ export default class Enemy {
   alpha = 0;
   radius = 0.25;
   clickRadius = 0.4;
-  health = 4;
-  maxHealth = this.health;
   speed = 1/60;
   fireIn = 1;
   shouldDespawn = false;
   z = 40;
 
-  constructor(engine, target, pos) {
+  constructor(engine, target, pos, health) {
     this.engine = engine;
     this.tileSet = this.engine.globals.tileSet;
     this.target = target;
     this.pos = pos;
+    this.maxHealth = this.health = health;
 
     this.dir = getDirectionFrom(pos, target.center());
     this.xv = Math.cos(this.dir) * this.speed;
