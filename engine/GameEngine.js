@@ -17,8 +17,8 @@ export default class GameEngine {
   mouse = {pos: new Coord(0, 0), left: false, right: false};
   fullscreen = false;
 
-  constructor(width, height, options = {}) {
-    this.window = new GameWindow(this, width, height, "gameCanvas");
+  constructor(options = {}) {
+    this.window = new GameWindow(this, "gameCanvas");
     this.images.preload("fullscreen");
 
     this.dev = window.location.href.indexOf("localhost") !== -1;
@@ -55,7 +55,7 @@ export default class GameEngine {
 
     this.load().then(() => {
       if ( options.showFullscreenIcon ) {
-        this.fullscreenButton = new Button(this, this.images.get("fullscreen"), width-20, height-20, 0.05);
+        this.fullscreenButton = new Button(this, this.images.get("fullscreen"), this.window.width-20, this.window.height-20, 0.05);
         this.register(this.fullscreenButton);
       }
     });

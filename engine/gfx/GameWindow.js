@@ -1,15 +1,16 @@
 export default class GameWindow {
   objects = [];
 
-  constructor(engine, width, height, canvasId) {
+  constructor(engine, canvasId) {
     this.engine = engine;
-    this.width = width;
-    this.height = height;
     
     this.canvas = document.getElementById(canvasId);
     this.canvas.oncontextmenu = () => false;
-    this.canvas.width = width;
-    this.canvas.height = height;
+    this.canvas.style = "width: 100%; height: 100%;"
+    this.canvas.width = window.innerWidth;
+    this.canvas.height = window.innerHeight;
+    this.width = this.canvas.width;
+    this.height = this.canvas.height;
     this.ctx = this.canvas.getContext("2d");
 
     requestAnimationFrame(() => this.draw());

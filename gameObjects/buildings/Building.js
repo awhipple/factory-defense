@@ -1,5 +1,4 @@
 import { Coord, NEXT_ORIENTATION, BoundingRect } from "../../engine/GameMath.js";
-import Rectangle from "../../engine/gfx/shapes/Rectangle.js";
 import Bar from "../../engine/gfx/ui/Bar.js";
 
 export const BUILDINGS = [

@@ -9,10 +9,7 @@ import Alert from "./engine/gfx/effects/Alert.js";
 
 export default class Game {
   constructor() {
-    this.engine = new GameEngine(1920, 1080, {
-      // showFullscreenSplash: true,
-      showFullscreenIcon: true,
-    });
+    this.engine = new GameEngine();
 
     // Debug
     window.engine = this.engine;
@@ -22,12 +19,6 @@ export default class Game {
     this.engine.images.preload(["empty", "blueOre", "lock", "oreChunk", "conveyorCorner", "beaker"]);
     this.engine.images.preload(BUILDINGS);
     this.engine.sounds.alias("music", "tsuwami_magenta-and-cyan");
-    
-    this.engine.onKeyPress(event => {
-      if ( event.key == 'f' ) {
-        engine.goFullscreen();
-      }
-    });
 
     if ( this.engine.prod ) {
       this.engine.on("firstInteraction", () => {
