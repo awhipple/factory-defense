@@ -29,6 +29,7 @@ export default class Enemy {
       if ( event.button === "left" ) {
         if ( this.tileSet.tilePos(event.pos).distanceTo(this.pos) <= this.clickRadius ) {
           this.health--;
+          this.engine.sounds.play("shot");
           if ( this.health === 0 ) {
             engine.unregister(this);
           }
