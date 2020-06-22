@@ -1,12 +1,15 @@
 import Circle from "../engine/gfx/shapes/Circle.js";
 import { getDirectionFrom } from "../engine/GameMath.js";
+import Projectile from "./Projectile.js";
 
 export default class Enemy {
   alpha = 0;
   radius = 0.25;
+  clickRadius = 0.4;
   health = 4;
   maxHealth = this.health;
-  speed = 1/90;
+  speed = 1/60;
+  fireIn = 1;
   shouldDespawn = false;
   z = 40;
 
@@ -24,7 +27,7 @@ export default class Enemy {
 
     engine.onMouseDown(event => {
       if ( event.button === "left" ) {
-        if ( this.tileSet.tilePos(event.pos).distanceTo(this.pos) <= this.radius ) {
+        if ( this.tileSet.tilePos(event.pos).distanceTo(this.pos) <= this.clickRadius ) {
           this.health--;
           if ( this.health === 0 ) {
             engine.unregister(this);
@@ -45,6 +48,10 @@ export default class Enemy {
     this.shouldDespawn = true;
   }
 
+  center() {
+    return this.pos;
+  }
+
   update() {
     if ( this.shouldDespawn ) {
       this.alpha -= 1/60;
@@ -58,15 +65,20 @@ export default class Enemy {
       }
     }
 
-    this.pos.x += this.xv;
-    this.pos.y += this.yv;
+    if ( this.pos.distanceToLessThan(this.target.center(), 3)) {
+      this.fireIn -= 1/60;
+      if ( this.fireIn < 0 ) {
+        this.fireIn += 1;
 
-    if ( !this.shouldDespawn && this.pos.within(this.target.tileRect) ) {
-      this.target.damage(20);
-      this.engine.unregister(this);
+        var enemyProjectile = new Projectile(this.engine, this.pos.copy(), this.target, 5);
+        this.engine.register(enemyProjectile);
+        this.engine.sounds.play("laser");
+      }
+    } else {
+      this.pos.x += this.xv;
+      this.pos.y += this.yv;
     }
   }
-
 
   draw(ctx) {
     this.body.pos = this.tileSet.viewportPos(this.pos);

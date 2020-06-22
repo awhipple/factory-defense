@@ -73,7 +73,7 @@ export default class Field {
         this.enemyCountdown += 1.5;
 
         var dir = Math.random() * 2 * Math.PI;
-        var distance = Math.random() * 10 + 5;
+        var distance = Math.random() * 10 + 10;
         var enemy = new Enemy(engine, this.targetBuilding, 
           this.targetBuilding.pos.add(new Coord(Math.cos(dir) * distance, Math.sin(dir) * distance))
         );

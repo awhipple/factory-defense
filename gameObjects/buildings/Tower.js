@@ -63,11 +63,13 @@ export default class Tower extends Building {
           if (this.ammo > 0 && this.center().distanceTo(enemy.pos) < this.range ) {
             this.fireIn += this.fireRate;
             
-            var projectile = new Projectile(engine, this.center().copy(), enemy);
-            engine.register(projectile);
+            setTimeout(() => {
+              var projectile = new Projectile(engine, this.center().copy(), enemy);
+              engine.register(projectile);
+            }, 75);
 
             this.ammo--;
-            this.engine.sounds.play("gunshot");
+            this.engine.sounds.play("shot");
             break;
           }
         }
