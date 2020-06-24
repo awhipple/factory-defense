@@ -121,7 +121,6 @@ export default class Field {
   }
 
   removeBuildingAt(pos) {
-    console.log("Removing at ", pos);
     this.setBuildingAt(null, pos);
   }
 

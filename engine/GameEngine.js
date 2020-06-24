@@ -167,7 +167,7 @@ export default class GameEngine {
 
   onMouseUp(callback) {
     this.window.canvas.addEventListener('mouseup', event => {
-      callback({button: MouseButtonNames[event.button] || event.button});
+      callback(this._mouseEvent(event));
     });
   }
 
