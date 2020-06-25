@@ -22,6 +22,7 @@ export default class Building {
 
   constructor(engine, pos, imgName, orientation = "right") {
     this.engine = engine;
+    this.cam = engine.globals.cam;
     this.field = engine.globals.field;
     this.tileSet = this.field.tileSet;
     this.pos = pos;
@@ -116,13 +117,13 @@ export default class Building {
 
   draw(ctx) {
     var drawArea = this.size === "large" ?
-      this.field.tileSet.getTileRect(this.pos.subtract(Coord.unit), this.pos.add(Coord.unit)) :
-      this.field.tileSet.getTileRect(this.pos);
+      this.tileSet.getTileRect(this.pos.subtract(Coord.unit), this.pos.add(Coord.unit)) :
+      this.tileSet.getTileRect(this.pos);
     this.img.draw(ctx, drawArea, {
       alpha: this.alpha,
     });
     if ( this.health < this.healthMax ) {
-      this.healthBar.draw(ctx, this.tileSet.getScreenRect(this.healthRect));
+      this.healthBar.draw(ctx, this.cam.getScreenRect(this.healthRect));
     }
   }
 }

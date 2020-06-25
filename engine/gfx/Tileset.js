@@ -36,26 +36,6 @@ export default class TileSet extends GameObject {
     }
   }
 
-  viewportX(tileX) {
-    return this.cam.getScreenX(tileX);
-  }
-  
-  viewportY(tileY) {
-    return this.cam.getScreenY(tileY);
-  }
-
-  viewportPos(pos) {
-    return this.cam.getScreenPos(pos);
-  }
-
-  getScreenRect(tileRect) {
-    return this.cam.getScreenRect(tileRect);
-  }
-
-  tilePos(screenPos) {
-    return this.cam.getPos(screenPos);
-  }
-
   getTileRect(upperLeftTile, lowerRightTile = null) {
     return this.cam.getScreenRect({
       x: upperLeftTile.x, y: upperLeftTile.y,

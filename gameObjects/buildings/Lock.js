@@ -11,7 +11,7 @@ export default class Lock extends Building {
     this.beakerImage = engine.images.get("beaker");
 
     engine.onMouseDown(event => {
-      if ( this.tileSet.tilePos(event.pos).floor().equals(this.pos) && !this.locked) {
+      if ( this.cam.getPos(event.pos).floor().equals(this.pos) && !this.locked) {
         this.engine.globals.alert.activate(6);
         this.field.startWave(this);
       }

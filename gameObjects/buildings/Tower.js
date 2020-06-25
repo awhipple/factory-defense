@@ -14,7 +14,7 @@ export default class Tower extends Building {
   constructor(engine, pos, cursorOrientation) {
     super(engine, pos, "tower", cursorOrientation);
 
-    this.tileSet = engine.globals.tileSet;
+    this.cam = engine.globals.cam;
 
     this.ammoBar = new Bar(new BoundingRect(), this.ammo, this.ammoMax, { color: "#ff0" });
     this.ammoRect = new BoundingRect();
@@ -80,11 +80,11 @@ export default class Tower extends Building {
   draw(ctx) {
     super.draw(ctx);
 
-    this.ammoBar.draw(ctx, this.tileSet.getScreenRect(this.ammoRect));
+    this.ammoBar.draw(ctx, this.cam.getScreenRect(this.ammoRect));
 
     if ( this._hover ) {
-      this.rangeDisplay.pos = this.tileSet.viewportPos(this.center());
-      this.rangeDisplay.radius = this.range * this.tileSet.camZoom;
+      this.rangeDisplay.pos = this.cam.getScreenPos(this.center());
+      this.rangeDisplay.radius = this.range * this.cam.zoom;
       this.rangeDisplay.draw(ctx);
     }
   }

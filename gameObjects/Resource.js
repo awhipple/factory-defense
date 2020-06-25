@@ -1,12 +1,15 @@
 import { BoundingRect, Coord } from "../engine/GameMath.js";
+import GameObject from "../engine/objects/GameObject.js";
 
-export default class Resource {
+export default class Resource extends GameObject {
   static collisionSize = 0.34;
   z = 20;
 
   constructor(engine, x, y) {
+    super({x, y, radius: 0.2});
+
     this.engine = engine;
-    this.tileSet = engine.globals.tileSet;
+    this.cam = engine.globals.cam;
     this.pos = new Coord(x, y);
     this.img = engine.images.get("oreChunk")
   }
@@ -15,7 +18,7 @@ export default class Resource {
     if ( typeof coord === "string" ) {
       coord = Coord[coord];
     }
-    this.moveTo(this.pos.add(coord.times(speed)));
+    this.pos = this.pos.add(coord.times(speed));
   }
 
   moveTo(coord) {
@@ -23,9 +26,7 @@ export default class Resource {
   }
 
   draw(ctx) {
-    var tileRect = new BoundingRect(this.pos.x - 0.2, this.pos.y - 0.2, 0.4, 0.4);
-    var screenRect = this.tileSet.getScreenRect(tileRect);
-    this.img.draw(ctx, screenRect);
+    this.img.draw(ctx, this.screenRect);
   }
   
 }

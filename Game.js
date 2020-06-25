@@ -54,7 +54,7 @@ export default class Game {
 
       this.engine.onMouseMove(event => {
         this.lastSelectedTile = this.selectedTile;
-        this.selectedTile = this.tileSet.tilePos(event.pos).floor();
+        this.selectedTile = this.cam.getPos(event.pos).floor();
         if ( !this.selectedTile.equals(this.lastSelectedTile) ) {
           if ( this.cursorBuilding instanceof Conveyor && this.engine.mouse.left) {
             var mouseMoveDirection = this.lastSelectedTile.directionTo(this.selectedTile);
