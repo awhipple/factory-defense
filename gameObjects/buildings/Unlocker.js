@@ -58,7 +58,7 @@ export default class Unlocker extends Building {
     super.draw(ctx);
 
     if ( this.unlockCost > 0 ) {
-      this.textImage?.draw(ctx, this.field.tileSet.getTileRect(this.pos));
+      this.textImage?.draw(ctx, this.cam.getScreenRect({x: this.pos.x, y: this.pos.y, w: 1, h: 1}));
     }
   }
 

@@ -117,8 +117,8 @@ export default class Building {
 
   draw(ctx) {
     var drawArea = this.size === "large" ?
-      this.tileSet.getTileRect(this.pos.subtract(Coord.unit), this.pos.add(Coord.unit)) :
-      this.tileSet.getTileRect(this.pos);
+      this.cam.getScreenRect({x: this.pos.x - 1, y: this.pos.y - 1, w: 3, h: 3}) :
+      this.cam.getScreenRect({x: this.pos.x, y: this.pos.y, w: 1, h: 1});
     this.img.draw(ctx, drawArea, {
       alpha: this.alpha,
     });

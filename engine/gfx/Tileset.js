@@ -36,14 +36,6 @@ export default class TileSet extends GameObject {
     }
   }
 
-  getTileRect(upperLeftTile, lowerRightTile = null) {
-    return this.cam.getScreenRect({
-      x: upperLeftTile.x, y: upperLeftTile.y,
-      w: lowerRightTile ? lowerRightTile.x - upperLeftTile.x + 1 : 1,
-      h: lowerRightTile ? lowerRightTile.y - upperLeftTile.y + 1 : 1,
-    });
-  }
-
   within(pos) {
     return (
       pos.x > 0 && pos.x < this.width &&
@@ -62,7 +54,7 @@ export default class TileSet extends GameObject {
 
     for(var y = startTileY; y < endTileY; y++) {
       for(var x = startTileX; x < endTileX; x++) {
-        this.engine.images.get(this.ground[x][y]).draw(ctx, this.getTileRect(new Coord(x, y)));
+        this.engine.images.get(this.ground[x][y]).draw(ctx, this.cam.getScreenRect({x, y, w: 1, h: 1}));
       }
     }
   }
