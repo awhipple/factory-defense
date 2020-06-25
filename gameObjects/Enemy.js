@@ -1,8 +1,9 @@
 import Circle from "../engine/gfx/shapes/Circle.js";
 import { getDirectionFrom } from "../engine/GameMath.js";
 import Projectile from "./Projectile.js";
+import GameObject from "../engine/objects/GameObject.js";
 
-export default class Enemy {
+export default class Enemy extends GameObject {
   alpha = 0;
   radius = 0.25;
   clickRadius = 0.4;
@@ -12,10 +13,12 @@ export default class Enemy {
   z = 40;
 
   constructor(engine, target, pos, health) {
+    super({x: pos.x, y: pos.y, radius: 0.25});
+
     this.engine = engine;
     this.cam = this.engine.globals.cam;
+
     this.target = target;
-    this.pos = pos;
     this.maxHealth = this.health = health;
 
     this.dir = getDirectionFrom(pos, target.center());
@@ -23,18 +26,16 @@ export default class Enemy {
     this.yv = Math.sin(this.dir) * this.speed;
 
     this.body = new Circle(this.cam.getScreenPos(this.pos), this.cam.zoom * this.radius, {color: "#a33"});
+  }
 
-    engine.onMouseDown(event => {
-      if ( event.button === "left" ) {
-        if ( this.cam.getPos(event.pos).distanceTo(this.pos) <= this.clickRadius ) {
-          this.health--;
-          this.engine.sounds.play("shot");
-          if ( this.health === 0 ) {
-            engine.unregister(this);
-          }
-        }
+  onClick(event) {
+    if ( event.button === "left" ) {
+      this.health--;
+      this.engine.sounds.play("shot");
+      if ( this.health === 0 ) {
+        this.engine.unregister(this);
       }
-    });
+    }
   }
 
   damage(dmg) {
@@ -75,8 +76,8 @@ export default class Enemy {
         this.engine.sounds.play("laser");
       }
     } else {
-      this.pos.x += this.xv;
-      this.pos.y += this.yv;
+      this.x += this.xv;
+      this.y += this.yv;
     }
   }
 

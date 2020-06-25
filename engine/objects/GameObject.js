@@ -1,15 +1,21 @@
-import { BoundingRect } from "../GameMath.js";
+import { BoundingRect, Coord } from "../GameMath.js";
 
 export default class GameObject {
-  constructor(rect) {
-    this.rect = new BoundingRect(rect.x, rect.y, rect.w, rect.h);
-    this.r = Math.floor(Math.random()*100);
+  constructor(shape = {}) {
+    this._pos = new Coord();
+
+    if ( shape.radius ) {
+      this._rect = new BoundingRect(
+        shape.x - shape.radius, shape.y - shape.radius,
+        2 * shape.radius, 2 * shape.radius
+      );
+        this.x = shape.x;
+        this.y = shape.y;
+    } else {
+      this.rect = new BoundingRect(shape.x, shape.y, shape.w, shape.h);
+    }
 
     this.updateScreenRect();
-  }
-
-  setCam(cam) {
-    this._cam = cam;
   }
 
   updateScreenRect() {
@@ -24,5 +30,50 @@ export default class GameObject {
     ctx.lineWidth = 3;
     ctx.strokeRect(this.screenRect.x, this.screenRect.y, this.screenRect.w, this.screenRect.h);
     ctx.restore();
+  }
+
+  get x() {
+    return this._pos.x;
+  }
+
+  set x(val) {
+    this._pos.x = val;
+    this._rect.x = this.x - this._rect.w / 2;
+  }
+
+  get y() {
+    return this._pos.y;
+  }
+
+  set y(val) {
+    this._pos.y = val;
+    this._rect.y = this.y - this._rect.h / 2;
+  }
+
+  get pos() {
+    return this._pos;
+  }
+
+  set pos(val) {
+    this.x = val.x;
+    this.y = val.y;
+  }
+
+  get rect() {
+    return this._rect;
+  }
+
+  set rect(val) {
+    this._rect = val;
+    this._pos.x = val.x + val.w / 2;
+    this._pos.y = val.y + val.h / 2;
+  }
+
+  get cam() {
+    return this._cam;
+  }
+
+  set cam(cam) {
+    this._cam = cam;
   }
 }

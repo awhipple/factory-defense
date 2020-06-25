@@ -7,6 +7,7 @@ export default class Lock extends Building {
   constructor(engine, pos, orientation) {
     super(engine, pos, "lock", orientation);
 
+    this.cam = engine.globals.cam;
     this.beakerImage = engine.images.get("beaker");
 
     engine.onMouseDown(event => {
@@ -36,8 +37,8 @@ export default class Lock extends Building {
     super.draw(ctx);
 
     if ( !this.locked ) {
-      var iconSize = 0.3 * this.tileSet.camZoom;
-      this.beakerImage.draw(ctx, this.tileSet.viewportPos(this.center()), iconSize, iconSize, {center: true});
+      var iconSize = 0.3 * this.cam.zoom;
+      this.beakerImage.draw(ctx, this.cam.getScreenPos(this.center()), iconSize, iconSize, {center: true});
     }
   }
 }
