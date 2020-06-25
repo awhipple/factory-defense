@@ -21,6 +21,16 @@ export default class AudioLibrary {
     this.get(name).stop();
   }
 
+  preload(sounds) {
+    if ( typeof sounds === "string" ) {
+      sounds = [ sounds ];
+    }
+
+    sounds.forEach(sound => {
+      this._loadSound(sound);
+    });
+  }
+
   _loadSound(name) {
     var sound =  new Sound(this.root + name + ".mp3");
     return this.sounds[name] = sound;

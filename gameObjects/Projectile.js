@@ -4,6 +4,7 @@ import { getDirectionFrom, Coord } from "../engine/GameMath.js";
 export default class Projectile {
   constructor(engine, pos, target, damage = 1) {
     this.engine = engine;
+    this.cam = engine.globals.cam;
     this.tileSet = engine.globals.tileSet;
     this.pos = pos;
     this.target = target;
@@ -29,9 +30,8 @@ export default class Projectile {
   }
 
   draw(ctx) {
-    this.circle.pos.x = this.tileSet.viewportX(this.pos.x);
-    this.circle.pos.y = this.tileSet.viewportY(this.pos.y);
-    this.circle.radius = 0.05 * this.tileSet.camZoom;
+    this.circle.pos = this.cam.getScreenPos(this.pos);
+    this.circle.radius = 0.05 * this.cam.zoom;
     
     this.circle.draw(ctx);
   }

@@ -16,9 +16,10 @@ export default class GameEngine {
   pressedKeys = {};
   mouse = {pos: new Coord(0, 0), left: false, right: false};
   fullscreen = false;
+  eventTimers = {};
 
   constructor(options = {}) {
-    this.window = new GameWindow(this, "gameCanvas");
+    this.window = new GameWindow(this, "gameCanvas", this.gameObjects.all);
     this.images.preload("fullscreen");
 
     this.dev = window.location.href.indexOf("localhost") !== -1;
@@ -35,13 +36,17 @@ export default class GameEngine {
     this.window.canvas.addEventListener('mousemove', event => {
       this.mouse.pos = this.getMouseCoord(event);
     });
+
     this.onMouseDown(event => {
       if ( !this.firstInteraction ) {
         this.firstInteraction = true;
         this.trigger("firstInteraction")
       }
       this.mouse[MouseButtonNames[event.button] || event.button] = true;
+
+      this._sendClickEvent(event);
     });
+
     this.onMouseUp(event => {
       this.mouse[MouseButtonNames[event.button] || event.button] = false;
     });
@@ -65,7 +70,6 @@ export default class GameEngine {
 
   register(object, name) {
     this.gameObjects.all.push(object);
-    this.window.register(object);
 
     // Store in its own collection if requested
     if ( name ) {
@@ -82,7 +86,6 @@ export default class GameEngine {
     if ( objectIndex !== -1 ) {
       this.gameObjects.all.splice(objectIndex, 1);
     }
-    this.window.unregister(object);
 
     var keys = Object.keys(this.gameObjects);
     for ( var i = 0; i < keys.length; i++) {
@@ -128,6 +131,10 @@ export default class GameEngine {
       for(var k = 0; k < pressedKeys.length; k++) {
         this.keyDownCallbacks[i]({key: pressedKeys[k]});
       }
+    }
+
+    for ( var key in this.eventTimers ) {
+      this.eventTimers[key] -= 1/60;
     }
 
     if ( this.gameLoop ) {
@@ -207,6 +214,14 @@ export default class GameEngine {
     this.dev = false;
   }
 
+  oncePerSecond(key, callback) {
+    this.eventTimers[key] = this.eventTimers[key] ?? 0;
+    if ( this.eventTimers[key] <= 0) {
+      this.eventTimers[key] += 1;
+      callback();
+    }
+  }
+
   _keyEvent(event) {
     return {
       key: KeyNames[event.keyCode] || event.keyCode
@@ -219,5 +234,17 @@ export default class GameEngine {
       pos: this.getMouseCoord(event),
       wheelDirection: event.wheelDeltaY < 0 ? "down" : "up",
     };
+  }
+
+  _sendClickEvent(event) {
+    // The game window currently sorts all these objects in order of their z value
+    for ( var i = this.gameObjects.all.length - 1; i >= 0; i-- ) {
+      var obj = this.gameObjects.all[i];
+      if ( typeof obj.onClick === "function" && obj.screenRect?.contains(event.pos.x, event.pos.y) ) {
+        if ( !obj.onClick(event) ) {
+          return;
+        }
+      }
+    }
   }
 }

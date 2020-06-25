@@ -1,8 +1,7 @@
 export default class GameWindow {
-  objects = [];
-
-  constructor(engine, canvasId) {
+  constructor(engine, canvasId, gameObjects) {
     this.engine = engine;
+    this.objects = gameObjects;
     
     this.canvas = document.getElementById(canvasId);
     this.canvas.oncontextmenu = () => false;
@@ -16,17 +15,6 @@ export default class GameWindow {
     requestAnimationFrame(() => this.draw());
   }
 
-  register(object) {
-    this.objects.push(object);
-  }
-
-  unregister(object) {
-    var objectIndex = this.objects.indexOf(object);
-    if ( objectIndex !== -1 ) {
-      this.objects.splice(objectIndex, 1);
-    }
-  }
-
   draw() {
     requestAnimationFrame(() => this.draw());
     this.ctx.save();
@@ -35,6 +23,7 @@ export default class GameWindow {
     this.objects.sort((a, b) => (a.z || 0) - (b.z || 0))
     for(var i = 0; i < this.objects.length; i++) {
       if ( !this.objects[i].hide ) {
+        this.objects[i].updateScreenRect?.();
         this.objects[i].draw?.(this.ctx, this.engine);
       }
     }

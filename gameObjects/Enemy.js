@@ -13,7 +13,7 @@ export default class Enemy {
 
   constructor(engine, target, pos, health) {
     this.engine = engine;
-    this.tileSet = this.engine.globals.tileSet;
+    this.cam = this.engine.globals.cam;
     this.target = target;
     this.pos = pos;
     this.maxHealth = this.health = health;
@@ -22,11 +22,11 @@ export default class Enemy {
     this.xv = Math.cos(this.dir) * this.speed;
     this.yv = Math.sin(this.dir) * this.speed;
 
-    this.body = new Circle(this.tileSet.viewportPos(this.pos), this.tileSet.camZoom * this.radius, {color: "#a33"});
+    this.body = new Circle(this.cam.getScreenPos(this.pos), this.cam.zoom * this.radius, {color: "#a33"});
 
     engine.onMouseDown(event => {
       if ( event.button === "left" ) {
-        if ( this.tileSet.tilePos(event.pos).distanceTo(this.pos) <= this.clickRadius ) {
+        if ( this.cam.getPos(event.pos).distanceTo(this.pos) <= this.clickRadius ) {
           this.health--;
           this.engine.sounds.play("shot");
           if ( this.health === 0 ) {
@@ -81,8 +81,8 @@ export default class Enemy {
   }
 
   draw(ctx) {
-    this.body.pos = this.tileSet.viewportPos(this.pos);
-    this.body.radius = this.tileSet.camZoom * 0.25;
+    this.body.pos = this.cam.getScreenPos(this.pos);
+    this.body.radius = this.cam.zoom * 0.25;
     this.body.alpha = this.alpha;
     this.body.arc = this.health / this.maxHealth;
     

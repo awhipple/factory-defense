@@ -99,6 +99,13 @@ export class BoundingRect {
     this.w = w;
     this.h = h;
   }
+
+  contains(x, y) {
+    return (
+      x >= this.x && x < this.x + this.w &&
+      y >= this.y && y < this.y + this.h
+    );
+  }
 }
 
 export function getDirectionFrom(pointA, pointB) {

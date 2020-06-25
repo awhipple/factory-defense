@@ -6,6 +6,8 @@ import Lock from "./gameObjects/buildings/Lock.js";
 import { BUILDINGS } from "./gameObjects/buildings/Building.js";
 import { Miner, Conveyor, Unlocker, Tower } from "./gameObjects/buildings/index.js";
 import Alert from "./engine/gfx/effects/Alert.js";
+import GameObject from "./engine/objects/GameObject.js";
+import Camera from "./engine/gfx/Camera.js";
 
 export default class Game {
   constructor() {
@@ -19,6 +21,8 @@ export default class Game {
     this.engine.images.preload(["empty", "blueOre", "lock", "oreChunk", "conveyorCorner", "beaker"]);
     this.engine.images.preload(BUILDINGS);
     this.engine.sounds.alias("music", "tsuwami_magenta-and-cyan");
+
+    this.engine.sounds.preload(["alarm", "laser", "shot"]);
 
     if ( this.engine.prod ) {
       this.engine.on("firstInteraction", () => {
@@ -75,11 +79,6 @@ export default class Game {
       });
 
       this.engine.onMouseDown(event => {
-        if ( event.button === "left" ) {
-          if ( !this.cursorBuilding ) {
-            this.tileSet.dragCam = true;
-          }
-        }
         if ( event.button === "right" ) {
           this.remove();
         }
@@ -90,7 +89,6 @@ export default class Game {
           if ( this.cursorBuilding ) {
             this.build(this.selectedTile);
           }
-          this.tileSet.dragCam = false;
         }
         
         if ( event.button === "right" ) {
@@ -106,6 +104,10 @@ export default class Game {
   }
 
   initialize() {
+    this.cam = new Camera(this.engine, 50, 50, 100, 25, 400);
+
+    this.engine.globals.cam = this.cam;
+
     this.hotBar = new HotBar(engine, BUILDINGS.slice(0, 3).map((b) => engine.images.get(b)));
       this.hotBar.onSelect(selected => {
         // Prevent the same click from selecting a tower and building in the same step.
