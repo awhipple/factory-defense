@@ -1,26 +1,25 @@
 import { BoundingRect } from "../../GameMath.js";
+import GameObject from "../../objects/GameObject.js";
 
-export default class HotBar {
+export default class HotBar extends GameObject {
   selected = 0;
   z = 60;
 
   constructor(engine, iconImages = [], iconSize = 75, iconSpacing = 15) {
+    super();
+
     this.engine = engine;
     this.iconImages = iconImages;
     this.iconSize = iconSize;
     this.iconSpacing = iconSpacing;
 
     this._initializeDimensions();
+  }
 
-    engine.onMouseUp(event => {
-      if (
-        event.pos.x > this.startX && event.pos.x < this.startX + this.width &&
-        event.pos.y > this.startY &&
-        event.pos.x % (iconSize + iconSpacing) > iconSpacing
-      ) {
-        this.select(Math.ceil((event.pos.x-this.startX)/(iconSize + iconSpacing)));
-      }
-    });
+  onClick(event) {
+    if ( event.relPos.x % (this.iconSize + this.iconSpacing) > this.iconSpacing ) {
+      this.select(Math.ceil((event.pos.x-this.rect.x)/(this.iconSize + this.iconSpacing)));
+    }
   }
 
   addIcon(img) {
@@ -43,15 +42,15 @@ export default class HotBar {
 
   draw(ctx) {
     ctx.fillStyle = "#999";
-    ctx.fillRect(this.startX, this.startY, this.width, this.height);
+    ctx.fillRect(this.rect.x, this.rect.y, this.rect.w, this.rect.h);
     ctx.lineWidth = 3;
-    ctx.strokeRect(this.startX, this.startY, this.width, this.height);
+    ctx.strokeRect(this.rect.x, this.rect.y, this.rect.w, this.rect.h);
 
     ctx.font = "bold 15px Arial";
     for(var i = 0; i < this.iconCount; i++) {
       ctx.strokeStyle = this.selected === i + 1 ? "green" : "black";
-      var startX = this.startX + (this.iconSize + this.iconSpacing) * i + this.iconSpacing;
-      var startY = this.startY + this.iconSpacing;
+      var startX = this.rect.x + (this.iconSize + this.iconSpacing) * i + this.iconSpacing;
+      var startY = this.rect.y + this.iconSpacing;
       ctx.fillStyle = this.selected === i + 1 ? "lightgreen" : "white";
       ctx.fillRect(
         startX, startY,
@@ -62,6 +61,7 @@ export default class HotBar {
       }
       ctx.lineWidth = 2;
       ctx.strokeRect(startX, startY, this.iconSize, this.iconSize);
+      ctx.fillStyle = "#fff";
       ctx.fillRect(startX, startY + this.iconSize - 17, 17, 17);
       ctx.strokeRect(startX, startY + this.iconSize - 17, 17, 17);
       ctx.fillStyle = "#000";
@@ -72,9 +72,13 @@ export default class HotBar {
   _initializeDimensions() {
     this.iconCount = this.iconImages.length;
 
-    this.width = this.iconCount * (this.iconSize + this.iconSpacing) + this.iconSpacing;
-    this.height = this.iconSize + 2 * this.iconSpacing;
-    this.startX = this.engine.window.width/2 - this.width/2;
-    this.startY = this.engine.window.height - this.height;
+    var barWidth = this.iconCount * (this.iconSize + this.iconSpacing) + this.iconSpacing;
+    var barHeight = this.iconSize + 2 * this.iconSpacing;
+
+    this.rect = new BoundingRect(
+      this.engine.window.width/2 - barWidth/2,
+      this.engine.window.height - barHeight,
+      barWidth, barHeight
+    )
   }
 }

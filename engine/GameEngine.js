@@ -241,6 +241,7 @@ export default class GameEngine {
     for ( var i = this.gameObjects.all.length - 1; i >= 0; i-- ) {
       var obj = this.gameObjects.all[i];
       if ( typeof obj.onClick === "function" && obj.screenRect?.contains(event.pos.x, event.pos.y) ) {
+        event.relPos = { x: event.pos.x - obj.screenRect.x, y: event.pos.y - obj.screenRect.y };
         if ( !obj.onClick(event) ) {
           return;
         }

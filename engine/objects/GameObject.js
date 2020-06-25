@@ -12,7 +12,7 @@ export default class GameObject {
         this.x = shape.x;
         this.y = shape.y;
     } else {
-      this.rect = new BoundingRect(shape.x, shape.y, shape.w, shape.h);
+      this.rect = new BoundingRect(shape.x ?? 0, shape.y ?? 0, shape.w ?? 0, shape.h) ?? 0;
     }
 
     this.updateScreenRect();

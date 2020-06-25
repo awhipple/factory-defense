@@ -45,6 +45,8 @@ export default class Field {
 
   ground = [];
   buildings = [];
+  buildingCount = {};
+  buildingMax = {Conveyor: 16, Miner: 10, Unlocker: 10};
 
   constructor(engine, width, height) {
     this.engine = engine;
@@ -64,6 +66,12 @@ export default class Field {
     this.tileSet = new TileSet(engine, this.ground);
     engine.globals.tileSet = this.tileSet;
     engine.register(this.tileSet);
+
+    var tileSetOnclick = this.tileSet.onClick;
+    this.tileSet.onClick = (event) => {
+      tileSetOnclick.call(this.tileSet, event);
+      this.engine.trigger("fieldClick");
+    }
   }
 
   update(engine) {
@@ -92,16 +100,27 @@ export default class Field {
     // This method gets tricky because of new building sizes.
     // It needs to remove all buildings under tiles of the new building and
     // trigger updates on all the tiles of those underneath buildings as well.
+
+    var name = building?.constructor.name;
+    if ( name ) {
+      this.buildingCount[name] = this.buildingCount[name] || 0;
+      if ( this.buildingMax[name] && this.buildingCount[name] >= this.buildingMax[name] ) {
+        building.remove();
+        return false;
+      }
+    }
+
     pos = pos || building?.tilePos;
     var buildSize = building?.size || "small";
     for ( var i = 0; i < Field.BUILDING_TILES[buildSize].length; i++ ) {
       var buildingPos = pos.add(Field.BUILDING_TILES[buildSize][i]);
       
       var oldBuilding = this.buildings[buildingPos.x][buildingPos.y];
-      if (oldBuilding && (building || !oldBuilding.remove())) {
+      if ( oldBuilding && (building || !oldBuilding.remove()) ) {
+        building.remove();
         return false;
       }
-      for ( var k = 0; k < Field.BUILDING_TILES[oldBuilding?.size]?.length; k++) {
+      for ( var k = 0; k < Field.BUILDING_TILES[oldBuilding?.size]?.length; k++ ) {
         var oldBuildingPos = oldBuilding.tilePos.add(Field.BUILDING_TILES[oldBuilding.size][k]);
         this.buildings[oldBuildingPos.x][oldBuildingPos.y] = null;
       }
@@ -109,6 +128,7 @@ export default class Field {
         this.signalBuildingChange(oldBuilding.tilePos, oldBuilding.size);
       }
     }
+
     for ( var i = 0; i < Field.BUILDING_TILES[buildSize].length; i++ ) {
       var buildingPos = pos.add(Field.BUILDING_TILES[buildSize][i]);
       this.buildings[buildingPos.x][buildingPos.y] = building;
@@ -117,6 +137,13 @@ export default class Field {
     if ( building ) {
       this.signalBuildingChange(pos, building.size);
     }
+
+    if ( !building && oldBuilding ) {
+      this.buildingCount[oldBuilding.constructor.name]--;
+    } else {
+      this.buildingCount[name]++;
+    }
+
     return true;
   }
 

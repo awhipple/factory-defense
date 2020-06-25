@@ -3,10 +3,10 @@ import Bar from "../../engine/gfx/ui/Bar.js";
 import GameObject from "../../engine/objects/GameObject.js";
 
 export const BUILDINGS = [
-  "conveyor",
-  "miner",
-  "unlocker",
-  "tower",
+  "Conveyor",
+  "Miner",
+  "Unlocker",
+  "Tower",
 ]
 
 export default class Building extends GameObject{
@@ -41,8 +41,15 @@ export default class Building extends GameObject{
     engine.register(this);
   }
 
-  onClick() {
-    return !this.virtual;
+  onClick(event) {
+    if ( this.virtual ) {
+      if ( event.button === "left" ) {
+        this.build(this.tilePos);
+        this.engine.trigger("buildingBuilt");
+      }
+      return false;
+    }
+    return true;
   }
 
   moveTo(pos) {
@@ -64,6 +71,13 @@ export default class Building extends GameObject{
     }
     this.img = this.img.rotate(newOrientation);
     this.field.signalBuildingChange(this.tilePos, this.size);
+  }
+
+  build(tile) {
+    this.alpha = 1;
+    this.on = true;
+    this.virtual = false;
+    this.field.setBuildingAt(this, tile);
   }
 
   remove() {
@@ -115,7 +129,9 @@ export default class Building extends GameObject{
   }
 
   clone() {
-    return new this.constructor(this.engine, this.tilePos.copy(), this.orientation);
+    var newBuilding = new this.constructor(this.engine, this.tilePos.copy(), this.orientation);
+    newBuilding.virtual = true;
+    return newBuilding;
   }
 
   draw(ctx) {

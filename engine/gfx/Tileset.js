@@ -31,7 +31,7 @@ export default class TileSet extends GameObject {
 
   onClick(event) {
     if ( event.button === "left" ) {
-      this.cam?.mouseDrag(true);  
+      this.cam?.mouseDrag(true);
     }
   }
 

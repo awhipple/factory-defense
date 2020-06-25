@@ -9,6 +9,7 @@ export default class ImageLibrary {
   }
 
   get(name) {
+    name = name.toLowerCase();
     return this.images[name] || this._loadImage(name);
   }
 

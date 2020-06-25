@@ -6,8 +6,8 @@ import Lock from "./gameObjects/buildings/Lock.js";
 import { BUILDINGS } from "./gameObjects/buildings/Building.js";
 import { Miner, Conveyor, Unlocker, Tower } from "./gameObjects/buildings/index.js";
 import Alert from "./engine/gfx/effects/Alert.js";
-import GameObject from "./engine/objects/GameObject.js";
 import Camera from "./engine/gfx/Camera.js";
+import BuildingHotbar from "./gameObjects/ui/BuildingHotbar.js";
 
 export default class Game {
   constructor() {
@@ -17,7 +17,6 @@ export default class Game {
     window.engine = this.engine;
     // this.engine.setProd();
 
-    this.engine.globals.blue = 0;
     this.engine.images.preload(["empty", "blueOre", "lock", "oreChunk", "conveyorCorner", "beaker"]);
     this.engine.images.preload(BUILDINGS);
     this.engine.sounds.alias("music", "tsuwami_magenta-and-cyan");
@@ -58,8 +57,14 @@ export default class Game {
         if ( !this.selectedTile.equals(this.lastSelectedTile) ) {
           if ( this.cursorBuilding instanceof Conveyor && this.engine.mouse.left) {
             var mouseMoveDirection = this.lastSelectedTile.directionTo(this.selectedTile);
+            var lastSelectedBuilding = this.field.getBuildingAt(this.lastSelectedTile);
+            if ( lastSelectedBuilding instanceof Conveyor ) {
+              lastSelectedBuilding.rotate(mouseMoveDirection);
+            }
             this.cursorBuilding.rotate(mouseMoveDirection);
-            this.build(this.lastSelectedTile, true);
+            this.cursorBuilding.moveTo(this.selectedTile);
+            this.cursorBuilding.build(this.selectedTile);
+            this.cursorBuilding = this.cursorBuilding.clone();
           }
 
           var newHoverBuilding = this.field.getBuildingAt(this.selectedTile);
@@ -84,13 +89,20 @@ export default class Game {
         }
       });
 
+      this.engine.on("buildingBuilt", () => {
+        this.cursorBuilding = this.cursorBuilding instanceof Conveyor ? 
+          this.cursorBuilding?.clone() : 
+          null;
+        this.hotBar.selected = 0;
+      });
+
       this.engine.onMouseUp(event => {
-        if ( event.button === "left" ) {
-          if ( this.cursorBuilding ) {
-            this.build(this.selectedTile);
-          }
+        if ( !this.dontRemoveCursorOnMouseUp ) {
+          this.cursorBuilding?.remove();
+          this.cursorBuilding = null;
         }
-        
+        this.dontRemoveCursorOnMouseUp = false;
+
         if ( event.button === "right" ) {
           this.deleteMode = false;
         }
@@ -108,34 +120,38 @@ export default class Game {
 
     this.engine.globals.cam = this.cam;
 
-    this.hotBar = new HotBar(engine, BUILDINGS.slice(0, 3).map((b) => engine.images.get(b)));
-      this.hotBar.onSelect(selected => {
-        // Prevent the same click from selecting a tower and building in the same step.
-        setTimeout(() => this.setBuild(selected), 0);
-      });
-      this.engine.register(this.hotBar);
+    this.field = new Field(engine, 100, 100);
+    this.engine.register(this.field);
+    this.engine.globals.field = this.field;
 
-      this.field = new Field(engine, 100, 100);
-      this.engine.register(this.field);
-      this.engine.globals.field = this.field;
-      var lockCoord = new Coord(55, 50);
-      this.field.setBuildingAt(new Lock(this.engine, lockCoord));
+    this.hotBar = new BuildingHotbar(
+      engine, BUILDINGS.slice(0, 3), 
+      this.field.buildingCount, this.field.buildingMax
+    );
+    this.hotBar.onSelect(selected => {
+      this.setBuild(selected);
+      this.dontRemoveCursorOnMouseUp = true;
+    });
+    this.engine.register(this.hotBar);
 
-      this.tileSet = this.field.tileSet;
+    var lockCoord = new Coord(55, 50);
+    this.field.setBuildingAt(new Lock(this.engine, lockCoord));
 
-      if ( this.engine.dev ) {
-        this._setUpTestBuildings();
-      }
+    this.tileSet = this.field.tileSet;
 
-      this.alert = new Alert(this.engine, "WARNING!", "alarm");
-      this.engine.register(this.alert);
-      this.engine.globals.alert = this.alert;
+    if ( this.engine.dev ) {
+      this._setUpTestBuildings();
+    }
 
-      this.selectedTile = new Coord(0, 0);
-      this.cursorBuilding = null;
-      this.hoverBuilding = null;
-      this.cursorOrientation = "right";
-      this.deleteMode = false;
+    this.alert = new Alert(this.engine, "WARNING!", "alarm");
+    this.engine.register(this.alert);
+    this.engine.globals.alert = this.alert;
+
+    this.selectedTile = new Coord(0, 0);
+    this.cursorBuilding = null;
+    this.hoverBuilding = null;
+    this.cursorOrientation = "right";
+    this.deleteMode = false;
   }
 
   rotateCursor() {
@@ -162,20 +178,6 @@ export default class Game {
       this.hoverBuilding = this.cursorBuilding;
       this.hoverBuilding.hover();
       this.hotBar.selected = selected;
-    }
-  }
-
-  build(tile, keepCursor = false) {
-    if ( this.cursorBuilding ) {
-      var nextCursorBuilding = keepCursor ? this.cursorBuilding.clone() : null;
-      this.cursorBuilding.alpha = 1;
-      this.cursorBuilding.on = true;
-      this.cursorBuilding.virtual = false;
-      if ( !this.field.setBuildingAt(this.cursorBuilding, tile) ) {
-        this.cursorBuilding.remove();
-      }
-      this.cursorBuilding = nextCursorBuilding;
-      this.hotBar.selected = 0;
     }
   }
 
