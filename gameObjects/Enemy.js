@@ -21,7 +21,7 @@ export default class Enemy extends GameObject {
     this.target = target;
     this.maxHealth = this.health = health;
 
-    this.dir = getDirectionFrom(pos, target.center());
+    this.dir = getDirectionFrom(pos, target.pos);
     this.xv = Math.cos(this.dir) * this.speed;
     this.yv = Math.sin(this.dir) * this.speed;
 
@@ -49,10 +49,6 @@ export default class Enemy extends GameObject {
     this.shouldDespawn = true;
   }
 
-  center() {
-    return this.pos;
-  }
-
   update() {
     if ( this.shouldDespawn ) {
       this.alpha -= 1/60;
@@ -66,7 +62,7 @@ export default class Enemy extends GameObject {
       }
     }
 
-    if ( this.pos.distanceToLessThan(this.target.center(), 3)) {
+    if ( this.pos.distanceToLessThan(this.target.pos, 3)) {
       this.fireIn -= 1/60;
       if ( this.fireIn < 0 ) {
         this.fireIn += 1;

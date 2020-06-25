@@ -60,11 +60,11 @@ export default class Tower extends Building {
         for ( var i = 0; i < enemies.length; i++ ) {
           var enemy = enemies[i];
           
-          if (this.ammo > 0 && this.center().distanceTo(enemy.pos) < this.range ) {
+          if (this.ammo > 0 && this.pos.distanceTo(enemy.pos) < this.range ) {
             this.fireIn += this.fireRate;
             
             setTimeout(() => {
-              var projectile = new Projectile(engine, this.center().copy(), enemy);
+              var projectile = new Projectile(engine, this.pos.copy(), enemy);
               engine.register(projectile);
             }, 75);
 
@@ -83,7 +83,7 @@ export default class Tower extends Building {
     this.ammoBar.draw(ctx, this.cam.getScreenRect(this.ammoRect));
 
     if ( this._hover ) {
-      this.rangeDisplay.pos = this.cam.getScreenPos(this.center());
+      this.rangeDisplay.pos = this.cam.getScreenPos(this.pos);
       this.rangeDisplay.radius = this.range * this.cam.zoom;
       this.rangeDisplay.draw(ctx);
     }

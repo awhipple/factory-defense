@@ -10,7 +10,7 @@ export default class Projectile {
     this.target = target;
     this.damage = damage;
 
-    this.dir = getDirectionFrom(this.pos, this.target.center());
+    this.dir = getDirectionFrom(this.pos, this.target.pos);
     this.vector = new Coord(Math.cos(this.dir) * 1/3, Math.sin(this.dir) * 1/3);
 
     this.circle = new Circle(this.pos.copy(), 0, {color: "#00f"});
@@ -19,7 +19,7 @@ export default class Projectile {
   update(engine) {
     this.pos.addTo(this.vector);
 
-    if ( this.pos.distanceToLessThan(this.target.center(), 0.25) ) {
+    if ( this.pos.distanceToLessThan(this.target.pos, 0.25) ) {
       this.target.damage(this.damage);
       engine.unregister(this);
     }

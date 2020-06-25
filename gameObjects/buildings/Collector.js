@@ -29,6 +29,6 @@ export default class Collector extends Building {
   }
 
   _updateCollectionPoint() {
-    this.collectionPoint = this.center().add(Coord[this.orientation].times(0.5));
+    this.collectionPoint = this.pos.add(Coord[this.orientation].times(0.5));
   }
 }

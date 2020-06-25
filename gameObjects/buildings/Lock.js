@@ -38,7 +38,7 @@ export default class Lock extends Building {
 
     if ( !this.locked ) {
       var iconSize = 0.3 * this.cam.zoom;
-      this.beakerImage.draw(ctx, this.cam.getScreenPos(this.center()), iconSize, iconSize, {center: true});
+      this.beakerImage.draw(ctx, this.cam.getScreenPos(this.pos), iconSize, iconSize, {center: true});
     }
   }
 }

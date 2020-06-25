@@ -56,15 +56,11 @@ export default class Building extends GameObject{
     this.healthRect = new BoundingRect(this.tilePos.x + 0.1, this.tilePos.y - 0.9, 0.8, 0.1);
   }
 
-  center() {
-    return this.pos.add(Coord.half);
-  }
-
   rotate(newOrientation = null) {
     this.orientation = newOrientation || NEXT_ORIENTATION[this.orientation];;
     for ( var i = 0; i < this.resources.length; i++ ) {
       var res = this.resources[i];
-      res.moveTo(res.pos.rotateAround(this.center()));
+      res.moveTo(res.pos.rotateAround(this.pos));
     }
     this.img = this.img.rotate(newOrientation);
     this.field.signalBuildingChange(this.tilePos, this.size);

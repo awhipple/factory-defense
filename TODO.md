@@ -1,4 +1,15 @@
 *****************
+** Features    **
+*****************
+
+* Limit quantity of buildings that can be constructed
+* Create "Blueprint" that can unlock new building copies. (Just use lock?)
+* Create UI classes in engine to show blueprint slideout
+* Add enemies that spawn gradually as things are unlocked.
+* Make "Tower" lock far enough away that you need to get a blueprint first.
+* Make boss?
+
+*****************
 ** Bugs        **
 *****************
 
