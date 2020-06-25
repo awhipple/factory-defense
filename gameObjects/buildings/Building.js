@@ -1,5 +1,6 @@
 import { Coord, NEXT_ORIENTATION, BoundingRect } from "../../engine/GameMath.js";
 import Bar from "../../engine/gfx/ui/Bar.js";
+import GameObject from "../../engine/objects/GameObject.js";
 
 export const BUILDINGS = [
   "conveyor",
@@ -8,7 +9,7 @@ export const BUILDINGS = [
   "tower",
 ]
 
-export default class Building {
+export default class Building extends GameObject{
   alpha = 1;
   on = true;
   size = "small";
@@ -21,16 +22,17 @@ export default class Building {
   resources = [];
 
   constructor(engine, pos, imgName, orientation = "right") {
+    super({x: pos.x, y: pos.y, w: 1, h: 1});
+
+    this.tilePos = pos.copy();
+
     this.engine = engine;
     this.cam = engine.globals.cam;
     this.field = engine.globals.field;
     this.tileSet = this.field.tileSet;
-    this.pos = pos;
     this.img = engine.images.get(imgName).rotate(orientation);
     this.orientation = orientation;
     
-    this.tileSpace = engine.globals.tile
-
     this.healthRect = new BoundingRect();
     this.healthBar = new Bar(this.healthRect, this.health, this.healthMax, { color: "#0f0" });
     
@@ -39,14 +41,19 @@ export default class Building {
     engine.register(this);
   }
 
+  onClick() {
+    return !this.virtual;
+  }
+
   moveTo(pos) {
-    this.pos = pos;
+    this.tilePos = pos;
+    this.pos = pos.add(Coord.half);
 
     this.tileRect = this.size === "small" ?
       new BoundingRect(pos.x, pos.y, 1, 1) :
       new BoundingRect(pos.x - 1, pos.y - 1, 3, 3);
 
-    this.healthRect = new BoundingRect(this.pos.x + 0.1, this.pos.y - 0.9, 0.8, 0.1);
+    this.healthRect = new BoundingRect(this.tilePos.x + 0.1, this.tilePos.y - 0.9, 0.8, 0.1);
   }
 
   center() {
@@ -60,7 +67,7 @@ export default class Building {
       res.moveTo(res.pos.rotateAround(this.center()));
     }
     this.img = this.img.rotate(newOrientation);
-    this.field.signalBuildingChange(this.pos, this.size);
+    this.field.signalBuildingChange(this.tilePos, this.size);
   }
 
   remove() {
@@ -102,7 +109,7 @@ export default class Building {
   damage(dmg) {
     this.health -= dmg;
     if (this.health <= 0 && this.health > -dmg) {
-      var removeFrom = this.pos.copy();
+      var removeFrom = this.tilePos.copy();
       if ( this.size === "large" ) {
         removeFrom.addTo(Coord.right);
       }
@@ -112,13 +119,13 @@ export default class Building {
   }
 
   clone() {
-    return new this.constructor(this.engine, this.pos.copy(), this.orientation);
+    return new this.constructor(this.engine, this.tilePos.copy(), this.orientation);
   }
 
   draw(ctx) {
     var drawArea = this.size === "large" ?
-      this.cam.getScreenRect({x: this.pos.x - 1, y: this.pos.y - 1, w: 3, h: 3}) :
-      this.cam.getScreenRect({x: this.pos.x, y: this.pos.y, w: 1, h: 1});
+      this.cam.getScreenRect({x: this.tilePos.x - 1, y: this.tilePos.y - 1, w: 3, h: 3}) :
+      this.cam.getScreenRect({x: this.tilePos.x, y: this.tilePos.y, w: 1, h: 1});
     this.img.draw(ctx, drawArea, {
       alpha: this.alpha,
     });

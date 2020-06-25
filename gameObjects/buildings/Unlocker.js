@@ -58,14 +58,14 @@ export default class Unlocker extends Building {
     super.draw(ctx);
 
     if ( this.unlockCost > 0 ) {
-      this.textImage?.draw(ctx, this.cam.getScreenRect({x: this.pos.x, y: this.pos.y, w: 1, h: 1}));
+      this.textImage?.draw(ctx, this.screenRect);
     }
   }
 
   _updateCollectionPoint() {
-    this.collectionPoint = this.center().add(Coord[this.orientation].times(1.5));
+    this.collectionPoint = this.pos.add(Coord[this.orientation].times(1.5));
     
-    this.centerBuilding = this.field.getBuildingAt(this.pos);
+    this.centerBuilding = this.field.getBuildingAt(this.tilePos);
     if ( this.centerBuilding instanceof Lock && this.centerBuilding.locked) {
       this.lock = this.centerBuilding;
       this.unlockCost = this.unlockCost || this.centerBuilding.cost;

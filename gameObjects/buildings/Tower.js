@@ -24,7 +24,7 @@ export default class Tower extends Building {
       alpha: 0.1,
     });
 
-    this.moveTo(this.pos);
+    this.moveTo(this.tilePos);
   }
 
   moveTo(pos) {
@@ -100,15 +100,15 @@ export default class Tower extends Building {
 
   _updateAmmoRect() {
     if ( this.ammoRect ) {
-      this.ammoRect.x = this.pos.x + 0.1;
-      this.ammoRect.y = this.pos.y + 0.8;
+      this.ammoRect.x = this.tilePos.x + 0.1;
+      this.ammoRect.y = this.tilePos.y + 0.8;
       this.ammoRect.w = 0.8;
       this.ammoRect.h = 0.1;
     }
   }
 
   _updateCollectionPoint() {
-    this.collectionPoint = this.center().add(Coord[this.orientation].times(0.5));
+    this.collectionPoint = this.pos.add(Coord[this.orientation].times(0.5));
   }
 
 }

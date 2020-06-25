@@ -1,10 +1,9 @@
-import { Coord, BoundingRect } from "../GameMath.js";
 import GameObject from "../objects/GameObject.js";
 
 export default class TileSet extends GameObject {
   z = 0;
 
-  constructor(engine, ground, options = {}) {
+  constructor(engine, ground) {
     super({x: 0, y: 0, w: engine.window.width, h: engine.window.height});
 
     this.engine = engine;

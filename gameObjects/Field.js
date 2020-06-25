@@ -92,7 +92,7 @@ export default class Field {
     // This method gets tricky because of new building sizes.
     // It needs to remove all buildings under tiles of the new building and
     // trigger updates on all the tiles of those underneath buildings as well.
-    pos = pos || building?.pos;
+    pos = pos || building?.tilePos;
     var buildSize = building?.size || "small";
     for ( var i = 0; i < Field.BUILDING_TILES[buildSize].length; i++ ) {
       var buildingPos = pos.add(Field.BUILDING_TILES[buildSize][i]);
@@ -102,11 +102,11 @@ export default class Field {
         return false;
       }
       for ( var k = 0; k < Field.BUILDING_TILES[oldBuilding?.size]?.length; k++) {
-        var oldBuildingPos = oldBuilding.pos.add(Field.BUILDING_TILES[oldBuilding.size][k]);
+        var oldBuildingPos = oldBuilding.tilePos.add(Field.BUILDING_TILES[oldBuilding.size][k]);
         this.buildings[oldBuildingPos.x][oldBuildingPos.y] = null;
       }
       if ( oldBuilding ) {
-        this.signalBuildingChange(oldBuilding.pos, oldBuilding.size);
+        this.signalBuildingChange(oldBuilding.tilePos, oldBuilding.size);
       }
     }
     for ( var i = 0; i < Field.BUILDING_TILES[buildSize].length; i++ ) {

@@ -157,6 +157,7 @@ export default class Game {
       this.cursorBuilding = new Type(this.engine, this.selectedTile, this.cursorOrientation);
       this.cursorBuilding.alpha = 0.4;
       this.cursorBuilding.on = false;
+      this.cursorBuilding.virtual = true;
       this.hoverBuilding?.unHover();
       this.hoverBuilding = this.cursorBuilding;
       this.hoverBuilding.hover();
@@ -169,6 +170,7 @@ export default class Game {
       var nextCursorBuilding = keepCursor ? this.cursorBuilding.clone() : null;
       this.cursorBuilding.alpha = 1;
       this.cursorBuilding.on = true;
+      this.cursorBuilding.virtual = false;
       if ( !this.field.setBuildingAt(this.cursorBuilding, tile) ) {
         this.cursorBuilding.remove();
       }

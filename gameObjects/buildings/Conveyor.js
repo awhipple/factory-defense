@@ -53,14 +53,14 @@ export default class Conveyor extends Building {
         if ( newSlideDirection !== slideDirection ) {
           res.moveTo(res.pos.floor().add(Coord.half));
         }
-      } else if ( this.pos.equals(res.pos.floor()) ) {
+      } else if ( this.tilePos.equals(res.pos.floor()) ) {
         var nextResource = this.resources[i+1]
         if ( nextResource?.pos.distanceTo(res.pos) < Resource.collisionSize) {
           continue;
         }
         res.move(this.moveCoord, 1/60);
       } else {
-        var handoffBuilding = this.field.getBuildingAt(this.pos.add(Coord[this.orientation]));
+        var handoffBuilding = this.field.getBuildingAt(this.tilePos.add(Coord[this.orientation]));
         if ( handoffBuilding?.handOff?.(res) ) {
           this.resources.splice(i, 1);
           i--;
@@ -79,7 +79,7 @@ export default class Conveyor extends Building {
     this.img = this.engine.images.get("conveyor").rotate(this.orientation);
 
     if ( this.conveyorCornerImage ) {
-      checkBuilding = this.field.getBuildingAt(this.pos.add(Coord.left));
+      checkBuilding = this.field.getBuildingAt(this.tilePos.add(Coord.left));
       if ( checkBuilding && checkBuilding.feedsToConveyor && checkBuilding.orientation === "right" ) {
         switch ( this.orientation ) {
           case "up":   this.img = this.conveyorCornerImage.rotate("up").mirror();
@@ -88,7 +88,7 @@ export default class Conveyor extends Building {
                       break;
         }
       }
-      checkBuilding = this.field.getBuildingAt(this.pos.add(Coord.up));
+      checkBuilding = this.field.getBuildingAt(this.tilePos.add(Coord.up));
       if ( checkBuilding && checkBuilding.feedsToConveyor && checkBuilding.orientation === "down" ) {
         switch ( this.orientation ) {
           case "left":  this.img = this.conveyorCornerImage.rotate("left");
@@ -97,7 +97,7 @@ export default class Conveyor extends Building {
                         break;
         }
       }
-      checkBuilding = this.field.getBuildingAt(this.pos.add(Coord.right));
+      checkBuilding = this.field.getBuildingAt(this.tilePos.add(Coord.right));
       if ( checkBuilding && checkBuilding.feedsToConveyor && checkBuilding.orientation === "left" ) {
         switch ( this.orientation ) {
           case "up":   this.img = this.conveyorCornerImage.rotate("up");
@@ -106,7 +106,7 @@ export default class Conveyor extends Building {
                       break;
         }
       }
-      checkBuilding = this.field.getBuildingAt(this.pos.add(Coord.down));
+      checkBuilding = this.field.getBuildingAt(this.tilePos.add(Coord.down));
       if ( checkBuilding && checkBuilding.feedsToConveyor && checkBuilding.orientation === "up" ) {
         switch ( this.orientation ) {
           case "left":  this.img = this.conveyorCornerImage.rotate("left").mirror();
