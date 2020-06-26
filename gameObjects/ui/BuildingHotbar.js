@@ -1,6 +1,8 @@
 import HotBar from "../../engine/gfx/ui/HotBar.js";
 
 export default class BuildingHotbar extends HotBar {
+  z = 60;
+
   constructor(engine, buildingNames, buildingCount, buildingMax) {
     super(engine, buildingNames.map((b) => engine.images.get(b)));
 
@@ -21,10 +23,10 @@ export default class BuildingHotbar extends HotBar {
         ctx.fillStyle = "#fff";
         ctx.strokeStyle = "#000";
         ctx.lineWidth = 2;
-        ctx.fillRect(startX + this.iconSize - 17, startY + this.iconSize - 17, 17, 17);
-        ctx.strokeRect(startX + this.iconSize - 17, startY + this.iconSize - 17, 17, 17);
+        ctx.fillRect(startX + this.iconSize - 20, startY + this.iconSize - 17, 20, 17);
+        ctx.strokeRect(startX + this.iconSize - 20, startY + this.iconSize - 17, 20, 17);
         ctx.fillStyle = this.buildingCount[bName] < this.buildingMax[bName] ? "#060" : "#f00";
-        ctx.fillText(this.buildingMax[bName] - this.buildingCount[bName], startX + this.iconSize - 13, startY + this.iconSize - 3);
+        ctx.fillText(this.buildingMax[bName] - this.buildingCount[bName], startX + this.iconSize - 18, startY + this.iconSize - 3);
       }
     }
   }

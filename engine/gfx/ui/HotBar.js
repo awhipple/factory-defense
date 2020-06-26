@@ -3,7 +3,6 @@ import GameObject from "../../objects/GameObject.js";
 
 export default class HotBar extends GameObject {
   selected = 0;
-  z = 60;
 
   constructor(engine, iconImages = [], iconSize = 75, iconSpacing = 15) {
     super();
