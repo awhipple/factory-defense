@@ -21,7 +21,7 @@ export default class Image {
         coord = null, 
         rect = null, 
         options = null;
-    
+    // console.log(typeof a, typeof b);
     if ( a instanceof BoundingRect ) {
       rect = a;
       options = b || {};
@@ -46,6 +46,9 @@ export default class Image {
       y = b;
       options = c || {};
     } else {
+      console.log(a, b);
+      console.log(typeof a, typeof b)
+      console.trace();
       console.log("Unsupported Image.draw call");
       return;
     }

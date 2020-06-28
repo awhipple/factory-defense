@@ -119,11 +119,24 @@ export default class Game {
     this.cam = new Camera(this.engine, 50, 50, 100, 25, 400);
 
     this.engine.register(new UIWindow(
-      this.engine, {x: this.engine.window.width/2, y: this.engine.window.height/2, radius: 300}, 
+      this.engine, {x: this.engine.window.width-498, y: this.engine.window.height/2-270, w: 500, h: 540}, 
       [
         {
           type: "title",
-          text: "YOLO"
+          text: "Unlocker",
+          icon: this.engine.images.get("lock"),
+        },
+        {
+          type: "title",
+          bgColor: "#f00",
+        },
+        {
+          type: "title",
+          bgColor: "#0f0",
+        },
+        {
+          type: "title",
+          bgColor: "#00f",
         },
         {
           type: "title",
