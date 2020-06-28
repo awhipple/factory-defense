@@ -71,6 +71,22 @@ export default class GameObject {
     this._pos.y = val.y + val.h / 2;
   }
 
+  get originX() {
+    return this._rect.x;
+  }
+
+  set originX(val) {
+    this.x = val + this._rect.w/2;
+  }
+  
+  get originY() {
+    return this._rect.y;
+  }
+
+  set originY(val) {
+    this.y = val + this._rect.h/2;
+  }
+
   get cam() {
     return this._cam;
   }

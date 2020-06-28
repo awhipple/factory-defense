@@ -11,7 +11,7 @@ export default class UIWindow extends GameObject {
     this.ui = ui;
 
     this.z = options.z ?? 100;
-    this.outerPadding = options.outerPadding ?? 15;
+    this.outerPadding = options.outerPadding ?? 10;
     this.innerPadding = options.innerPadding ?? options.padding ?? 15;
     
     this.scrollSpeed = options.scrollSpeed ?? 30;
@@ -64,12 +64,26 @@ export default class UIWindow extends GameObject {
     this.scroll = Math.min(this.maxScroll, this.scroll);
   }
 
-  _generateComponents() {
-    this.components = [];
+  get x() {
+    return super.x;
+  }
 
+  set x(val) {
+    super.x = val;
+
+    this._setInnerRect();
+  }
+
+  _setInnerRect() {
     this.innerRect = new BoundingRect(
       this.rect.x + this.outerPadding, this.rect.y + this.outerPadding,
       this.rect.w - this.outerPadding * 2, this.rect.h - this.outerPadding * 2);
+  }
+
+  _generateComponents() {
+    this.components = [];
+
+    this._setInnerRect();
 
     this.ui.forEach(component => {
       var Type = nativeComponents[component.type];

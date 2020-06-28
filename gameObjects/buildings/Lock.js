@@ -18,6 +18,10 @@ export default class Lock extends Building {
     });
   }
 
+  onClick() {
+    this.engine.trigger("menuOn");
+  }
+
   rotate() {
 
   }

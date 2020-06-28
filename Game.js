@@ -17,6 +17,8 @@ export default class Game {
     window.engine = this.engine;
     // this.engine.setProd();
 
+    this.menuX = this.engine.window.width + 5;
+
     this.engine.images.preload(["empty", "blueOre", "lock", "oreChunk", "conveyorCorner", "beaker"]);
     this.engine.images.preload(BUILDINGS);
     this.engine.sounds.alias("music", "tsuwami_magenta-and-cyan");
@@ -96,6 +98,22 @@ export default class Game {
         this.hotBar.selected = 0;
       });
 
+      this.engine.on("menuOn", () => {
+        this.slideMenuOut = true;
+        this.menu.scroll = 0;
+      });
+      this.engine.on("menuOff", () => {
+        this.slideMenuOut = false;
+      });
+      this.engine.onUpdate(() => {
+        if ( this.slideMenuOut ) {
+          this.menuX = Math.max(this.menuX - 25, this.engine.window.width - 498);
+        } else {
+          this.menuX = Math.min(this.menuX + 25, this.engine.window.width + 5)
+        }
+        this.menu.originX = this.menuX;
+      });
+
       this.engine.onMouseUp(event => {
         if ( !this.dontRemoveCursorOnMouseUp ) {
           this.cursorBuilding?.remove();
@@ -118,8 +136,8 @@ export default class Game {
   initialize() {
     this.cam = new Camera(this.engine, 50, 50, 100, 25, 400);
 
-    this.engine.register(new UIWindow(
-      this.engine, {x: this.engine.window.width-498, y: this.engine.window.height/2-270, w: 500, h: 540}, 
+    this.menu = new UIWindow(
+      this.engine, {x: this.menuX, y: this.engine.window.height/2-270, w: 500, h: 540}, 
       [
         {
           type: "title",
@@ -164,7 +182,8 @@ export default class Game {
         },
       ], 
       {z: 60}
-    ));
+    );
+    this.engine.register(this.menu);
 
     this.engine.globals.cam = this.cam;
 

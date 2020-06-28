@@ -24,6 +24,8 @@ export default class TileSet extends GameObject {
     if ( event.button === "left" ) {
       this.cam?.mouseDrag(true);
     }
+    //Temp Code
+    this.engine.trigger("menuOff");
   }
 
   onWheel(event) {
