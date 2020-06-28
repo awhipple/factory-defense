@@ -4,6 +4,8 @@ import GameObject from "../../objects/GameObject.js";
 export default class HotBar extends GameObject {
   selected = 0;
 
+  iconDisabled = [];
+
   constructor(engine, iconImages = [], iconSize = 75, iconSpacing = 15) {
     super(engine);
 
@@ -56,6 +58,15 @@ export default class HotBar extends GameObject {
       );
       if ( this.iconImages[i] ) {
         this.iconImages[i].draw(ctx, new BoundingRect(startX, startY, this.iconSize, this.iconSize));
+      }
+      if ( this.iconDisabled[i] ) {
+        ctx.globalAlpha = 0.4;
+        ctx.fillStyle = "#722";
+        ctx.fillRect(
+          startX, startY,
+          this.iconSize, this.iconSize,
+        );
+        ctx.globalAlpha = 1.0;
       }
       ctx.lineWidth = 2;
       ctx.strokeRect(startX, startY, this.iconSize, this.iconSize);

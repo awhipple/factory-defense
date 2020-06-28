@@ -5,6 +5,8 @@ import { Coord } from './GameMath.js';
 import Button from './objects/Button.js';
 import FullscreenSplash from './objects/FullScreenSplash.js';
 import AudioLibrary from './AudioLibrary.js';
+import FlashText from './gfx/FlashText.js';
+import Text from './gfx/Text.js';
 
 export default class GameEngine {
   images = new ImageLibrary();
@@ -67,6 +69,9 @@ export default class GameEngine {
         this.fullscreenButton = new Button(this, this.images.get("fullscreen"), this.window.width-20, this.window.height-20, 0.05);
         this.register(this.fullscreenButton);
       }
+
+      this.flash = new FlashText(this);
+      this.register(this.flash);
     });
 
     this.startGameLoop();

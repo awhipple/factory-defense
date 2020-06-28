@@ -1,6 +1,8 @@
 import Image from "./Image.js";
 
 export default class Text {
+  alpha = 1;
+
   constructor(str, x, y, options = {}) {
     this.str = str;
     this.x = x;
@@ -17,10 +19,13 @@ export default class Text {
   }
 
   draw(ctx) {
+    ctx.save();
+    ctx.globalAlpha = this.alpha;
     ctx.font = this.style;
     var xShow = this.x - (this.center ? ctx.measureText(this.str).width/2 : 0);
     ctx.fillStyle = this.fontColor;
     ctx.fillText(this.str, xShow, this.y + this.fontSize);
+    ctx.restore();
   }
 
   setText(str) {

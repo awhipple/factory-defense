@@ -15,15 +15,15 @@ export default class Game {
 
     // Debug
     window.engine = this.engine;
-    this.engine.setProd();
+    // this.engine.setProd();
 
     this.menuX = this.engine.window.width + 5;
 
-    this.engine.images.preload(["empty", "blueOre", "lock", "oreChunk", "conveyorCorner", "beaker"]);
+    this.engine.images.preload(["empty", "blueore", "lock", "orechunk", "conveyorcorner", "beaker"]);
     this.engine.images.preload(BUILDINGS);
     this.engine.sounds.alias("music", "tsuwami_magenta-and-cyan");
 
-    this.engine.sounds.preload(["alarm", "laser", "shot"]);
+    this.engine.sounds.preload(["alarm", "laser", "shot", "buzz"]);
 
     if ( this.engine.prod ) {
       this.engine.on("firstInteraction", () => {

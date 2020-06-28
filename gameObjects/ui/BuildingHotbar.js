@@ -25,7 +25,14 @@ export default class BuildingHotbar extends HotBar {
         ctx.lineWidth = 2;
         ctx.fillRect(startX + this.iconSize - 20, startY + this.iconSize - 17, 20, 17);
         ctx.strokeRect(startX + this.iconSize - 20, startY + this.iconSize - 17, 20, 17);
-        ctx.fillStyle = this.buildingCount[bName] < this.buildingMax[bName] ? "#060" : "#f00";
+        
+        if ( this.buildingCount[bName] < this.buildingMax[bName] ) {
+          ctx.fillStyle = "#060";
+          this.iconDisabled[i] = false;
+        } else {
+          ctx.fillStyle = "#f00";
+          this.iconDisabled[i] = true;
+        }
         ctx.fillText(this.buildingMax[bName] - this.buildingCount[bName], startX + this.iconSize - 18, startY + this.iconSize - 3);
       }
     }

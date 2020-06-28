@@ -106,6 +106,8 @@ export default class Field {
       this.buildingCount[name] = this.buildingCount[name] || 0;
       if ( this.buildingMax[name] && this.buildingCount[name] >= this.buildingMax[name] ) {
         building.remove();
+        this.engine.flash.show("You cannot build anymore " + building.constructor.name + "s");
+        this.engine.sounds.play("buzz");
         return false;
       }
     }
@@ -118,6 +120,8 @@ export default class Field {
       var oldBuilding = this.buildings[buildingPos.x][buildingPos.y];
       if ( oldBuilding && (building || !oldBuilding.remove()) ) {
         building?.remove();
+        this.engine.flash.show("You cannot build on top of another building");
+        this.engine.sounds.play("buzz");
         return false;
       }
       for ( var k = 0; k < Field.BUILDING_TILES[oldBuilding?.size]?.length; k++ ) {
