@@ -15,7 +15,7 @@ export default class Game {
 
     // Debug
     window.engine = this.engine;
-    // this.engine.setProd();
+    this.engine.setProd();
 
     this.menuX = this.engine.window.width + 5;
 
