@@ -22,11 +22,10 @@ export default class Building extends GameObject{
   resources = [];
 
   constructor(engine, pos, imgName, orientation = "right") {
-    super({x: pos.x, y: pos.y, w: 1, h: 1});
+    super(engine, {x: pos.x, y: pos.y, w: 1, h: 1});
 
     this.tilePos = pos.copy();
 
-    this.engine = engine;
     this.cam = engine.globals.cam;
     this.field = engine.globals.field;
     this.tileSet = this.field.tileSet;

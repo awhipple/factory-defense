@@ -47,6 +47,10 @@ export default class GameEngine {
       this._sendClickEvent(event);
     });
 
+    this.onMouseWheel(event => {
+      this._sendWheelEvent(event);
+    });
+
     this.onMouseUp(event => {
       this.mouse[MouseButtonNames[event.button] || event.button] = false;
     });
@@ -69,6 +73,12 @@ export default class GameEngine {
   }
 
   register(object, name) {
+    if (object === this) {
+      console.log("You cannot register the engine as a game object!");
+      console.trace();
+      return;
+    }
+
     this.gameObjects.all.push(object);
 
     // Store in its own collection if requested
@@ -214,7 +224,7 @@ export default class GameEngine {
     this.dev = false;
   }
 
-  oncePerSecond(key, callback) {
+  oncePerSecond(callback, key = "onceOnly") {
     this.eventTimers[key] = this.eventTimers[key] ?? 0;
     if ( this.eventTimers[key] <= 0) {
       this.eventTimers[key] += 1;
@@ -243,6 +253,19 @@ export default class GameEngine {
       if ( typeof obj.onClick === "function" && obj.screenRect?.contains(event.pos.x, event.pos.y) ) {
         event.relPos = { x: event.pos.x - obj.screenRect.x, y: event.pos.y - obj.screenRect.y };
         if ( !obj.onClick(event) ) {
+          return;
+        }
+      }
+    }
+  }
+  
+  _sendWheelEvent(event) {
+    // The game window currently sorts all these objects in order of their z value
+    for ( var i = this.gameObjects.all.length - 1; i >= 0; i-- ) {
+      var obj = this.gameObjects.all[i];
+      if ( typeof obj.onWheel === "function" && obj.screenRect?.contains(event.pos.x, event.pos.y) ) {
+        event.relPos = { x: event.pos.x - obj.screenRect.x, y: event.pos.y - obj.screenRect.y };
+        if ( !obj.onWheel(event) ) {
           return;
         }
       }

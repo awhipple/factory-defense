@@ -5,9 +5,8 @@ export default class HotBar extends GameObject {
   selected = 0;
 
   constructor(engine, iconImages = [], iconSize = 75, iconSpacing = 15) {
-    super();
+    super(engine);
 
-    this.engine = engine;
     this.iconImages = iconImages;
     this.iconSize = iconSize;
     this.iconSpacing = iconSpacing;

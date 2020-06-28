@@ -4,9 +4,8 @@ export default class TileSet extends GameObject {
   z = 0;
 
   constructor(engine, ground) {
-    super({x: 0, y: 0, w: engine.window.width, h: engine.window.height});
+    super(engine, {x: 0, y: 0, w: engine.window.width, h: engine.window.height});
 
-    this.engine = engine;
     this.cam = engine.globals.cam;
     this.width = ground.length;
     this.height = ground[0].length;

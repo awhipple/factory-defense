@@ -1,7 +1,9 @@
 import { BoundingRect, Coord } from "../GameMath.js";
 
 export default class GameObject {
-  constructor(shape = {}) {
+  constructor(engine, shape = {}) {
+    this.engine = engine;
+    
     this._pos = new Coord();
 
     if ( shape.radius ) {
@@ -9,8 +11,8 @@ export default class GameObject {
         shape.x - shape.radius, shape.y - shape.radius,
         2 * shape.radius, 2 * shape.radius
       );
-        this.x = shape.x;
-        this.y = shape.y;
+      this.x = shape.x;
+      this.y = shape.y;
     } else {
       this.rect = new BoundingRect(shape.x ?? 0, shape.y ?? 0, shape.w ?? 0, shape.h) ?? 0;
     }
@@ -22,9 +24,9 @@ export default class GameObject {
     this.screenRect = this._cam ? this._cam.getScreenRect(this.rect) : this.rect;
   }
 
-  draw(ctx) {
+  draw(ctx, engine, color = "#00f") {
     ctx.save();
-    ctx.fillStyle = "#00f";
+    ctx.fillStyle = color;
     ctx.fillRect(this.screenRect.x, this.screenRect.y, this.screenRect.w, this.screenRect.h);
     ctx.strokeStyle = "#000";
     ctx.lineWidth = 3;

@@ -13,9 +13,8 @@ export default class Enemy extends GameObject {
   z = 40;
 
   constructor(engine, target, pos, health) {
-    super({x: pos.x, y: pos.y, radius: 0.25});
+    super(engine, {x: pos.x, y: pos.y, radius: 0.25});
 
-    this.engine = engine;
     this.cam = this.engine.globals.cam;
 
     this.target = target;

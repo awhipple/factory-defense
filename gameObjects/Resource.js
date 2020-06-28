@@ -1,4 +1,4 @@
-import { BoundingRect, Coord } from "../engine/GameMath.js";
+import { Coord } from "../engine/GameMath.js";
 import GameObject from "../engine/objects/GameObject.js";
 
 export default class Resource extends GameObject {
@@ -6,9 +6,8 @@ export default class Resource extends GameObject {
   z = 20;
 
   constructor(engine, x, y) {
-    super({x, y, radius: 0.2});
+    super(engine, {x, y, radius: 0.2});
 
-    this.engine = engine;
     this.cam = engine.globals.cam;
     this.pos = new Coord(x, y);
     this.img = engine.images.get("oreChunk")

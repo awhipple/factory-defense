@@ -1,6 +1,5 @@
 import GameEngine from "./engine/GameEngine.js";
 import Field from "./gameObjects/Field.js";
-import HotBar from "./engine/gfx/ui/HotBar.js";
 import { Coord, NEXT_ORIENTATION } from "./engine/GameMath.js";
 import Lock from "./gameObjects/buildings/Lock.js";
 import { BUILDINGS } from "./gameObjects/buildings/Building.js";
@@ -8,6 +7,7 @@ import { Miner, Conveyor, Unlocker, Tower } from "./gameObjects/buildings/index.
 import Alert from "./engine/gfx/effects/Alert.js";
 import Camera from "./engine/gfx/Camera.js";
 import BuildingHotbar from "./gameObjects/ui/BuildingHotbar.js";
+import UIWindow from "./engine/gfx/ui/window/index.js";
 
 export default class Game {
   constructor() {
@@ -117,6 +117,57 @@ export default class Game {
 
   initialize() {
     this.cam = new Camera(this.engine, 50, 50, 100, 25, 400);
+
+    this.engine.register(new UIWindow(
+      this.engine, {x: this.engine.window.width/2, y: this.engine.window.height/2, radius: 300}, 
+      [
+        {
+          type: "title",
+          text: "YOLO"
+        },
+        {
+          type: "title",
+          text: "YOLO"
+        },
+        {
+          type: "title",
+          text: "YOLO"
+        },
+        {
+          type: "title",
+          text: "YOLO",
+        },
+        {
+          type: "title",
+          text: "YOLO"
+        },
+        {
+          type: "title",
+          text: "YOLO"
+        },
+        {
+          type: "title",
+          text: "YOLO"
+        },
+        {
+          type: "title",
+          text: "YOLO"
+        },
+        {
+          type: "title",
+          text: "YOLO"
+        },
+        {
+          type: "title",
+          text: "YOLO"
+        },
+        {
+          type: "title",
+          text: "YOLO"
+        },
+      ], 
+      {z: 60}
+    ));
 
     this.engine.globals.cam = this.cam;
 
