@@ -127,43 +127,27 @@ export default class Game {
         },
         {
           type: "title",
-          text: "YOLO"
+          bgColor: "#f00",
         },
         {
           type: "title",
-          text: "YOLO"
+          bgColor: "#0f0",
         },
         {
           type: "title",
-          text: "YOLO",
+          bgColor: "#00f",
         },
         {
           type: "title",
-          text: "YOLO"
+          bgColor: "#f00",
         },
         {
           type: "title",
-          text: "YOLO"
+          bgColor: "#0f0",
         },
         {
           type: "title",
-          text: "YOLO"
-        },
-        {
-          type: "title",
-          text: "YOLO"
-        },
-        {
-          type: "title",
-          text: "YOLO"
-        },
-        {
-          type: "title",
-          text: "YOLO"
-        },
-        {
-          type: "title",
-          text: "YOLO"
+          bgColor: "#00f",
         },
       ], 
       {z: 60}

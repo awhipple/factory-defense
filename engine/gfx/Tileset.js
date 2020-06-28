@@ -18,19 +18,19 @@ export default class TileSet extends GameObject {
         }
       });
     }
-
-    engine.onMouseWheel(event => {
-      if ( event.wheelDirection === "up" ) {
-        this.cam.zoomIn(0.1);
-      } else if ( event.wheelDirection === "down" ) {
-        this.cam.zoomOut(0.1);
-      }
-    });
   }
 
   onClick(event) {
     if ( event.button === "left" ) {
       this.cam?.mouseDrag(true);
+    }
+  }
+
+  onWheel(event) {
+    if ( event.wheelDirection === "up" ) {
+      this.cam.zoomIn(0.1);
+    } else if ( event.wheelDirection === "down" ) {
+      this.cam.zoomOut(0.1);
     }
   }
 

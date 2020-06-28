@@ -27,6 +27,10 @@ export default class GameWindow {
         this.objects[i].draw?.(this.ctx, this.engine);
       }
     }
+    if ( this.debugImage ) {
+      this.debugImage.debug(this.ctx);
+      this.debugImage = null;
+    }
     this.ctx.restore();
   }
 }

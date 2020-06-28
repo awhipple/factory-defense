@@ -6,14 +6,21 @@ export default class Text {
     this.x = x;
     this.y = y;
     this.center = options.center;
-    this.style = options.style;
+
+
+    this.fontWeight = options.fontWeight ? options.fontWeight + ' ' : '';
+    this.fontSize = options.fontSize ?? 50;
+    this.fontStyle = options.fontStyle ?? "Arial";
+    this.fontColor = options.fontColor ?? "#000";
+
+    this.style = this.fontWeight + this.fontSize + "px " + this.fontStyle;
   }
 
   draw(ctx) {
-    ctx.font = this.style || "bold 200px Arial"
+    ctx.font = this.style;
     var xShow = this.x - (this.center ? ctx.measureText(this.str).width/2 : 0);
-    ctx.fillStyle = "#733";
-    ctx.fillText(this.str, xShow, this.y);
+    ctx.fillStyle = this.fontColor;
+    ctx.fillText(this.str, xShow, this.y + this.fontSize);
   }
 
   setText(str) {

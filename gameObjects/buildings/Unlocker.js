@@ -69,7 +69,7 @@ export default class Unlocker extends Building {
     if ( this.centerBuilding instanceof Lock && this.centerBuilding.locked) {
       this.lock = this.centerBuilding;
       this.unlockCost = this.unlockCost || this.centerBuilding.cost;
-      this.text = this.text || new Text(this.unlockCost, 200, 340, { center: true });
+      this.text = this.text || new Text(this.unlockCost, 200, 140, { center: true, fontWeight: "bold", fontSize: 200, fontColor: "#733" });
       this.textImage = this.text.asImage(400, 400);
       this.startWave = true;
     } else {

@@ -1,5 +1,6 @@
 import GameObject from '../../../objects/GameObject.js';
 import nativeComponents from './nativeComponents.js';
+import { BoundingRect } from '../../../GameMath.js';
 
 export default class UIWindow extends GameObject {
   scroll = 0;
@@ -10,11 +11,15 @@ export default class UIWindow extends GameObject {
     this.ui = ui;
 
     this.z = options.z ?? 100;
-    this.outerPadding = options.outerPadding ?? 2;
+    this.outerPadding = options.outerPadding ?? 15;
     this.innerPadding = options.innerPadding ?? options.padding ?? 15;
+    
+    this.scrollSpeed = options.scrollSpeed ?? 30;
   }
 
   draw(ctx) {
+    ctx.save();
+
     if ( !this.components ) {
       this._generateComponents();
     }
@@ -28,7 +33,7 @@ export default class UIWindow extends GameObject {
       img.draw(
         this.ctx,
         this.innerPadding, currentY,
-        this.rect.w - this.innerPadding*2, img.height
+        this.innerRect.w - this.innerPadding*2, img.height
       );
       currentY += img.height + this.innerPadding;
     });
@@ -36,25 +41,40 @@ export default class UIWindow extends GameObject {
     ctx.drawImage(
       this.canvas, 
       0, this.scroll, 
-      this.canvas.width, this.rect.h - this.outerPadding * 2, 
-      this.rect.x + this.outerPadding, this.rect.y + this.outerPadding, 
-      this.rect.w - this.outerPadding * 2, this.rect.h - this.outerPadding*2);
+      this.canvas.width, this.innerRect.h, 
+      this.innerRect.x, this.innerRect.y, 
+      this.innerRect.w, this.innerRect.h
+    );
+
+    ctx.restore();
+  }
+
+  onClick() {
+    // do nothing
   }
 
   onWheel(event) {
     if ( event.wheelDirection === "up" ) {
-      this.scroll--;
+      this.scroll -= this.scrollSpeed;
     } else if ( event.wheelDirection === "down" ) {
-      this.scroll++;
+      this.scroll += this.scrollSpeed;
     }
+
+    this.scroll = Math.max(0, this.scroll);
+    this.scroll = Math.min(this.maxScroll, this.scroll);
   }
 
   _generateComponents() {
     this.components = [];
+
+    this.innerRect = new BoundingRect(
+      this.rect.x + this.outerPadding, this.rect.y + this.outerPadding,
+      this.rect.w - this.outerPadding * 2, this.rect.h - this.outerPadding * 2);
+
     this.ui.forEach(component => {
       var Type = nativeComponents[component.type];
       if ( Type ) {
-        var newComponent = new Type(this.rect.w, component);
+        var newComponent = new Type(this.innerRect.w - this.innerPadding*2, component);
         newComponent.initializeCanvas()
         this.components.push(newComponent);
       }
@@ -66,5 +86,6 @@ export default class UIWindow extends GameObject {
       (total, com) => total + com.canvas.height + this.innerPadding, 0
     ) + this.innerPadding;
     this.ctx = this.canvas.getContext("2d");
+    this.maxScroll = Math.max(0, this.canvas.height - this.rect.h + this.outerPadding * 2);
   }
 }

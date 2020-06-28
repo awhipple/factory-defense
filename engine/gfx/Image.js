@@ -68,6 +68,20 @@ export default class Image {
     ctx.restore();
   }
 
+  // Optionally provide engine to ensure image gets drawn on top of everything else
+  debug(ctx, engine = null) {
+    if ( engine ) {
+      engine.window.debugImage = this;
+    } else {
+      ctx.save();
+      ctx.strokeStyle = "#f00";
+      ctx.lineWidth = 6;
+      ctx.strokeRect(3, 3, this.img.width + 6, this.img.height + 6);
+      ctx.drawImage(this.img, 6, 6, this.img.width, this.img.height);
+      ctx.restore();
+    }
+  }
+
   rotate(targetOrientation = null) {
     targetOrientation = targetOrientation || NEXT_ORIENTATION[this.orientation];
     if ( this.orientationMap[targetOrientation]?.[this.flip] ) {

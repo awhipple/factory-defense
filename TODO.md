@@ -15,6 +15,7 @@
 
 * Sometimes enemies don't spawn after warning. Seems sporadic.
 * When game is sleeping for a long time, it goes turbo speed.
+* Tower range shouldn't show when menu is on top of them and they are hovered
 
 *****************
 ** Misc        **

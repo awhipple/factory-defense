@@ -16,7 +16,13 @@ export default class Alert {
     this.sound = sound;
 
     if ( str ) {
-      this.warnText = new Text("Warning!!", this.width/2, 250, { style: "bold 100px Arial", center: true });
+      this.warnText = new Text("Warning!!", this.width/2, 250, 
+      { 
+        fontWeight: "bold",
+        fontSize: 100,
+        fontColor: "#733",
+        center: true,
+      });
     }
   }
 
