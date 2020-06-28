@@ -115,7 +115,7 @@ export default class Game {
       });
 
       this.engine.onMouseUp(event => {
-        if ( !this.dontRemoveCursorOnMouseUp ) {
+        if ( this.cursorBuilding instanceof Conveyor || !this.dontRemoveCursorOnMouseUp ) {
           this.cursorBuilding?.remove();
           this.cursorBuilding = null;
         }
