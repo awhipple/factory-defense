@@ -40,7 +40,7 @@ export default class Building extends GameObject{
     engine.register(this);
   }
 
-  onClick(event) {
+  onMouseClick(event) {
     if ( this.virtual ) {
       if ( event.button === "left" ) {
         this.build(this.tilePos);
@@ -76,6 +76,9 @@ export default class Building extends GameObject{
     this.alpha = 1;
     this.on = true;
     this.virtual = false;
+    if ( this.centerBuilding ) {
+      this.centerBuilding.outerBuilding = this;
+    }
     this.field.setBuildingAt(this, tile);
   }
 

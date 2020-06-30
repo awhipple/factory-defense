@@ -46,11 +46,15 @@ export default class GameEngine {
       }
       this.mouse[MouseButtonNames[event.button] || event.button] = true;
 
-      this._sendClickEvent(event);
+      this._sendMouseEvent(event, "onMouseClick");
     });
 
     this.onMouseWheel(event => {
-      this._sendWheelEvent(event);
+      this._sendMouseEvent(event, "onMouseWheel");
+    });
+
+    this.onMouseMove(event => {
+      this._sendMouseEvent(event, "onMouseMove");
     });
 
     this.onMouseUp(event => {
@@ -251,26 +255,13 @@ export default class GameEngine {
     };
   }
 
-  _sendClickEvent(event) {
+  _sendMouseEvent(event, methodName) {
     // The game window currently sorts all these objects in order of their z value
     for ( var i = this.gameObjects.all.length - 1; i >= 0; i-- ) {
       var obj = this.gameObjects.all[i];
-      if ( typeof obj.onClick === "function" && obj.screenRect?.contains(event.pos.x, event.pos.y) ) {
+      if ( typeof obj[methodName] === "function" && obj.screenRect?.contains(event.pos.x, event.pos.y) ) {
         event.relPos = { x: event.pos.x - obj.screenRect.x, y: event.pos.y - obj.screenRect.y };
-        if ( !obj.onClick(event) ) {
-          return;
-        }
-      }
-    }
-  }
-  
-  _sendWheelEvent(event) {
-    // The game window currently sorts all these objects in order of their z value
-    for ( var i = this.gameObjects.all.length - 1; i >= 0; i-- ) {
-      var obj = this.gameObjects.all[i];
-      if ( typeof obj.onWheel === "function" && obj.screenRect?.contains(event.pos.x, event.pos.y) ) {
-        event.relPos = { x: event.pos.x - obj.screenRect.x, y: event.pos.y - obj.screenRect.y };
-        if ( !obj.onWheel(event) ) {
+        if ( !obj[methodName](event) ) {
           return;
         }
       }

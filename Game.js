@@ -17,7 +17,7 @@ export default class Game {
 
     // Debug
     window.engine = this.engine;
-    // this.engine.setProd();
+    this.engine.setProd();
 
     this.menuX = this.engine.window.width + 5;
 
@@ -159,6 +159,48 @@ export default class Game {
     this.lock = new Lock(this.engine, new Coord(55, 50));
     this.field.setBuildingAt(this.lock);
 
+    this.slideMenuOut = this.engine.dev;
+    this.menu = new UIWindow(
+      this.engine, 
+      {
+        x: this.menuX, 
+        y: this.engine.window.height/2-300, 
+        w: 500, 
+        h: 600, 
+      }, 
+      [
+        {
+          type: "title",
+          icon: this.engine.images.get("lock"),
+          text: "Unlocker",
+        },
+        {
+          type: "title",
+          text: "Current Progress:",
+          fontSize: 20,
+        },
+        {
+          type: UnlockProgress,
+          lock: this.lock,
+        },
+        {
+          type: "title",
+          text: "Available:",
+          fontSize: 20,
+        },
+        {
+          type: LockInventory,
+          lock: this.lock,
+        },
+      ], 
+      {
+        z: 60,
+        innerPadding: 15, 
+        outerPadding: 15,
+      }
+    );
+    this.engine.register(this.menu);
+
     this.tileSet = this.field.tileSet;
 
     if ( this.engine.dev ) {
@@ -215,61 +257,21 @@ export default class Game {
   }
 
   _setUpTestBuildings() {
-    this.field.setBuildingAt(new Miner(this.engine, new Coord(50, 50), "right"));
-    this.field.setBuildingAt(new Conveyor(this.engine, new Coord(51, 50), "right"));
-    this.field.setBuildingAt(new Conveyor(this.engine, new Coord(52, 50), "right"));
-    this.field.setBuildingAt(new Miner(this.engine, new Coord(49, 50), "down"));
-    this.field.setBuildingAt(new Miner(this.engine, new Coord(48, 50), "down"));
-    this.field.setBuildingAt(new Conveyor(this.engine, new Coord(49, 51), "right"));
-    this.field.setBuildingAt(new Conveyor(this.engine, new Coord(48, 51), "right"));
-    this.field.setBuildingAt(new Conveyor(this.engine, new Coord(50, 51), "right"));
-    this.field.setBuildingAt(new Conveyor(this.engine, new Coord(51, 51), "up"));
-    this.field.setBuildingAt(new Tower(this.engine, new Coord(50, 49), "left"));
-    this.field.setBuildingAt(new Miner(this.engine, new Coord(49, 49), "right"));
+    this._buildTestBuilding(new Miner(this.engine, new Coord(50, 50), "right"));
+    this._buildTestBuilding(new Conveyor(this.engine, new Coord(51, 50), "right"));
+    this._buildTestBuilding(new Conveyor(this.engine, new Coord(52, 50), "right"));
+    this._buildTestBuilding(new Miner(this.engine, new Coord(49, 50), "down"));
+    this._buildTestBuilding(new Miner(this.engine, new Coord(48, 50), "down"));
+    this._buildTestBuilding(new Conveyor(this.engine, new Coord(49, 51), "right"));
+    this._buildTestBuilding(new Conveyor(this.engine, new Coord(48, 51), "right"));
+    this._buildTestBuilding(new Conveyor(this.engine, new Coord(50, 51), "right"));
+    this._buildTestBuilding(new Conveyor(this.engine, new Coord(51, 51), "up"));
+    this._buildTestBuilding(new Tower(this.engine, new Coord(50, 49), "left"));
+    this._buildTestBuilding(new Miner(this.engine, new Coord(49, 49), "right"));
+    this._buildTestBuilding(new Unlocker(this.engine, new Coord(55, 50), "left"));
+  }
 
-    this.unlocker = new Unlocker(this.engine, new Coord(55, 50), "left");
-    this.field.setBuildingAt(this.unlocker);
-
-    this.slideMenuOut = true;
-    this.menu = new UIWindow(
-      this.engine, 
-      {
-        x: this.menuX, 
-        y: this.engine.window.height/2-270, 
-        w: 500, 
-        h: 540, 
-      }, 
-      [
-        {
-          type: "title",
-          icon: this.engine.images.get("lock"),
-          text: "Unlocker",
-        },
-        {
-          type: "title",
-          text: "Current Progress:",
-          fontSize: 20,
-        },
-        {
-          type: UnlockProgress,
-          unlocker: this.unlocker,
-        },
-        {
-          type: "title",
-          text: "Available:",
-          fontSize: 20,
-        },
-        {
-          type: LockInventory,
-          lock: this.lock,
-        },
-      ], 
-      {
-        z: 60,
-        innerPadding: 15, 
-        outerPadding: 15,
-      }
-    );
-    this.engine.register(this.menu);
+  _buildTestBuilding(testBuilding) {
+    testBuilding.build();
   }
 }

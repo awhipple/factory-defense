@@ -67,6 +67,7 @@ export default class Field {
     engine.globals.tileSet = this.tileSet;
     engine.register(this.tileSet);
 
+    // Does this need to be updated?
     var tileSetOnclick = this.tileSet.onClick;
     this.tileSet.onClick = (event) => {
       tileSetOnclick.call(this.tileSet, event);

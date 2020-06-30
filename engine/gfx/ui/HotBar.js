@@ -16,7 +16,7 @@ export default class HotBar extends GameObject {
     this._initializeDimensions();
   }
 
-  onClick(event) {
+  onMouseClick(event) {
     if ( event.relPos.x % (this.iconSize + this.iconSpacing) > this.iconSpacing ) {
       this.select(Math.ceil((event.pos.x-this.rect.x)/(this.iconSize + this.iconSpacing)));
     }

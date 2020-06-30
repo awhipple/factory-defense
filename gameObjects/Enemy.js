@@ -27,7 +27,7 @@ export default class Enemy extends GameObject {
     this.body = new Circle(this.cam.getScreenPos(this.pos), this.cam.zoom * this.radius, {color: "#a33"});
   }
 
-  onClick(event) {
+  onMouseClick(event) {
     if ( event.button === "left" ) {
       this.health--;
       this.engine.sounds.play("shot");

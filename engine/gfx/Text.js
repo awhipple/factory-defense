@@ -35,6 +35,7 @@ export default class Text {
     this._singleton.x = x;
     this._singleton.y = y;
     this._singleton.fontSize = options.fontSize ?? 50;
+    this._singleton.fontColor = options.fontColor ?? "#000";
     this._singleton.center = options.center ?? false;
     this._singleton._updateStyle();
     this._singleton.draw(ctx);

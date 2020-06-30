@@ -13,9 +13,11 @@
 ** Bugs        **
 *****************
 
+* Menu mouse out, mouse in and out for all game objects
 * Sometimes enemies don't spawn after warning. Seems sporadic.
 * When game is sleeping for a long time, it goes turbo speed.
 * Tower range shouldn't show when menu is on top of them and they are hovered
+* Hotbar clicking to select buildings is broken
 
 *****************
 ** Misc        **
@@ -37,3 +39,4 @@
 *****************
 
 * Creating new Coords hundreds of times per sec. Creating camera bounding recs hundreds of times per second
+* Don't repaint UI every frame

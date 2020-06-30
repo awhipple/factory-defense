@@ -35,7 +35,11 @@ export default class Unlocker extends Building {
   }
 
   handOff(resource) {
-    if ( this.unlockCost && this.unlockCost > 0 && this.collectionPoint.distanceTo(resource.pos) < 0.1 ) {
+    if ( 
+      this.unlockCost && this.unlockCost > 0 && 
+      this.collectionPoint.distanceTo(resource.pos) < 0.1 &&
+      this.unlockTarget 
+    ) {
       this.engine.unregister(resource);
       this.unlockCost -= 1;
       this.text?.setText(this.unlockCost);
@@ -71,6 +75,12 @@ export default class Unlocker extends Building {
         color: "#77c",
       },
     ];
+  }
+
+  setUnlock(type) {
+    this.unlockTarget = this.lock.inventory[type];
+    this.unlockCost = 50;
+    this.startWave = true;
   }
 
   _updateCollectionPoint() {

@@ -20,7 +20,7 @@ export default class TileSet extends GameObject {
     }
   }
 
-  onClick(event) {
+  onMouseClick(event) {
     if ( event.button === "left" ) {
       this.cam?.mouseDrag(true);
     }
@@ -28,7 +28,7 @@ export default class TileSet extends GameObject {
     this.engine.trigger("menuOff");
   }
 
-  onWheel(event) {
+  onMouseWheel(event) {
     if ( event.wheelDirection === "up" ) {
       this.cam.zoomIn(0.1);
     } else if ( event.wheelDirection === "down" ) {

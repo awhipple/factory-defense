@@ -10,15 +10,14 @@ export default class Lock extends Building {
     this.cam = engine.globals.cam;
     this.beakerImage = engine.images.get("beaker");
 
-    engine.onMouseDown(event => {
-      if ( this.cam.getPos(event.pos).floor().equals(this.pos) && !this.locked) {
-        this.engine.globals.alert.activate(6);
-        this.field.startWave(this);
-      }
-    });
+    this.inventory = {
+      conveyor: {icon: this.engine.images.get("conveyor")},
+      miner: {icon: this.engine.images.get("miner")}, 
+      unlocker: {icon: this.engine.images.get("unlocker")}, 
+    };
   }
 
-  onClick() {
+  onMouseClick() {
     this.engine.trigger("menuOn");
   }
 
@@ -35,14 +34,6 @@ export default class Lock extends Building {
     this.img = this.engine.images.get("tower");
     this.alpha = 0.4;
     this.engine.trigger("unlock");
-  }
-
-  getInventory() {
-    return [
-      {
-        icon: this.engine.images.get("conveyor"),
-      }
-    ];
   }
 
   draw(ctx) {
