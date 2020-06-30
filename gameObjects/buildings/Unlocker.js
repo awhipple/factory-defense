@@ -62,6 +62,17 @@ export default class Unlocker extends Building {
     }
   }
 
+  getProgress() {
+    return [
+      {
+        icon: this.engine.images.get("orechunk"),
+        val: this.centerBuilding.cost - this.unlockCost,
+        max: this.centerBuilding.cost,
+        color: "#77c",
+      },
+    ];
+  }
+
   _updateCollectionPoint() {
     this.collectionPoint = this.pos.add(Coord[this.orientation].times(1.5));
     

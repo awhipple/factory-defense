@@ -37,6 +37,14 @@ export default class Lock extends Building {
     this.engine.trigger("unlock");
   }
 
+  getInventory() {
+    return [
+      {
+        icon: this.engine.images.get("conveyor"),
+      }
+    ];
+  }
+
   draw(ctx) {
     super.draw(ctx);
 

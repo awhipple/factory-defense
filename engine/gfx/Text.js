@@ -1,6 +1,8 @@
 import Image from "./Image.js";
 
 export default class Text {
+  static _singleton = new Text('', 0, 0);
+
   alpha = 1;
 
   constructor(str, x, y, options = {}) {
@@ -15,7 +17,7 @@ export default class Text {
     this.fontStyle = options.fontStyle ?? "Arial";
     this.fontColor = options.fontColor ?? "#000";
 
-    this.style = this.fontWeight + this.fontSize + "px " + this.fontStyle;
+    this._updateStyle();
   }
 
   draw(ctx) {
@@ -26,6 +28,16 @@ export default class Text {
     ctx.fillStyle = this.fontColor;
     ctx.fillText(this.str, xShow, this.y + this.fontSize);
     ctx.restore();
+  }
+
+  static draw(ctx, str, x, y, options = {}) {
+    this._singleton.setText(str);
+    this._singleton.x = x;
+    this._singleton.y = y;
+    this._singleton.fontSize = options.fontSize ?? 50;
+    this._singleton.center = options.center ?? false;
+    this._singleton._updateStyle();
+    this._singleton.draw(ctx);
   }
 
   setText(str) {
@@ -45,6 +57,10 @@ export default class Text {
     }
 
     return this.textImage;    
+  }
+
+  _updateStyle() {
+    this.style = this.fontWeight + this.fontSize + "px " + this.fontStyle;
   }
 
   _updateImage() {

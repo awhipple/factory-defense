@@ -1,4 +1,8 @@
+import { BoundingRect } from "../../GameMath.js";
+
 export default class Bar {
+  static _singleton = new Bar(new BoundingRect(), 0, 0);
+
   constructor(rect, val, max, options = {}) {
     this.rect = rect;
     this.max = max;
@@ -26,5 +30,13 @@ export default class Bar {
     ctx.fillRect(drawAt.x, drawAt.y, drawAt.w * this.fillAmount, drawAt.h);
     ctx.lineWidth = 1;
     ctx.strokeRect(drawAt.x, drawAt.y, drawAt.w, drawAt.h);    
+  }
+
+  static draw(ctx, rect, val, max, color) {
+    this._singleton.max = max;
+    this._singleton.setVal(val);
+    this._singleton.color = color;
+
+    this._singleton.draw(ctx, rect);
   }
 }

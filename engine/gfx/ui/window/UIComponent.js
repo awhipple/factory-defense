@@ -3,7 +3,8 @@ import Image from "../../Image.js";
 // Classes should extend this and implement the drawComponent method
 export class UIComponent {
 
-  constructor(suggestedWidth) {
+  constructor(engine, suggestedWidth) {
+    this.engine = engine;
     this.suggestedWidth = suggestedWidth;
   }
 

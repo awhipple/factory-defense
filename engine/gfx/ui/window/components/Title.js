@@ -1,21 +1,21 @@
-import { UIComponent } from "./UIComponent.js";
-import Text from "../../Text.js";
+import { UIComponent } from "../UIComponent.js";
+import Text from "../../../Text.js";
 
 export default class Title extends UIComponent{
-  height = 80;
-  
-  constructor(suggestedWidth, options = {}) {
-    super(suggestedWidth);
+  constructor(engine, suggestedWidth, options = {}) {
+    super(engine, suggestedWidth);
 
     this.bgColor = options.bgColor;
 
     this.icon = options.icon;
 
-    this.text = new Text(options.text ?? '', 0, 0);
+    this.text = new Text(options.text ?? '', 0, 0, options);
 
     if ( this.icon ) {
       this.text.x += this.text.fontSize + 10;
     }
+
+    this.height = this.text.fontSize * 1.2;
   }
 
   drawComponent() {

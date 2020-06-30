@@ -86,10 +86,12 @@ export default class UIWindow extends GameObject {
     this._setInnerRect();
 
     this.ui.forEach(component => {
-      var Type = nativeComponents[component.type];
+      var Type = typeof component.type === "string" ?
+        nativeComponents[component.type] :
+        component.type;
       if ( Type ) {
-        var newComponent = new Type(this.innerRect.w - this.innerPadding*2, component);
-        newComponent.initializeCanvas()
+        var newComponent = new Type(this.engine, this.innerRect.w - this.innerPadding*2, component);
+        newComponent.initializeCanvas();
         this.components.push(newComponent);
       }
     });
