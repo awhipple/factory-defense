@@ -18,6 +18,7 @@
 * When game is sleeping for a long time, it goes turbo speed.
 * Tower range shouldn't show when menu is on top of them and they are hovered
 * Hotbar clicking to select buildings is broken
+* Sound channels might get added incorrectly due to losing track of the current channel when a new channel is added
 
 *****************
 ** Misc        **
