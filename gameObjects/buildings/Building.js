@@ -76,6 +76,10 @@ export default class Building extends GameObject{
     this.alpha = 1;
     this.on = true;
     this.virtual = false;
+    tile = tile ?? this.pos.floor();
+    if ( this.size === "large" ) {
+      this.centerBuilding = this.field.getBuildingAt(tile);
+    }
     if ( this.centerBuilding ) {
       this.centerBuilding.outerBuilding = this;
     }

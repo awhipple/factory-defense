@@ -17,7 +17,7 @@ export default class UnlockProgress extends UIComponent {
 
       this.ctx.fillStyle = "#aaf";
       this.ctx.fillRect(0, 0, 100, 100);
-      unlocker.unlockTarget.icon.draw(this.ctx, 0, 0, 100, 100);
+      unlocker.unlockTarget.icon?.draw(this.ctx, 0, 0, 100, 100);
 
       var progresses = unlocker.getProgress();
       var top = 50 - progresses.length*15;

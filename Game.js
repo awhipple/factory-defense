@@ -17,11 +17,15 @@ export default class Game {
 
     // Debug
     window.engine = this.engine;
-    this.engine.setProd();
+    // this.engine.setProd();
 
     this.menuX = this.engine.window.width + 5;
 
-    this.engine.images.preload(["empty", "blueore", "lock", "orechunk", "conveyorcorner", "beaker"]);
+    this.engine.images.preload([
+      "empty", "blueore", 
+      "lock", "conveyorcorner",
+      "blueres", "redres", "beaker",
+    ]);
     this.engine.images.preload(BUILDINGS);
     this.engine.sounds.alias("music", "tsuwami_magenta-and-cyan");
 
@@ -147,7 +151,7 @@ export default class Game {
     this.engine.globals.field = this.field;
 
     this.hotBar = new BuildingHotbar(
-      engine, BUILDINGS.slice(0, 3), 
+      engine, BUILDINGS, 
       this.field.buildingCount, this.field.buildingMax
     );
     this.hotBar.onSelect(selected => {
@@ -166,7 +170,7 @@ export default class Game {
         x: this.menuX, 
         y: this.engine.window.height/2-300, 
         w: 500, 
-        h: 600, 
+        h: 610, 
       }, 
       [
         {
@@ -260,15 +264,18 @@ export default class Game {
     this._buildTestBuilding(new Miner(this.engine, new Coord(50, 50), "right"));
     this._buildTestBuilding(new Conveyor(this.engine, new Coord(51, 50), "right"));
     this._buildTestBuilding(new Conveyor(this.engine, new Coord(52, 50), "right"));
-    this._buildTestBuilding(new Miner(this.engine, new Coord(49, 50), "down"));
-    this._buildTestBuilding(new Miner(this.engine, new Coord(48, 50), "down"));
-    this._buildTestBuilding(new Conveyor(this.engine, new Coord(49, 51), "right"));
-    this._buildTestBuilding(new Conveyor(this.engine, new Coord(48, 51), "right"));
-    this._buildTestBuilding(new Conveyor(this.engine, new Coord(50, 51), "right"));
-    this._buildTestBuilding(new Conveyor(this.engine, new Coord(51, 51), "up"));
+    this._buildTestBuilding(new Unlocker(this.engine, new Coord(55, 50), "left"));
+    
+    // this._buildTestBuilding(new Miner(this.engine, new Coord(49, 50), "down"));
+    // this._buildTestBuilding(new Miner(this.engine, new Coord(48, 50), "down"));
+    // this._buildTestBuilding(new Conveyor(this.engine, new Coord(49, 51), "right"));
+    // this._buildTestBuilding(new Conveyor(this.engine, new Coord(48, 51), "right"));
+    // this._buildTestBuilding(new Conveyor(this.engine, new Coord(50, 51), "right"));
+    // this._buildTestBuilding(new Conveyor(this.engine, new Coord(51, 51), "up"));
+
     this._buildTestBuilding(new Tower(this.engine, new Coord(50, 49), "left"));
     this._buildTestBuilding(new Miner(this.engine, new Coord(49, 49), "right"));
-    this._buildTestBuilding(new Unlocker(this.engine, new Coord(55, 50), "left"));
+    
   }
 
   _buildTestBuilding(testBuilding) {

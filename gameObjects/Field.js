@@ -45,8 +45,8 @@ export default class Field {
 
   ground = [];
   buildings = [];
-  buildingCount = {Conveyor: 0, Miner: 0, Unlocker: 0};
-  buildingMax = {Conveyor: 16, Miner: 4, Unlocker: 1};
+  buildingCount = {Conveyor: 0, Miner: 0, Unlocker: 0, Tower: 0};
+  buildingMax = {Conveyor: 16, Miner: 4, Unlocker: 1, Tower: 2};
 
   constructor(engine, width, height) {
     this.engine = engine;

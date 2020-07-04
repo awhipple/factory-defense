@@ -49,7 +49,6 @@ export default class Unlocker extends Building {
         this.startWave = false;
       }
       if ( this.unlockCost === 0 ) {
-        this.lock?.unlock();
         this.field.endWave();
       }
       return true;
@@ -69,16 +68,20 @@ export default class Unlocker extends Building {
   getProgress() {
     return [
       {
-        icon: this.engine.images.get("orechunk"),
-        val: this.centerBuilding.cost - this.unlockCost,
-        max: this.centerBuilding.cost,
+        icon: this.engine.images.get("blueres"),
+        val: 50 - this.unlockCost,
+        max: 50,
         color: "#77c",
       },
     ];
   }
 
+  getLockInventoryLessBuildQueue() {
+    return this.centerBuilding.inventory;
+  }
+
   setUnlock(type) {
-    this.unlockTarget = this.lock.inventory[type];
+    this.unlockTarget = this.centerBuilding.inventory[type];
     this.unlockCost = 50;
     this.startWave = true;
   }
@@ -88,7 +91,6 @@ export default class Unlocker extends Building {
     
     this.centerBuilding = this.field.getBuildingAt(this.tilePos);
     if ( this.centerBuilding instanceof Lock && this.centerBuilding.locked) {
-      this.lock = this.centerBuilding;
       this.unlockCost = this.unlockCost || this.centerBuilding.cost;
       this.text = this.text || new Text(this.unlockCost, 200, 140, { center: true, fontWeight: "bold", fontSize: 200, fontColor: "#733" });
       this.textImage = this.text.asImage(400, 400);

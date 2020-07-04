@@ -10,7 +10,7 @@ export default class Resource extends GameObject {
 
     this.cam = engine.globals.cam;
     this.pos = new Coord(x, y);
-    this.img = engine.images.get("oreChunk")
+    this.img = engine.images.get("blueres")
   }
 
   move(coord, speed) {

@@ -15,7 +15,7 @@ export default class ScoreBoard {
     ctx.strokeStyle = "#000";
     ctx.strokeRect(0, 0, 190, 85);
 
-    this.engine.images.get("oreChunk").draw(ctx, this.imageRect);
+    this.engine.images.get("blueres").draw(ctx, this.imageRect);
 
     ctx.font = "bold 50px Arial";
     ctx.fillStyle = "#000";
